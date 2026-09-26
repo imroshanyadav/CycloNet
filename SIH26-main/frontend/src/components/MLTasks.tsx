@@ -260,31 +260,30 @@ export function MLTasks() {
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 px-6 py-3 rounded-xl bg-white text-black
-            flex items-center gap-3 hover:shadow-2xl transition-all hover:scale-105
-            shadow-lg font-semibold"
+          className="fixed bottom-6 right-6 z-50 px-6 py-3 rounded-xl border border-cyan-400/30 bg-[radial-gradient(circle_at_top,_rgba(34,211,238,0.22),_rgba(8,15,25,0.9)_55%)] text-cyan-50 flex items-center gap-3 hover:shadow-[0_0_25px_rgba(34,211,238,0.24)] transition-all hover:scale-[1.02] shadow-lg font-semibold backdrop-blur-md"
         >
-          <Upload size={20} />
-          <span className="text-sm tracking-wide">ML ANALYSIS</span>
+          <Upload size={20} className="text-cyan-300" />
+          <span className="text-sm tracking-[0.18em]">ML ANALYSIS</span>
         </button>
       )}
 
       {/* Modal */}
       {isOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-6xl max-h-[90vh] bg-black border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-950/80 backdrop-blur-md">
+          <div className="w-full max-w-6xl max-h-[90vh] bg-[#07101a] border border-slate-700/80 rounded-2xl shadow-[0_20px_80px_rgba(2,8,23,0.8)] flex flex-col overflow-hidden">
             {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10">
+            <div className="flex items-center justify-between px-6 py-4 border-b border-slate-700/70 bg-slate-900/60">
               <div className="flex items-center gap-3">
-                <Upload size={24} className="text-white" />
-                <h2 className="text-lg font-bold tracking-wide text-white">
+                <div className="p-2 rounded-lg bg-cyan-500/10 border border-cyan-400/20 text-cyan-300">
+                  <Upload size={18} />
+                </div>
+                <h2 className="text-lg font-bold tracking-[0.18em] text-slate-100">
                   ML ANALYSIS TASKS
                 </h2>
               </div>
               <button
                 onClick={() => setIsOpen(false)}
-                className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center
-                  text-gray-400 hover:text-white transition-colors border border-white/10"
+                className="w-8 h-8 rounded-lg bg-slate-800 border border-slate-700 text-slate-300 hover:text-cyan-200 hover:border-cyan-400/30 transition-colors"
               >
                 <X size={18} />
               </button>
@@ -305,19 +304,18 @@ export function MLTasks() {
                         <button
                           key={task.id}
                           onClick={() => setSelectedTask(task.id)}
-                          className={`p-6 rounded-xl border ${task.borderColor} ${task.bgColor}
-                            hover:scale-105 transition-all group`}
+                          className={`p-6 rounded-xl border ${task.borderColor} bg-slate-900/80 hover:bg-slate-800/90 hover:scale-[1.02] transition-all group shadow-[0_12px_30px_rgba(2,6,23,0.38)]`}
                         >
                           <div className="flex flex-col items-center text-center gap-3">
                             <div
-                              className={`p-4 rounded-full ${task.bgColor} ${task.color}`}
+                              className={`p-4 rounded-full border ${task.borderColor} ${task.bgColor} ${task.color}`}
                             >
                               <Icon size={32} />
                             </div>
-                            <h3 className="text-xl font-semibold text-white">
+                            <h3 className="text-xl font-semibold text-slate-100">
                               {task.title}
                             </h3>
-                            <p className="text-sm text-gray-400">
+                            <p className="text-sm text-slate-300">
                               {task.description}
                             </p>
                           </div>
@@ -357,8 +355,7 @@ export function MLTasks() {
 
                       <div
                         onClick={() => fileInputRef.current?.click()}
-                        className="relative border-2 border-dashed border-white/20 rounded-xl p-8
-                          hover:border-white/40 transition-colors cursor-pointer bg-white/5"
+                        className="relative border-2 border-dashed border-slate-600 rounded-xl p-8 hover:border-cyan-400/40 transition-colors cursor-pointer bg-slate-900/60"
                       >
                         <input
                           ref={fileInputRef}
@@ -406,7 +403,7 @@ export function MLTasks() {
                     {selectedTask === "classify" && (
                       <div className="grid grid-cols-2 gap-3">
                         <div>
-                          <label className="text-xs text-gray-500 mb-2 block uppercase tracking-wider">
+                          <label className="text-xs text-slate-400 mb-2 block uppercase tracking-wider">
                             <MapPin size={12} className="inline mr-1" />
                             CENTER LATITUDE
                           </label>
@@ -416,12 +413,11 @@ export function MLTasks() {
                             value={centerLat}
                             onChange={(e) => setCenterLat(e.target.value)}
                             placeholder="e.g., 15.2"
-                            className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/20
-                              text-white placeholder-gray-600 focus:border-white/40 focus:outline-none"
+                            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 focus:border-cyan-400/50 focus:outline-none"
                           />
                         </div>
                         <div>
-                          <label className="text-xs text-gray-500 mb-2 block uppercase tracking-wider">
+                          <label className="text-xs text-slate-400 mb-2 block uppercase tracking-wider">
                             <MapPin size={12} className="inline mr-1" />
                             CENTER LONGITUDE
                           </label>
@@ -431,8 +427,7 @@ export function MLTasks() {
                             value={centerLon}
                             onChange={(e) => setCenterLon(e.target.value)}
                             placeholder="e.g., 68.4"
-                            className="w-full px-3 py-2 rounded-lg bg-white/5 border border-white/20
-                              text-white placeholder-gray-600 focus:border-white/40 focus:outline-none"
+                            className="w-full px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-slate-100 placeholder-slate-500 focus:border-cyan-400/50 focus:outline-none"
                           />
                         </div>
                       </div>
@@ -441,10 +436,10 @@ export function MLTasks() {
                     <button
                       onClick={handleRun}
                       disabled={!selectedFiles.length || isLoading}
-                      className="w-full px-6 py-3 rounded-xl bg-white text-black
-                        flex items-center justify-center gap-3
-                        hover:bg-gray-100 transition-all disabled:opacity-50 disabled:cursor-not-allowed
-                        font-semibold tracking-wide"
+                      className="w-full px-6 py-3 rounded-xl bg-gradient-to-r from-cyan-500 via-sky-500 to-blue-600 text-white
+                        flex items-center justify-center gap-3 shadow-[0_12px_24px_rgba(14,165,233,0.35)]
+                        hover:brightness-110 transition-all disabled:opacity-50 disabled:cursor-not-allowed
+                        font-semibold tracking-[0.18em]"
                     >
                       {isLoading ? (
                         <>

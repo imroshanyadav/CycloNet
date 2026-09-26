@@ -85,7 +85,7 @@ function App() {
             <div className="flex items-center gap-4">
               <button
                 onClick={() => setShowLanding(true)}
-                className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"
+                className="w-8 h-8 rounded-lg bg-[#0f172a] border border-cyan-500/20 flex items-center justify-center text-slate-300 hover:text-cyan-200 hover:border-cyan-400/40 hover:bg-cyan-500/5 transition-all shadow-[0_0_0_1px_rgba(34,211,238,0.08)]"
                 title="Back to home"
               >
                 <Home size={16} />
@@ -133,7 +133,7 @@ function App() {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setIsDark((value) => !value)}
-                className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white hover:bg-white/10 transition-all"
+                className="w-8 h-8 rounded-lg bg-[#0f172a] border border-sky-500/20 flex items-center justify-center text-slate-300 hover:text-cyan-200 hover:border-cyan-400/40 hover:bg-cyan-500/5 transition-all shadow-[0_0_0_1px_rgba(34,211,238,0.08)]"
                 title={isDark ? "Switch to light mode" : "Switch to dark mode"}
                 aria-label={
                   isDark ? "Switch to light mode" : "Switch to dark mode"
@@ -141,22 +141,22 @@ function App() {
               >
                 {isDark ? <Sun size={13} /> : <Moon size={13} />}
               </button>
-              <button className="w-8 h-8 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-gray-400 hover:text-white transition-all">
+              <button className="w-8 h-8 rounded-lg bg-[#0f172a] border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-cyan-200 transition-all">
                 <User size={13} />
               </button>
               <button
                 onClick={() => setAlertOpen(true)}
-                className="h-8 px-3 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center gap-1.5 text-gray-400 hover:text-white hover:bg-red-500/20 transition-all relative"
+                className="h-8 px-3 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center gap-1.5 text-slate-300 hover:text-red-100 hover:bg-red-500/15 transition-all relative shadow-[0_0_0_1px_rgba(239,68,68,0.12)]"
               >
                 <Bell
                   size={12}
                   fill="currentColor"
-                  className="text-red-500 animate-pulse"
+                  className="text-red-400 animate-pulse"
                 />
-                <span className="text-[9px] font-bold tracking-[0.14em] text-white">
+                <span className="text-[9px] font-bold tracking-[0.14em] text-slate-100">
                   ALERT
                 </span>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[#0a0a0a] animate-pulse"></div>
+                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[#070b12] animate-pulse"></div>
               </button>
             </div>
           </header>

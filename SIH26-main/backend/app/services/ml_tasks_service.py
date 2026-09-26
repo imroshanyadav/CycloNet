@@ -276,68 +276,76 @@ def run_prediction(
         raise
 
 
+def _forecast_horizons(frame_count: int) -> List[int]:
+    """Return a multi-step forecast ladder for recent cyclone image sequences.
+
+    2-frame inputs keep the existing T+12/T+24 contract. 3-4 recent frames are
+    treated as a short storm-history window and generate several upcoming path
+    points at 6-hour intervals, which better matches the user's requirement for
+    "predict the next few hours" from recent imagery.
+    """
+    if frame_count <= 2:
+        return [12, 24]
+    if frame_count <= 4:
+        return [6, 12, 18, 24]
+    return [6, 12, 18, 24, 30, 36]
+
+
 def _stub_prediction(
     sequence_tensor: np.ndarray,
     timestamps: List[str]
 ) -> dict[str, Any]:
-    """Stub implementation for prediction."""
-    # Analyze sequence trend
-    mean_intensities = [float(np.mean(frame)) for frame in sequence_tensor]
-    std_intensities = [float(np.std(frame)) for frame in sequence_tensor]
-    
-    # Estimate movement trend
+    """Stub implementation for prediction using recent image history."""
+    if sequence_tensor.ndim == 4:
+        frames = [np.asarray(frame, dtype=np.float32) for frame in sequence_tensor]
+    elif sequence_tensor.ndim == 3:
+        frames = [np.asarray(frame, dtype=np.float32) for frame in sequence_tensor]
+    else:
+        frames = [np.asarray(sequence_tensor, dtype=np.float32)]
+
+    mean_intensities = [float(np.mean(frame)) for frame in frames]
+    std_intensities = [float(np.std(frame)) for frame in frames]
+
     mean_trend = mean_intensities[-1] - mean_intensities[0]
     std_trend = std_intensities[-1] - std_intensities[0]
-    
-    # Base position from last frame
+
     base_lat = 15.0 + mean_intensities[-1] * 10.0
     base_lon = 68.0 + std_intensities[-1] * 20.0
-    
-    # T+12h prediction
-    pred_12h_lat = base_lat + mean_trend * 5.0 + 0.8
-    pred_12h_lon = base_lon + std_trend * 3.0 - 0.5
-    pattern_12h = "eye" if std_intensities[-1] > 0.18 else "spiral_banding"
-    
-    # T+24h prediction
-    pred_24h_lat = base_lat + mean_trend * 10.0 + 1.8
-    pred_24h_lon = base_lon + std_trend * 6.0 - 1.2
-    pattern_24h = "spiral_banding" if std_intensities[-1] > 0.15 else "curved_band"
-    
+
+    horizons = _forecast_horizons(len(frames))
+    predictions: List[dict[str, Any]] = []
+
+    for idx, horizon_hours in enumerate(horizons):
+        relative = horizon_hours / 12.0
+        pred_lat = base_lat + mean_trend * (5.0 * relative) + (0.7 * idx)
+        pred_lon = base_lon + std_trend * (3.0 * relative) - (0.4 * idx)
+        current_pattern = "eye" if std_intensities[-1] > 0.18 else "spiral_banding"
+        future_pattern = "spiral_banding" if horizon_hours >= 18 else current_pattern
+        if horizon_hours >= 24 and std_intensities[-1] <= 0.15:
+            future_pattern = "curved_band"
+
+        predictions.append(
+            {
+                "horizon_hours": horizon_hours,
+                "center": {
+                    "lat": round(pred_lat, 2),
+                    "lon": round(pred_lon, 2),
+                },
+                "structural_pattern": {
+                    "pattern": future_pattern,
+                    "confidence": round(0.82 - (idx * 0.04), 3),
+                },
+                "uncertainty": {
+                    "sigma_lat": round(0.5 + (horizon_hours / 24.0) * 0.4, 3),
+                    "sigma_lon": round(0.5 + (horizon_hours / 24.0) * 0.45, 3),
+                }
+            }
+        )
+
     return {
         "input_sequence_length": len(timestamps),
         "current_time": timestamps[-1],
-        "predictions": [
-            {
-                "horizon_hours": 12,
-                "center": {
-                    "lat": round(pred_12h_lat, 2),
-                    "lon": round(pred_12h_lon, 2),
-                },
-                "structural_pattern": {
-                    "pattern": pattern_12h,
-                    "confidence": 0.82,
-                },
-                "uncertainty": {
-                    "sigma_lat": 0.5,
-                    "sigma_lon": 0.5,
-                }
-            },
-            {
-                "horizon_hours": 24,
-                "center": {
-                    "lat": round(pred_24h_lat, 2),
-                    "lon": round(pred_24h_lon, 2),
-                },
-                "structural_pattern": {
-                    "pattern": pattern_24h,
-                    "confidence": 0.74,
-                },
-                "uncertainty": {
-                    "sigma_lat": 0.8,
-                    "sigma_lon": 0.8,
-                }
-            }
-        ],
+        "predictions": predictions,
         "model": {
             "name": "cyclone-predictor-stub",
             "version": "0.1.0",

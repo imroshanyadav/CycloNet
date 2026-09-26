@@ -2,8 +2,11 @@
 import os
 os.environ["ML_FORCE_STUB"] = "true"
 
+import numpy as np
 import pytest
 from httpx import AsyncClient
+
+from app.services.ml_tasks_service import _stub_prediction
 
 
 @pytest.fixture
@@ -101,3 +104,25 @@ async def test_predict_no_timezone_rejected(client: AsyncClient, seeded_frame):
     body = {"event_id": "biparjoy_2023", "start_timestamp": "2023-06-14T00:00:00"}
     response = await client.post("/api/ps70/predict", json=body)
     assert response.status_code == 422
+
+
+def test_stub_prediction_generates_multi_horizon_path_for_recent_sequence():
+    timestamps = [
+        "2023-06-14T00:00:00Z",
+        "2023-06-14T06:00:00Z",
+        "2023-06-14T12:00:00Z",
+        "2023-06-14T18:00:00Z",
+    ]
+    sequence = np.stack([
+        np.ones((64, 64), dtype=np.float32) * 0.2,
+        np.ones((64, 64), dtype=np.float32) * 0.3,
+        np.ones((64, 64), dtype=np.float32) * 0.36,
+        np.ones((64, 64), dtype=np.float32) * 0.42,
+    ])
+
+    result = _stub_prediction(sequence, timestamps)
+
+    assert len(result["predictions"]) >= 4
+    horizons = [step["horizon_hours"] for step in result["predictions"]]
+    assert horizons == sorted(horizons)
+    assert horizons[0] >= 6
