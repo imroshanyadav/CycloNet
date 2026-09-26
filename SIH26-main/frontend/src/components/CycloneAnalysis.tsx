@@ -299,599 +299,607 @@ export function CycloneAnalysis({ mode }: { mode: "LIVE" | "HISTORICAL" }) {
       )}
 
       {/* Modal */}
-      {isOpen && createPortal(
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-7xl max-h-[95vh] bg-black border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
-            {/* Header */}
-            <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-gradient-to-r from-slate-900/50 to-slate-800/50">
-              <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
-                  <FileText size={20} className="text-white" />
+      {isOpen &&
+        createPortal(
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+            <div className="w-full max-w-7xl max-h-[95vh] bg-black border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+              {/* Header */}
+              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-gradient-to-r from-slate-900/50 to-slate-800/50">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
+                    <FileText size={20} className="text-white" />
+                  </div>
+                  <div>
+                    <h2 className="text-xl font-bold tracking-wide text-white">
+                      CycloNet Analysis
+                    </h2>
+                    <p className="text-xs text-gray-400">
+                      AI-Powered Cyclone Intelligence
+                    </p>
+                  </div>
                 </div>
-                <div>
-                  <h2 className="text-xl font-bold tracking-wide text-white">
-                    CycloNet Analysis
-                  </h2>
-                  <p className="text-xs text-gray-400">
-                    AI-Powered Cyclone Intelligence
-                  </p>
-                </div>
-              </div>
-              <button
-                onClick={() => setIsOpen(false)}
-                className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center
+                <button
+                  onClick={() => setIsOpen(false)}
+                  className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center
                   text-gray-400 hover:text-white hover:bg-white/20 transition-all border border-white/10"
-              >
-                <X size={20} />
-              </button>
-            </div>
+                >
+                  <X size={20} />
+                </button>
+              </div>
 
-            {/* Content */}
-            <div className="flex-1 overflow-y-auto">
-              {!report ? (
-                /* Upload Section */
-                <div className="p-8 max-w-2xl mx-auto">
-                  <div className="space-y-6">
-                    <div>
-                      <label className="text-sm text-gray-400 mb-3 block font-medium flex items-center gap-2">
-                        <Upload size={16} className="text-cyan-400" />
-                        UPLOAD SATELLITE IMAGE
-                      </label>
+              {/* Content */}
+              <div className="flex-1 overflow-y-auto">
+                {!report ? (
+                  /* Upload Section */
+                  <div className="p-8 max-w-2xl mx-auto">
+                    <div className="space-y-6">
+                      <div>.
+                        <label className="text-sm text-gray-400 mb-3 block font-medium flex items-center gap-2">
+                          <Upload size={16} className="text-cyan-400" />
+                          UPLOAD SATELLITE IMAGE
+                        </label>
 
-                      <div
-                        onClick={() => fileInputRef.current?.click()}
-                        className="relative border-2 border-dashed border-cyan-500/30 rounded-2xl p-12
+                        <div
+                          onClick={() => fileInputRef.current?.click()}
+                          className="relative border-2 border-dashed border-cyan-500/30 rounded-2xl p-12
                           hover:border-cyan-400/50 transition-all cursor-pointer bg-gradient-to-br from-cyan-500/5 to-blue-500/5
                           hover:from-cyan-500/10 hover:to-blue-500/10"
-                      >
-                        <input
-                          ref={fileInputRef}
-                          type="file"
-                          accept="image/jpeg,image/jpg,image/png,image/tiff"
-                          onChange={handleFileSelect}
-                          className="hidden"
-                        />
-
-                        {previewUrl ? (
-                          <div className="relative">
-                            <img
-                              src={previewUrl}
-                              alt="Preview"
-                              className="w-full h-80 object-contain rounded-lg"
-                            />
-                            <button
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleReset();
-                              }}
-                              className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/90
-                                flex items-center justify-center text-white hover:bg-black"
-                            >
-                              <X size={16} />
-                            </button>
-                          </div>
-                        ) : (
-                          <div className="flex flex-col items-center gap-4 text-center">
-                            <div
-                              className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 
-                              flex items-center justify-center border-2 border-cyan-500/30"
-                            >
-                              <Upload size={40} className="text-cyan-400" />
-                            </div>
-                            <div>
-                              <p className="text-white font-semibold text-lg mb-2">
-                                Click to upload satellite image
-                              </p>
-                              <p className="text-gray-400 text-sm">
-                                JPEG, PNG, or TIFF • Max 10MB
-                              </p>
-                            </div>
-                          </div>
-                        )}
-                      </div>
-
-                      {selectedFile && (
-                        <p className="text-xs text-gray-500 mt-2">
-                          {selectedFile.name} (
-                          {(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
-                        </p>
-                      )}
-                    </div>
-
-                    <button
-                      onClick={handleAnalyze}
-                      disabled={!selectedFile || isLoading}
-                      className="w-full px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white
-                        flex items-center justify-center gap-3
-                        hover:from-cyan-400 hover:to-blue-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed
-                        font-bold tracking-wide text-base shadow-lg hover:shadow-cyan-500/50 hover:scale-[1.02]"
-                    >
-                      {isLoading ? (
-                        <>
-                          <Loader2 size={24} className="animate-spin" />
-                          <span>ANALYZING CYCLONE...</span>
-                        </>
-                      ) : (
-                        <>
-                          <Wind size={24} />
-                          <span>RUN FULL ANALYSIS</span>
-                        </>
-                      )}
-                    </button>
-
-                    {error && (
-                      <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30 flex items-start gap-3">
-                        <AlertTriangle
-                          size={20}
-                          className="text-red-400 flex-shrink-0 mt-0.5"
-                        />
-                        <p className="text-sm text-red-400">{error}</p>
-                      </div>
-                    )}
-
-                    <div className="space-y-3">
-                      <p className="text-sm text-gray-400 text-center font-medium">
-                        This analysis includes:
-                      </p>
-                      <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                        <div
-                          className="p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/30 text-center
-                          hover:from-blue-500/20 hover:to-cyan-500/20 transition-all"
                         >
-                          <Eye
-                            size={24}
-                            className="text-cyan-400 mx-auto mb-2"
+                          <input
+                            ref={fileInputRef}
+                            type="file"
+                            accept="image/jpeg,image/jpg,image/png,image/tiff"
+                            onChange={handleFileSelect}
+                            className="hidden"
                           />
-                          <p className="text-xs text-cyan-300 font-semibold">
-                            Detection & Location
-                          </p>
-                        </div>
-                        <div
-                          className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 text-center
-                          hover:from-purple-500/20 hover:to-pink-500/20 transition-all"
-                        >
-                          <Target
-                            size={24}
-                            className="text-purple-400 mx-auto mb-2"
-                          />
-                          <p className="text-xs text-purple-300 font-semibold">
-                            Pattern Classification
-                          </p>
-                        </div>
-                        <div
-                          className="p-4 rounded-xl bg-gradient-to-br from-red-500/10 to-orange-500/10 border border-red-500/30 text-center
-                          hover:from-red-500/20 hover:to-orange-500/20 transition-all"
-                        >
-                          <Wind
-                            size={24}
-                            className="text-red-400 mx-auto mb-2"
-                          />
-                          <p className="text-xs text-red-300 font-semibold">
-                            Intensity & Damage
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              ) : (
-                /* Report Section */
-                <div className="p-8">
-                  {/* Report Header */}
-                  <div className="flex items-start justify-between mb-8 pb-6 border-b border-cyan-500/20">
-                    <div>
-                      <div className="flex items-center gap-3 mb-3">
-                        <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
-                          <FileText size={24} className="text-white" />
-                        </div>
-                        <div>
-                          <h3 className="text-3xl font-bold text-white">
-                            CycloNet Analysis Report
-                          </h3>
-                          <p className="text-sm text-cyan-400">
-                            Comprehensive Cyclone Intelligence
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-center gap-4 text-sm text-gray-400">
-                        <span className="flex items-center gap-1">
-                          <Calendar size={14} />
-                          {formatDate(report.timestamp)}
-                        </span>
-                        <span>•</span>
-                        <span>
-                          Model: {report.model.name} v{report.model.version}
-                        </span>
-                        <span>•</span>
-                        <span className="px-2 py-1 rounded bg-green-500/20 text-green-400 text-xs font-semibold">
-                          Analysis Complete
-                        </span>
-                      </div>
-                    </div>
-                    <button
-                      onClick={handleReset}
-                      className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 
-                        hover:from-cyan-500/30 hover:to-blue-500/30
-                        transition-all border border-cyan-500/30 text-sm font-medium"
-                    >
-                      New Analysis
-                    </button>
-                  </div>
 
-                  {/* Report Grid */}
-                  <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-                    {/* Left Column: Detection & Location */}
-                    <div className="space-y-6">
-                      <div>
-                        <div className="flex items-center gap-2 mb-4">
-                          <Eye size={20} className="text-blue-400" />
-                          <h4 className="text-lg font-semibold text-white">
-                            Detection
-                          </h4>
-                        </div>
-                        <div className="space-y-3">
-                          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-sm text-gray-400">
-                                Status
-                              </span>
-                              <span
-                                className={`px-3 py-1 rounded-full text-xs font-semibold ${
-                                  report.is_cyclone_present
-                                    ? "bg-green-500/20 text-green-400 border border-green-500/30"
-                                    : "bg-red-500/20 text-red-400 border border-red-500/30"
-                                }`}
-                              >
-                                {report.is_cyclone_present
-                                  ? "DETECTED"
-                                  : "NOT DETECTED"}
-                              </span>
-                            </div>
-                            <div className="flex items-baseline gap-2">
-                              <span className="text-3xl font-bold text-white">
-                                {(report.detection.confidence * 100).toFixed(1)}
-                                %
-                              </span>
-                              <span className="text-sm text-gray-400">
-                                confidence
-                              </span>
-                            </div>
-                          </div>
-
-                          {report.center && (
-                            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                              <div className="flex items-center gap-2 mb-3">
-                                <MapPin size={16} className="text-blue-400" />
-                                <span className="text-sm text-gray-400">
-                                  Center Location
-                                </span>
-                              </div>
-                              <div className="space-y-2">
-                                <div>
-                                  <span className="text-xs text-gray-500">
-                                    Latitude
-                                  </span>
-                                  <p className="text-xl font-bold text-white">
-                                    {report.center.lat.toFixed(2)}°
-                                  </p>
-                                </div>
-                                <div>
-                                  <span className="text-xs text-gray-500">
-                                    Longitude
-                                  </span>
-                                  <p className="text-xl font-bold text-white">
-                                    {report.center.lon.toFixed(2)}°
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          )}
-
-                          {report.structural_pattern.pattern !== "unknown" && (
-                            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                              <div className="flex items-center gap-2 mb-3">
-                                <Target size={16} className="text-purple-400" />
-                                <span className="text-sm text-gray-400">
-                                  Structural Pattern
-                                </span>
-                              </div>
-                              <div className="flex items-center justify-between">
-                                <span
-                                  className={`text-xl font-bold ${getPatternColor(report.structural_pattern.pattern)}`}
-                                >
-                                  {formatPattern(
-                                    report.structural_pattern.pattern,
-                                  )}
-                                </span>
-                                <span className="text-sm text-gray-400">
-                                  {(
-                                    report.structural_pattern.confidence * 100
-                                  ).toFixed(0)}
-                                  %
-                                </span>
-                              </div>
-                            </div>
-                          )}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Middle Column: Intensity */}
-                    <div className="space-y-6">
-                      <div>
-                        <div className="flex items-center gap-2 mb-4">
-                          <Gauge size={20} className="text-red-400" />
-                          <h4 className="text-lg font-semibold text-white">
-                            Intensity
-                          </h4>
-                        </div>
-                        <div className="space-y-3">
-                          <div className="p-6 rounded-xl bg-white/5 border border-white/10">
-                            <span className="text-sm text-gray-400 block mb-3">
-                              Wind Speed
-                            </span>
-                            <div className="flex items-baseline gap-3 mb-3">
-                              <span className="text-5xl font-bold text-white">
-                                {report.intensity.wind_speed_knots.toFixed(0)}
-                              </span>
-                              <span className="text-xl text-gray-400">
-                                knots
-                              </span>
-                            </div>
-                            <div className="flex gap-4 text-sm">
-                              <span className="text-gray-400">
-                                {report.intensity.wind_speed_kmh.toFixed(1)}{" "}
-                                km/h
-                              </span>
-                              <span className="text-gray-500">•</span>
-                              <span className="text-gray-400">
-                                {report.intensity.wind_speed_mph.toFixed(1)} mph
-                              </span>
-                            </div>
-                          </div>
-
-                          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                            <div className="flex items-center justify-between mb-2">
-                              <span className="text-sm text-gray-400">
-                                IMD Category
-                              </span>
-                              <span
-                                className={`text-3xl font-bold ${getCategoryColor(report.category.category_code)}`}
-                              >
-                                {report.category.category_code}
-                              </span>
-                            </div>
-                            <p className="text-white font-medium mb-2">
-                              {report.category.category_name}
-                            </p>
-                            <span
-                              className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getDamageColor(report.category.damage_potential)}`}
-                            >
-                              {report.category.damage_potential} Damage
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Right Column: Damage Assessment */}
-                    <div className="space-y-6">
-                      <div>
-                        <div className="flex items-center gap-2 mb-4">
-                          <AlertTriangle
-                            size={20}
-                            className="text-orange-400"
-                          />
-                          <h4 className="text-lg font-semibold text-white">
-                            Impact Assessment
-                          </h4>
-                        </div>
-                        <div className="space-y-3">
-                          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                            <span className="text-xs text-gray-500 uppercase mb-2 block">
-                              Description
-                            </span>
-                            <p className="text-sm text-white leading-relaxed">
-                              {report.damage_assessment.description}
-                            </p>
-                          </div>
-
-                          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                            <span className="text-xs text-gray-500 uppercase mb-2 block">
-                              Infrastructure
-                            </span>
-                            <p className="text-sm text-white leading-relaxed">
-                              {report.damage_assessment.infrastructure}
-                            </p>
-                          </div>
-
-                          <div className="p-4 rounded-xl bg-white/5 border border-white/10">
-                            <span className="text-xs text-gray-500 uppercase mb-2 block">
-                              Coastal Impact
-                            </span>
-                            <p className="text-sm text-white leading-relaxed">
-                              {report.damage_assessment.coastal}
-                            </p>
-                          </div>
-
-                          <div className="p-4 rounded-xl bg-orange-500/10 border border-orange-500/30">
-                            <div className="flex items-start gap-2">
-                              <AlertTriangle
-                                size={16}
-                                className="text-orange-400 flex-shrink-0 mt-0.5"
+                          {previewUrl ? (
+                            <div className="relative">
+                              <img
+                                src={previewUrl}
+                                alt="Preview"
+                                className="w-full h-80 object-contain rounded-lg"
                               />
+                              <button
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleReset();
+                                }}
+                                className="absolute top-2 right-2 w-8 h-8 rounded-full bg-black/90
+                                flex items-center justify-center text-white hover:bg-black"
+                              >
+                                <X size={16} />
+                              </button>
+                            </div>
+                          ) : (
+                            <div className="flex flex-col items-center gap-4 text-center">
+                              <div
+                                className="w-20 h-20 rounded-full bg-gradient-to-br from-cyan-500/20 to-blue-500/20 
+                              flex items-center justify-center border-2 border-cyan-500/30"
+                              >
+                                <Upload size={40} className="text-cyan-400" />
+                              </div>
                               <div>
-                                <span className="text-xs text-orange-400 uppercase font-semibold mb-1 block">
-                                  Recommended Precautions
-                                </span>
-                                <p className="text-sm text-orange-300 leading-relaxed">
-                                  {report.damage_assessment.precautions}
+                                <p className="text-white font-semibold text-lg mb-2">
+                                  Click to upload satellite image
+                                </p>
+                                <p className="text-gray-400 text-sm">
+                                  JPEG, PNG, or TIFF • Max 10MB
                                 </p>
                               </div>
                             </div>
+                          )}
+                        </div>
+
+                        {selectedFile && (
+                          <p className="text-xs text-gray-500 mt-2">
+                            {selectedFile.name} (
+                            {(selectedFile.size / 1024 / 1024).toFixed(2)} MB)
+                          </p>
+                        )}
+                      </div>
+
+                      <button
+                        onClick={handleAnalyze}
+                        disabled={!selectedFile || isLoading}
+                        className="w-full px-8 py-4 rounded-xl bg-gradient-to-r from-cyan-500 to-blue-500 text-white
+                        flex items-center justify-center gap-3
+                        hover:from-cyan-400 hover:to-blue-400 transition-all disabled:opacity-50 disabled:cursor-not-allowed
+                        font-bold tracking-wide text-base shadow-lg hover:shadow-cyan-500/50 hover:scale-[1.02]"
+                      >
+                        {isLoading ? (
+                          <>
+                            <Loader2 size={24} className="animate-spin" />
+                            <span>ANALYZING CYCLONE...</span>
+                          </>
+                        ) : (
+                          <>
+                            <Wind size={24} />
+                            <span>RUN FULL ANALYSIS</span>
+                          </>
+                        )}
+                      </button>
+
+                      {error && (
+                        <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/30 flex items-start gap-3">
+                          <AlertTriangle
+                            size={20}
+                            className="text-red-400 flex-shrink-0 mt-0.5"
+                          />
+                          <p className="text-sm text-red-400">{error}</p>
+                        </div>
+                      )}
+
+                      <div className="space-y-3">
+                        <p className="text-sm text-gray-400 text-center font-medium">
+                          This analysis includes:
+                        </p>
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+                          <div
+                            className="p-4 rounded-xl bg-gradient-to-br from-blue-500/10 to-cyan-500/10 border border-blue-500/30 text-center
+                          hover:from-blue-500/20 hover:to-cyan-500/20 transition-all"
+                          >
+                            <Eye
+                              size={24}
+                              className="text-cyan-400 mx-auto mb-2"
+                            />
+                            <p className="text-xs text-cyan-300 font-semibold">
+                              Detection & Location
+                            </p>
+                          </div>
+                          <div
+                            className="p-4 rounded-xl bg-gradient-to-br from-purple-500/10 to-pink-500/10 border border-purple-500/30 text-center
+                          hover:from-purple-500/20 hover:to-pink-500/20 transition-all"
+                          >
+                            <Target
+                              size={24}
+                              className="text-purple-400 mx-auto mb-2"
+                            />
+                            <p className="text-xs text-purple-300 font-semibold">
+                              Pattern Classification
+                            </p>
+                          </div>
+                          <div
+                            className="p-4 rounded-xl bg-gradient-to-br from-red-500/10 to-orange-500/10 border border-red-500/30 text-center
+                          hover:from-red-500/20 hover:to-orange-500/20 transition-all"
+                          >
+                            <Wind
+                              size={24}
+                              className="text-red-400 mx-auto mb-2"
+                            />
+                            <p className="text-xs text-red-300 font-semibold">
+                              Intensity & Damage
+                            </p>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Additional pattern intelligence */}
-                  {(() => {
-                    const patternKey = report.structural_pattern.pattern;
-                    const guidance =
-                      PATTERN_GUIDANCE[patternKey] ||
-                      PATTERN_GUIDANCE.disorganized;
-                    const patternName = formatPattern(patternKey);
-                    const confidence = (
-                      report.structural_pattern.confidence * 100
-                    ).toFixed(0);
-
-                    return (
-                      <section className="mt-8 pt-6 border-t border-cyan-500/20">
-                        <div className="flex items-center justify-between gap-4 mb-4">
+                ) : (
+                  /* Report Section */
+                  <div className="p-8">
+                    {/* Report Header */}
+                    <div className="flex items-start justify-between mb-8 pb-6 border-b border-cyan-500/20">
+                      <div>
+                        <div className="flex items-center gap-3 mb-3">
+                          <div className="w-12 h-12 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
+                            <FileText size={24} className="text-white" />
+                          </div>
                           <div>
-                            <h4 className="text-xl font-semibold text-white">
-                              Tropical Cyclone Pattern Intelligence
-                            </h4>
-                            <p className="text-sm text-gray-400 mt-1">
-                              Identification, classification, and pattern-based
-                              outlook
+                            <h3 className="text-3xl font-bold text-white">
+                              CycloNet Analysis Report
+                            </h3>
+                            <p className="text-sm text-cyan-400">
+                              Comprehensive Cyclone Intelligence
                             </p>
                           </div>
-                          <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-300">
-                            {patternName} · {confidence}% confidence
+                        </div>
+                        <div className="flex items-center gap-4 text-sm text-gray-400">
+                          <span className="flex items-center gap-1">
+                            <Calendar size={14} />
+                            {formatDate(report.timestamp)}
+                          </span>
+                          <span>•</span>
+                          <span>
+                            Model: {report.model.name} v{report.model.version}
+                          </span>
+                          <span>•</span>
+                          <span className="px-2 py-1 rounded bg-green-500/20 text-green-400 text-xs font-semibold">
+                            Analysis Complete
                           </span>
                         </div>
+                      </div>
+                      <button
+                        onClick={handleReset}
+                        className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 
+                        hover:from-cyan-500/30 hover:to-blue-500/30
+                        transition-all border border-cyan-500/30 text-sm font-medium"
+                      >
+                        New Analysis
+                      </button>
+                    </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                          <div className="p-5 rounded-xl bg-blue-500/10 border border-blue-500/25">
-                            <div className="flex items-center gap-2 mb-3">
-                              <Eye size={18} className="text-blue-400" />
-                              <h5 className="font-semibold text-blue-300">
-                                Identification
-                              </h5>
-                            </div>
-                            <p className="text-sm text-gray-300 leading-relaxed">
-                              {guidance.identification}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-3">
-                              Cyclone present:{" "}
-                              {report.is_cyclone_present ? "Yes" : "No"}
-                            </p>
+                    {/* Report Grid */}
+                    <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                      {/* Left Column: Detection & Location */}
+                      <div className="space-y-6">
+                        <div>
+                          <div className="flex items-center gap-2 mb-4">
+                            <Eye size={20} className="text-blue-400" />
+                            <h4 className="text-lg font-semibold text-white">
+                              Detection
+                            </h4>
                           </div>
-
-                          <div className="p-5 rounded-xl bg-purple-500/10 border border-purple-500/25">
-                            <div className="flex items-center gap-2 mb-3">
-                              <Target size={18} className="text-purple-400" />
-                              <h5 className="font-semibold text-purple-300">
-                                Classification
-                              </h5>
+                          <div className="space-y-3">
+                            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-sm text-gray-400">
+                                  Status
+                                </span>
+                                <span
+                                  className={`px-3 py-1 rounded-full text-xs font-semibold ${
+                                    report.is_cyclone_present
+                                      ? "bg-green-500/20 text-green-400 border border-green-500/30"
+                                      : "bg-red-500/20 text-red-400 border border-red-500/30"
+                                  }`}
+                                >
+                                  {report.is_cyclone_present
+                                    ? "DETECTED"
+                                    : "NOT DETECTED"}
+                                </span>
+                              </div>
+                              <div className="flex items-baseline gap-2">
+                                <span className="text-3xl font-bold text-white">
+                                  {(report.detection.confidence * 100).toFixed(
+                                    1,
+                                  )}
+                                  %
+                                </span>
+                                <span className="text-sm text-gray-400">
+                                  confidence
+                                </span>
+                              </div>
                             </div>
-                            <p className="text-sm text-gray-300 leading-relaxed">
-                              {guidance.classification}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-3">
-                              Detected pattern: {patternName}
-                            </p>
-                          </div>
 
-                          <div className="p-5 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
-                            <div className="flex items-center gap-2 mb-3">
-                              <Wind size={18} className="text-emerald-400" />
-                              <h5 className="font-semibold text-emerald-300">
-                                Prediction
-                              </h5>
-                            </div>
-                            <p className="text-sm text-gray-300 leading-relaxed">
-                              {guidance.prediction}
-                            </p>
-                            <p className="text-xs text-gray-500 mt-3">
-                              Pattern-based outlook; not a track forecast.
-                            </p>
+                            {report.center && (
+                              <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                                <div className="flex items-center gap-2 mb-3">
+                                  <MapPin size={16} className="text-blue-400" />
+                                  <span className="text-sm text-gray-400">
+                                    Center Location
+                                  </span>
+                                </div>
+                                <div className="space-y-2">
+                                  <div>
+                                    <span className="text-xs text-gray-500">
+                                      Latitude
+                                    </span>
+                                    <p className="text-xl font-bold text-white">
+                                      {report.center.lat.toFixed(2)}°
+                                    </p>
+                                  </div>
+                                  <div>
+                                    <span className="text-xs text-gray-500">
+                                      Longitude
+                                    </span>
+                                    <p className="text-xl font-bold text-white">
+                                      {report.center.lon.toFixed(2)}°
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            )}
+
+                            {report.structural_pattern.pattern !==
+                              "unknown" && (
+                              <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                                <div className="flex items-center gap-2 mb-3">
+                                  <Target
+                                    size={16}
+                                    className="text-purple-400"
+                                  />
+                                  <span className="text-sm text-gray-400">
+                                    Structural Pattern
+                                  </span>
+                                </div>
+                                <div className="flex items-center justify-between">
+                                  <span
+                                    className={`text-xl font-bold ${getPatternColor(report.structural_pattern.pattern)}`}
+                                  >
+                                    {formatPattern(
+                                      report.structural_pattern.pattern,
+                                    )}
+                                  </span>
+                                  <span className="text-sm text-gray-400">
+                                    {(
+                                      report.structural_pattern.confidence * 100
+                                    ).toFixed(0)}
+                                    %
+                                  </span>
+                                </div>
+                              </div>
+                            )}
                           </div>
                         </div>
-                      </section>
-                    );
-                  })()}
+                      </div>
 
-                  {/* Image Preview at Bottom */}
-                  {previewUrl && (
-                    <div className="mt-8 pt-6 border-t border-white/10">
-                      <h4 className="text-sm text-gray-400 uppercase mb-3">
-                        Analyzed Image
-                      </h4>
-                      <div className="relative w-full max-w-md mx-auto overflow-hidden rounded-xl border border-white/10">
-                        <img
-                          src={previewUrl}
-                          alt="Analyzed satellite"
-                          className="w-full rounded-xl"
-                        />
-                        {report.is_cyclone_present && (
-                          <div
-                            className="absolute inset-0 pointer-events-none"
-                            aria-label="Cyclone intensity heat map"
-                            style={{
-                              background: report.center
-                                ? "radial-gradient(circle at 50% 50%, rgba(255,247,120,0.78) 0%, rgba(255,150,40,0.56) 12%, rgba(239,68,68,0.38) 28%, rgba(239,68,68,0.12) 48%, transparent 70%)"
-                                : "radial-gradient(circle at 50% 50%, rgba(255,150,40,0.5) 0%, rgba(239,68,68,0.22) 35%, transparent 68%)",
-                              mixBlendMode: "screen",
-                            }}
-                          >
-                            <div
-                              className="absolute inset-[-8%]"
-                              style={{
-                                background:
-                                  "radial-gradient(circle at 50% 50%, rgba(255,255,220,0.95) 0%, rgba(255,238,80,0.9) 5%, rgba(255,130,20,0.78) 12%, rgba(239,35,25,0.64) 23%, rgba(250,75,35,0.4) 34%, rgba(122,225,86,0.3) 48%, rgba(52,211,190,0.24) 61%, transparent 76%)",
-                                filter: "blur(5px)",
-                                mixBlendMode: "screen",
-                              }}
-                            />
-                            <div
-                              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[72%] aspect-square rounded-full"
-                              style={{
-                                background:
-                                  "conic-gradient(from 15deg, transparent 0deg, rgba(255,80,30,0.24) 55deg, transparent 115deg, rgba(255,190,40,0.2) 180deg, transparent 245deg, rgba(255,80,30,0.2) 310deg, transparent 360deg)",
-                                maskImage:
-                                  "radial-gradient(circle, transparent 0 24%, black 36% 68%, transparent 82%)",
-                                WebkitMaskImage:
-                                  "radial-gradient(circle, transparent 0 24%, black 36% 68%, transparent 82%)",
-                                mixBlendMode: "screen",
-                              }}
-                            />
-                            <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-yellow-100 shadow-[0_0_18px_6px_rgba(255,190,60,0.9)]" />
+                      {/* Middle Column: Intensity */}
+                      <div className="space-y-6">
+                        <div>
+                          <div className="flex items-center gap-2 mb-4">
+                            <Gauge size={20} className="text-red-400" />
+                            <h4 className="text-lg font-semibold text-white">
+                              Intensity
+                            </h4>
                           </div>
-                        )}
+                          <div className="space-y-3">
+                            <div className="p-6 rounded-xl bg-white/5 border border-white/10">
+                              <span className="text-sm text-gray-400 block mb-3">
+                                Wind Speed
+                              </span>
+                              <div className="flex items-baseline gap-3 mb-3">
+                                <span className="text-5xl font-bold text-white">
+                                  {report.intensity.wind_speed_knots.toFixed(0)}
+                                </span>
+                                <span className="text-xl text-gray-400">
+                                  knots
+                                </span>
+                              </div>
+                              <div className="flex gap-4 text-sm">
+                                <span className="text-gray-400">
+                                  {report.intensity.wind_speed_kmh.toFixed(1)}{" "}
+                                  km/h
+                                </span>
+                                <span className="text-gray-500">•</span>
+                                <span className="text-gray-400">
+                                  {report.intensity.wind_speed_mph.toFixed(1)}{" "}
+                                  mph
+                                </span>
+                              </div>
+                            </div>
+
+                            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                              <div className="flex items-center justify-between mb-2">
+                                <span className="text-sm text-gray-400">
+                                  IMD Category
+                                </span>
+                                <span
+                                  className={`text-3xl font-bold ${getCategoryColor(report.category.category_code)}`}
+                                >
+                                  {report.category.category_code}
+                                </span>
+                              </div>
+                              <p className="text-white font-medium mb-2">
+                                {report.category.category_name}
+                              </p>
+                              <span
+                                className={`inline-block px-3 py-1 rounded-full text-xs font-semibold border ${getDamageColor(report.category.damage_potential)}`}
+                              >
+                                {report.category.damage_potential} Damage
+                              </span>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      {/* Right Column: Damage Assessment */}
+                      <div className="space-y-6">
+                        <div>
+                          <div className="flex items-center gap-2 mb-4">
+                            <AlertTriangle
+                              size={20}
+                              className="text-orange-400"
+                            />
+                            <h4 className="text-lg font-semibold text-white">
+                              Impact Assessment
+                            </h4>
+                          </div>
+                          <div className="space-y-3">
+                            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                              <span className="text-xs text-gray-500 uppercase mb-2 block">
+                                Description
+                              </span>
+                              <p className="text-sm text-white leading-relaxed">
+                                {report.damage_assessment.description}
+                              </p>
+                            </div>
+
+                            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                              <span className="text-xs text-gray-500 uppercase mb-2 block">
+                                Infrastructure
+                              </span>
+                              <p className="text-sm text-white leading-relaxed">
+                                {report.damage_assessment.infrastructure}
+                              </p>
+                            </div>
+
+                            <div className="p-4 rounded-xl bg-white/5 border border-white/10">
+                              <span className="text-xs text-gray-500 uppercase mb-2 block">
+                                Coastal Impact
+                              </span>
+                              <p className="text-sm text-white leading-relaxed">
+                                {report.damage_assessment.coastal}
+                              </p>
+                            </div>
+
+                            <div className="p-4 rounded-xl bg-orange-500/10 border border-orange-500/30">
+                              <div className="flex items-start gap-2">
+                                <AlertTriangle
+                                  size={16}
+                                  className="text-orange-400 flex-shrink-0 mt-0.5"
+                                />
+                                <div>
+                                  <span className="text-xs text-orange-400 uppercase font-semibold mb-1 block">
+                                    Recommended Precautions
+                                  </span>
+                                  <p className="text-sm text-orange-300 leading-relaxed">
+                                    {report.damage_assessment.precautions}
+                                  </p>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Additional pattern intelligence */}
+                    {(() => {
+                      const patternKey = report.structural_pattern.pattern;
+                      const guidance =
+                        PATTERN_GUIDANCE[patternKey] ||
+                        PATTERN_GUIDANCE.disorganized;
+                      const patternName = formatPattern(patternKey);
+                      const confidence = (
+                        report.structural_pattern.confidence * 100
+                      ).toFixed(0);
+
+                      return (
+                        <section className="mt-8 pt-6 border-t border-cyan-500/20">
+                          <div className="flex items-center justify-between gap-4 mb-4">
+                            <div>
+                              <h4 className="text-xl font-semibold text-white">
+                                Tropical Cyclone Pattern Intelligence
+                              </h4>
+                              <p className="text-sm text-gray-400 mt-1">
+                                Identification, classification, and
+                                pattern-based outlook
+                              </p>
+                            </div>
+                            <span className="hidden sm:inline-flex px-3 py-1 rounded-full bg-cyan-500/10 border border-cyan-500/20 text-xs text-cyan-300">
+                              {patternName} · {confidence}% confidence
+                            </span>
+                          </div>
+
+                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div className="p-5 rounded-xl bg-blue-500/10 border border-blue-500/25">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Eye size={18} className="text-blue-400" />
+                                <h5 className="font-semibold text-blue-300">
+                                  Identification
+                                </h5>
+                              </div>
+                              <p className="text-sm text-gray-300 leading-relaxed">
+                                {guidance.identification}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-3">
+                                Cyclone present:{" "}
+                                {report.is_cyclone_present ? "Yes" : "No"}
+                              </p>
+                            </div>
+
+                            <div className="p-5 rounded-xl bg-purple-500/10 border border-purple-500/25">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Target size={18} className="text-purple-400" />
+                                <h5 className="font-semibold text-purple-300">
+                                  Classification
+                                </h5>
+                              </div>
+                              <p className="text-sm text-gray-300 leading-relaxed">
+                                {guidance.classification}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-3">
+                                Detected pattern: {patternName}
+                              </p>
+                            </div>
+
+                            <div className="p-5 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
+                              <div className="flex items-center gap-2 mb-3">
+                                <Wind size={18} className="text-emerald-400" />
+                                <h5 className="font-semibold text-emerald-300">
+                                  Prediction
+                                </h5>
+                              </div>
+                              <p className="text-sm text-gray-300 leading-relaxed">
+                                {guidance.prediction}
+                              </p>
+                              <p className="text-xs text-gray-500 mt-3">
+                                Pattern-based outlook; not a track forecast.
+                              </p>
+                            </div>
+                          </div>
+                        </section>
+                      );
+                    })()}
+
+                    {/* Image Preview at Bottom */}
+                    {previewUrl && (
+                      <div className="mt-8 pt-6 border-t border-white/10">
+                        <h4 className="text-sm text-gray-400 uppercase mb-3">
+                          Analyzed Image
+                        </h4>
+                        <div className="relative w-full max-w-md mx-auto overflow-hidden rounded-xl border border-white/10">
+                          <img
+                            src={previewUrl}
+                            alt="Analyzed satellite"
+                            className="w-full rounded-xl"
+                          />
+                          {report.is_cyclone_present && (
+                            <div
+                              className="absolute inset-0 pointer-events-none"
+                              aria-label="Cyclone intensity heat map"
+                              style={{
+                                background: report.center
+                                  ? "radial-gradient(circle at 50% 50%, rgba(255,247,120,0.78) 0%, rgba(255,150,40,0.56) 12%, rgba(239,68,68,0.38) 28%, rgba(239,68,68,0.12) 48%, transparent 70%)"
+                                  : "radial-gradient(circle at 50% 50%, rgba(255,150,40,0.5) 0%, rgba(239,68,68,0.22) 35%, transparent 68%)",
+                                mixBlendMode: "screen",
+                              }}
+                            >
+                              <div
+                                className="absolute inset-[-8%]"
+                                style={{
+                                  background:
+                                    "radial-gradient(circle at 50% 50%, rgba(255,255,220,0.95) 0%, rgba(255,238,80,0.9) 5%, rgba(255,130,20,0.78) 12%, rgba(239,35,25,0.64) 23%, rgba(250,75,35,0.4) 34%, rgba(122,225,86,0.3) 48%, rgba(52,211,190,0.24) 61%, transparent 76%)",
+                                  filter: "blur(5px)",
+                                  mixBlendMode: "screen",
+                                }}
+                              />
+                              <div
+                                className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[72%] aspect-square rounded-full"
+                                style={{
+                                  background:
+                                    "conic-gradient(from 15deg, transparent 0deg, rgba(255,80,30,0.24) 55deg, transparent 115deg, rgba(255,190,40,0.2) 180deg, transparent 245deg, rgba(255,80,30,0.2) 310deg, transparent 360deg)",
+                                  maskImage:
+                                    "radial-gradient(circle, transparent 0 24%, black 36% 68%, transparent 82%)",
+                                  WebkitMaskImage:
+                                    "radial-gradient(circle, transparent 0 24%, black 36% 68%, transparent 82%)",
+                                  mixBlendMode: "screen",
+                                }}
+                              />
+                              <div className="absolute left-1/2 top-1/2 z-10 -translate-x-1/2 -translate-y-1/2 w-4 h-4 rounded-full border-2 border-yellow-100 shadow-[0_0_18px_6px_rgba(255,190,60,0.9)]" />
+                            </div>
+                          )}
+                          {report.is_cyclone_present && (
+                            <div
+                              className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 pointer-events-none"
+                              aria-label="Cyclone identification bracket"
+                            >
+                              <span className="absolute left-0 top-0 w-7 h-7 border-l-2 border-t-2 border-yellow-100" />
+                              <span className="absolute right-0 top-0 w-7 h-7 border-r-2 border-t-2 border-yellow-100" />
+                              <span className="absolute left-0 bottom-0 w-7 h-7 border-l-2 border-b-2 border-yellow-100" />
+                              <span className="absolute right-0 bottom-0 w-7 h-7 border-r-2 border-b-2 border-yellow-100" />
+                            </div>
+                          )}
+                        </div>
                         {report.is_cyclone_present && (
-                          <div
-                            className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-36 h-36 pointer-events-none"
-                            aria-label="Cyclone identification bracket"
-                          >
-                            <span className="absolute left-0 top-0 w-7 h-7 border-l-2 border-t-2 border-yellow-100" />
-                            <span className="absolute right-0 top-0 w-7 h-7 border-r-2 border-t-2 border-yellow-100" />
-                            <span className="absolute left-0 bottom-0 w-7 h-7 border-l-2 border-b-2 border-yellow-100" />
-                            <span className="absolute right-0 bottom-0 w-7 h-7 border-r-2 border-b-2 border-yellow-100" />
+                          <div className="flex items-center justify-center gap-3 mt-3 text-[10px] text-gray-400">
+                            <span className="inline-block w-3 h-3 rounded-full bg-yellow-200 shadow-[0_0_8px_rgba(255,190,60,0.8)]" />
+                            <span>Core intensity</span>
+                            <span className="inline-block w-3 h-3 rounded-full bg-red-400/70" />
+                            <span>Outer circulation</span>
+                            <span className="inline-block w-3 h-3 border-l-2 border-t-2 border-yellow-100" />
+                            <span>Identified area</span>
                           </div>
                         )}
                       </div>
-                      {report.is_cyclone_present && (
-                        <div className="flex items-center justify-center gap-3 mt-3 text-[10px] text-gray-400">
-                          <span className="inline-block w-3 h-3 rounded-full bg-yellow-200 shadow-[0_0_8px_rgba(255,190,60,0.8)]" />
-                          <span>Core intensity</span>
-                          <span className="inline-block w-3 h-3 rounded-full bg-red-400/70" />
-                          <span>Outer circulation</span>
-                          <span className="inline-block w-3 h-3 border-l-2 border-t-2 border-yellow-100" />
-                          <span>Identified area</span>
-                        </div>
-                      )}
-                    </div>
-                  )}
-                </div>
-              )}
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
-          </div>
-        </div>,
-        document.body,
-      )}
+          </div>,
+          document.body,
+        )}
     </>
   );
 }

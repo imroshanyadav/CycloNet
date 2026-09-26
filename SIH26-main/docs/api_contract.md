@@ -24,6 +24,7 @@ http://<server-ip>:8000        (prod)
 Returns API liveness and database connectivity status.
 
 **Response `200 OK`**
+
 ```json
 {
   "status": "ok",
@@ -34,6 +35,7 @@ Returns API liveness and database connectivity status.
 `db` is `"ok"` if the database responded to `SELECT 1`, or `"degraded"` if it did not.
 
 **curl**
+
 ```bash
 curl http://localhost:8000/health
 ```
@@ -48,17 +50,18 @@ Return metadata for a satellite frame, or stream the raw image file.
 
 **Path parameters**
 
-| Parameter | Type | Description |
-|---|---|---|
+| Parameter  | Type   | Description                                         |
+| ---------- | ------ | --------------------------------------------------- |
 | `frame_id` | string | Frame identifier stored in `satellite_frames` table |
 
 **Query parameters**
 
-| Parameter | Type | Default | Description |
-|---|---|---|---|
-| `format` | string | `json` | `json` returns metadata; `image` streams the file |
+| Parameter | Type   | Default | Description                                       |
+| --------- | ------ | ------- | ------------------------------------------------- |
+| `format`  | string | `json`  | `json` returns metadata; `image` streams the file |
 
 **Response `200 OK` (format=json)**
+
 ```json
 {
   "frame_id": "frame_001",
@@ -75,12 +78,13 @@ Return metadata for a satellite frame, or stream the raw image file.
 
 **Error responses**
 
-| Code | Condition |
-|---|---|
-| `404` | `frame_id` not found in DB |
+| Code  | Condition                          |
+| ----- | ---------------------------------- |
+| `404` | `frame_id` not found in DB         |
 | `404` | `format=image` but no file on disk |
 
 **curl**
+
 ```bash
 # Metadata
 curl http://localhost:8000/api/ps70/frames/frame_001
@@ -98,6 +102,7 @@ curl http://localhost:8000/api/ps70/frames/frame_001?format=image -o frame.tif
 Run classification inference on a satellite frame and persist the result.
 
 **Request body**
+
 ```json
 {
   "event_id": "biparjoy_2023",
@@ -106,20 +111,21 @@ Run classification inference on a satellite frame and persist the result.
 }
 ```
 
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| `event_id` | string | yes | Must exist in `events` table |
-| `timestamp` | ISO 8601 datetime | yes | Must include timezone (UTC) |
-| `frame_id` | string | yes | Must exist in `satellite_frames` table |
+| Field       | Type              | Required | Notes                                  |
+| ----------- | ----------------- | -------- | -------------------------------------- |
+| `event_id`  | string            | yes      | Must exist in `events` table           |
+| `timestamp` | ISO 8601 datetime | yes      | Must include timezone (UTC)            |
+| `frame_id`  | string            | yes      | Must exist in `satellite_frames` table |
 
 **Response `200 OK`**
+
 ```json
 {
   "event_id": "biparjoy_2023",
   "timestamp": "2023-06-14T12:00:00Z",
   "center": {
-    "lat": 15.20,
-    "lon": 68.40
+    "lat": 15.2,
+    "lon": 68.4
   },
   "pattern": {
     "label": "banding",
@@ -139,13 +145,14 @@ Run classification inference on a satellite frame and persist the result.
 
 **Error responses**
 
-| Code | Condition |
-|---|---|
-| `422` | `event_id` not found |
-| `422` | `frame_id` not found |
+| Code  | Condition                    |
+| ----- | ---------------------------- |
+| `422` | `event_id` not found         |
+| `422` | `frame_id` not found         |
 | `422` | `timestamp` missing timezone |
 
 **curl**
+
 ```bash
 curl -X POST http://localhost:8000/api/ps70/classify \
   -H "Content-Type: application/json" \
@@ -164,6 +171,7 @@ Return all stored classifications for an event, sorted by timestamp ascending.
 Used by the frontend for the time-series view.
 
 **Response `200 OK`**
+
 ```json
 {
   "event_id": "biparjoy_2023",
@@ -174,7 +182,7 @@ Used by the frontend for the time-series view.
       "event_id": "biparjoy_2023",
       "frame_id": "frame_001",
       "timestamp": "2023-06-14T00:00:00Z",
-      "center": { "lat": 14.80, "lon": 68.90 },
+      "center": { "lat": 14.8, "lon": 68.9 },
       "pattern": { "label": "curved_band", "confidence": 0.68 },
       "model": { "name": "ps70-classifier-stub", "version": "0.1.0" }
     }
@@ -184,11 +192,12 @@ Used by the frontend for the time-series view.
 
 **Error responses**
 
-| Code | Condition |
-|---|---|
+| Code  | Condition            |
+| ----- | -------------------- |
 | `404` | `event_id` not found |
 
 **curl**
+
 ```bash
 curl http://localhost:8000/api/ps70/classifications/biparjoy_2023
 ```
@@ -203,6 +212,7 @@ Run temporal prediction (T+12 and T+24) from a base timestamp.
 Persists predictions and provisional uncertainty polygon to DB.
 
 **Request body**
+
 ```json
 {
   "event_id": "biparjoy_2023",
@@ -210,12 +220,13 @@ Persists predictions and provisional uncertainty polygon to DB.
 }
 ```
 
-| Field | Type | Required | Notes |
-|---|---|---|---|
-| `event_id` | string | yes | Must exist in `events` table |
-| `start_timestamp` | ISO 8601 datetime | yes | Analysis time, UTC required |
+| Field             | Type              | Required | Notes                        |
+| ----------------- | ----------------- | -------- | ---------------------------- |
+| `event_id`        | string            | yes      | Must exist in `events` table |
+| `start_timestamp` | ISO 8601 datetime | yes      | Analysis time, UTC required  |
 
 **Response `200 OK`**
+
 ```json
 {
   "event_id": "biparjoy_2023",
@@ -223,12 +234,12 @@ Persists predictions and provisional uncertainty polygon to DB.
   "predictions": [
     {
       "valid_time": "2023-06-14T12:00:00Z",
-      "center": { "lat": 16.10, "lon": 67.80 },
+      "center": { "lat": 16.1, "lon": 67.8 },
       "pattern": { "label": "eye", "confidence": 0.64 }
     },
     {
       "valid_time": "2023-06-15T00:00:00Z",
-      "center": { "lat": 17.20, "lon": 67.10 },
+      "center": { "lat": 17.2, "lon": 67.1 },
       "pattern": { "label": "eye", "confidence": 0.59 }
     }
   ],
@@ -236,7 +247,15 @@ Persists predictions and provisional uncertainty polygon to DB.
     "status": "provisional",
     "geometry": {
       "type": "Polygon",
-      "coordinates": [[[67.30, 16.30], [67.30, 17.10], [68.30, 17.10], [68.30, 16.30], [67.30, 16.30]]]
+      "coordinates": [
+        [
+          [67.3, 16.3],
+          [67.3, 17.1],
+          [68.3, 17.1],
+          [68.3, 16.3],
+          [67.3, 16.3]
+        ]
+      ]
     },
     "coverage_target": null
   },
@@ -251,12 +270,13 @@ Persists predictions and provisional uncertainty polygon to DB.
 
 **Error responses**
 
-| Code | Condition |
-|---|---|
-| `422` | `event_id` not found |
+| Code  | Condition                          |
+| ----- | ---------------------------------- |
+| `422` | `event_id` not found               |
 | `422` | `start_timestamp` missing timezone |
 
 **curl**
+
 ```bash
 curl -X POST http://localhost:8000/api/ps70/predict \
   -H "Content-Type: application/json" \
@@ -279,11 +299,12 @@ Return the full historical replay sequence for a cyclone event.
 
 **Path parameters**
 
-| Parameter | Type | Description |
-|---|---|---|
+| Parameter  | Type   | Description              |
+| ---------- | ------ | ------------------------ |
 | `event_id` | string | Cyclone event identifier |
 
 **Response `200 OK`**
+
 ```json
 {
   "event_id": "biparjoy_2023",
@@ -295,23 +316,23 @@ Return the full historical replay sequence for a cyclone event.
       "prediction": {
         "t12": {
           "valid_time": "2023-06-13T12:00:00Z",
-          "center": { "lat": 15.20, "lon": 68.40 },
+          "center": { "lat": 15.2, "lon": 68.4 },
           "pattern": { "label": "banding", "confidence": 0.72 }
         },
         "t24": {
           "valid_time": "2023-06-14T00:00:00Z",
-          "center": { "lat": 16.10, "lon": 67.80 },
+          "center": { "lat": 16.1, "lon": 67.8 },
           "pattern": { "label": "eye", "confidence": 0.64 }
         }
       },
       "actual": {
         "t12": {
           "valid_time": "2023-06-13T12:00:00Z",
-          "center": { "lat": 15.30, "lon": 68.30 }
+          "center": { "lat": 15.3, "lon": 68.3 }
         },
         "t24": {
           "valid_time": "2023-06-14T00:00:00Z",
-          "center": { "lat": 16.20, "lon": 67.70 }
+          "center": { "lat": 16.2, "lon": 67.7 }
         }
       },
       "errors": {
@@ -329,11 +350,12 @@ Steps are sorted strictly by `time` ascending.
 
 **Error responses**
 
-| Code | Condition |
-|---|---|
+| Code  | Condition            |
+| ----- | -------------------- |
 | `404` | `event_id` not found |
 
 **curl**
+
 ```bash
 curl http://localhost:8000/api/replay/biparjoy_2023
 ```
@@ -348,11 +370,12 @@ Return aggregated evaluation metrics. Optionally filtered by event.
 
 **Query parameters**
 
-| Parameter | Type | Required | Description |
-|---|---|---|---|
-| `event_id` | string | no | Filter to a single event; omit for aggregate |
+| Parameter  | Type   | Required | Description                                  |
+| ---------- | ------ | -------- | -------------------------------------------- |
+| `event_id` | string | no       | Filter to a single event; omit for aggregate |
 
 **Response `200 OK` (with data)**
+
 ```json
 {
   "event_id": "biparjoy_2023",
@@ -381,6 +404,7 @@ Return aggregated evaluation metrics. Optionally filtered by event.
 ```
 
 **Response `200 OK` (no data yet)**
+
 ```json
 {
   "event_id": "biparjoy_2023",
@@ -400,6 +424,7 @@ Return aggregated evaluation metrics. Optionally filtered by event.
 > `baseline` values are `null` until the persistence baseline model is implemented and evaluated.
 
 **curl**
+
 ```bash
 # All events
 curl http://localhost:8000/api/metrics
@@ -438,6 +463,6 @@ Before classification or prediction can be run, the event and its frames must be
 
 ## Changelog
 
-| Date | Change |
-|---|---|
+| Date       | Change                                                     |
+| ---------- | ---------------------------------------------------------- |
 | 2026-08-27 | Initial contract — all endpoints defined, stub mode active |
