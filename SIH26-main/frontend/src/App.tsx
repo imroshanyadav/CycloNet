@@ -176,21 +176,24 @@ function App() {
               {/* ── Left: Map (65%) ── */}
               <div className="flex-none h-[50vh] lg:h-auto lg:flex-[0.65] min-h-0 flex flex-col border-b lg:border-b-0 lg:border-r border-white/10">
                 {/* Section label */}
-                <div className="flex-shrink-0 flex items-center justify-between px-4 py-2 border-b border-white/5">
-                  <span className="metric-label text-gray-500">
+                <div className="flex-shrink-0 flex items-center justify-between gap-3 px-4 py-2 border-b border-white/5">
+                  <span className="metric-label min-w-0 truncate text-gray-500">
                     {mode === "LIVE"
                       ? "LIVE SATELLITE IMAGING"
                       : "HISTORICAL SATELLITE ARCHIVE"}
                   </span>
-                  {mode === "HISTORICAL" && (
-                    <button
-                      onClick={openEvidence}
-                      className="text-[9px] font-semibold tracking-widest text-blue-400 hover:text-blue-300
-                        transition-colors px-2 py-0.5 rounded border border-blue-500/25 hover:border-blue-400/50"
-                    >
-                      VIEW EVIDENCE
-                    </button>
-                  )}
+                  <div className="flex flex-shrink-0 items-center gap-2">
+                    {mode === "HISTORICAL" && (
+                      <button
+                        onClick={openEvidence}
+                        className="text-[9px] font-semibold tracking-widest text-blue-400 hover:text-blue-300
+                          transition-colors px-2 py-0.5 rounded border border-blue-500/25 hover:border-blue-400/50"
+                      >
+                        VIEW EVIDENCE
+                      </button>
+                    )}
+                    <CycloneAnalysis mode={mode} />
+                  </div>
                 </div>
 
                 {/* Map container */}
@@ -220,9 +223,6 @@ function App() {
 
           {/* Alert System — real-time notifications */}
           <AlertSystem open={alertOpen} onClose={() => setAlertOpen(false)} />
-
-          {/* Cyclone Analysis — comprehensive report with all features */}
-          <CycloneAnalysis />
 
           {/* ML Tasks — separate task interface can be enabled here when needed. */}
         </div>

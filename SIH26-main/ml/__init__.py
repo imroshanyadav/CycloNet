@@ -1,1 +1,1 @@
-# ml package — CycloneWatch PS70 ML module
+# ml package — CycloNet PS70 ML module

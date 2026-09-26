@@ -2,7 +2,7 @@ import { useEffect, useRef, useCallback } from 'react';
 import { MapContainer, TileLayer, Marker, Polyline, Circle, useMap } from 'react-leaflet';
 import 'leaflet/dist/leaflet.css';
 import L from 'leaflet';
-import { useCycloneStore } from '../../store/useCycloneStore';
+import { getHistoricalCenter, useCycloneStore } from '../../store/useCycloneStore';
 import { INDIA_BOUNDS, INDIA_CENTER, DEFAULT_ZOOM, MIN_ZOOM, MAX_ZOOM } from './mapConstants';
 import { registerMap } from './mapHelpers';
 
@@ -56,7 +56,7 @@ interface LeafletMapProps {
 }
 
 export function LeafletMap({ layers, onCentreClick }: LeafletMapProps) {
-  const { mode, activeEventId, getCurrentObservation, liveData, apiClassificationsData, timelineIndex } = useCycloneStore();
+  const { mode, activeEventId, getCurrentObservation, liveData, apiReplayData, apiClassificationsData, timelineIndex } = useCycloneStore();
   const obs = getCurrentObservation();
   const mapInstanceRef = useRef<L.Map | null>(null);
 
@@ -81,10 +81,8 @@ export function LeafletMap({ layers, onCentreClick }: LeafletMapProps) {
   const trackCoords: [number, number][] = [];
   if (mode === 'HISTORICAL' && apiClassificationsData?.classifications) {
     for (let i = 0; i <= timelineIndex; i++) {
-      const c = apiClassificationsData.classifications[i];
-      if (c && c.center) {
-        trackCoords.push([c.center.lat, c.center.lon]);
-      }
+      const center = getHistoricalCenter(apiReplayData, apiClassificationsData.classifications, i);
+      if (center) trackCoords.push([center.lat, center.lon]);
     }
   }
 

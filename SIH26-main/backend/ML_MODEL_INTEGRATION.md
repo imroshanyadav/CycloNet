@@ -1,6 +1,6 @@
 # Cyclone Intensity Estimation - ML Model Integration Guide
 
-This guide explains how to integrate the actual deep learning model from the research repository into the CycloneWatch system.
+This guide explains how to integrate the actual deep learning model from the research repository into the CycloNet system.
 
 ## Overview
 

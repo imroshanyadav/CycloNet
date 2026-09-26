@@ -1,5 +1,5 @@
 """
-validate_and_join.py — Ground-truth join for PS70 CycloneWatch
+validate_and_join.py — Ground-truth join for PS70 CycloNet
 
 Fixes vs. previous version:
 - Reads data/normalized/normalized_manifest.csv (written by the fixed

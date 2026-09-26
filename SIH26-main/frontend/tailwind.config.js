@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ── Ocean palette (from cyclonewatch_shell.html tokens) ────────────
+        // ── Ocean palette (from the console shell tokens) ─────────────────
         ocean: {
           950: '#050506',
           900: '#0C0C0E',

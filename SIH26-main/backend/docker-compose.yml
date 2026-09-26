@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────
-# CycloneWatch — DEV Docker Compose
+# CycloNet — DEV Docker Compose
 # Usage: docker compose up
 # ──────────────────────────────────────────────────────
 version: "3.9"

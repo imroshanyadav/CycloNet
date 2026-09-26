@@ -1,6 +1,6 @@
-# CycloneWatch: Future Roadmap & Pending Work
+# CycloNet: Future Roadmap & Pending Work
 
-*This document outlines the strategic improvements planned for CycloneWatch if selected for the next phase of the Smart India Hackathon. These are the key talking points for pitching the future of the project.*
+*This document outlines the strategic improvements planned for CycloNet if selected for the next phase of the Smart India Hackathon. These are the key talking points for pitching the future of the project.*
 
 ---
 

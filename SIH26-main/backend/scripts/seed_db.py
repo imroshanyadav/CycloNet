@@ -182,7 +182,7 @@ def seed(reset: bool = False) -> None:
     logger.info("Seed complete.")
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Seed demo data into CycloneWatch DB")
+    parser = argparse.ArgumentParser(description="Seed demo data into CycloNet DB")
     parser.add_argument("--reset", action="store_true", help="Delete existing seed rows before inserting")
     args = parser.parse_args()
     seed(reset=args.reset)

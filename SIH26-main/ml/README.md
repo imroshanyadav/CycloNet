@@ -1,4 +1,4 @@
-# CycloneWatch — ML Package
+# CycloNet — ML Package
 
 CNN-based cyclone centre regression and structural pattern classification for PS70.
 

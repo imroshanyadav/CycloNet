@@ -1,6 +1,6 @@
-﻿# Frontend Explainer: The Face of CycloneWatch
+﻿# Frontend Explainer: The Face of CycloNet
 
-*This document explains the Frontend of CycloneWatch in simple terms so anyone — technical or not — can understand what it does and how it works.*
+*This document explains the Frontend of CycloNet in simple terms so anyone — technical or not — can understand what it does and how it works.*
 
 ---
 
@@ -44,7 +44,7 @@ When switched to LIVE mode, the dashboard connects to the **Open-Meteo API** (a 
 ## Key Buzzwords Explained
 
 - **SPA (Single Page Application):** Traditional websites reload the entire page every time you click. An SPA loads the framework once and only updates the specific pieces that change. This makes the dashboard feel instant and app-like.
-- **React:** Facebook's open-source toolkit for building interactive UIs using reusable components. Every card, button, and panel on the CycloneWatch screen is one React "component."
+- **React:** Facebook's open-source toolkit for building interactive UIs using reusable components. Every card, button, and panel on the CycloNet screen is one React "component."
 - **Zustand:** A lightweight state manager. All the data (which cyclone is selected, what the ML model said, is the map playing) lives in one central "store" that every component can read from.
 - **Leaflet:** The industry-standard JavaScript map library. It handles the interactive world map, tile loading, and rendering of lines and markers.
 - **NASA GIBS:** NASA's Global Imagery Browse Services — a free API that provides historical satellite imagery by date. We use it to overlay real cloud data on the map matching the cyclone's timeline.

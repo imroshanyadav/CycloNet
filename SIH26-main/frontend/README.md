@@ -1,16 +1,16 @@
-# CycloneWatch — Frontend Dashboard
+# CycloNet ï¿½ Frontend Dashboard
 
-React + TypeScript + Vite web application powering the CycloneWatch visual command center for PS70 — SIH 2026.
+React + TypeScript + Vite web application powering the CycloNet visual command center for PS70 ï¿½ SIH 2026.
 
 ---
 
 ## What This Is
 
-The CycloneWatch frontend is a **Single-Page Application (SPA)** that provides:
+The CycloNet frontend is a **Single-Page Application (SPA)** that provides:
 
 - **Live Monitoring Mode:** Real-time atmospheric and ocean data (wind speed, pressure, SST, wave height) fetched from Open-Meteo API for both Bay of Bengal and Arabian Sea basins.
-- **Historical Archive Mode:** Full replay of 7 historical cyclones (2013–2023) with satellite imagery, ML-predicted tracks, and T+12h/T+24h forecast errors visualized on an interactive Leaflet map.
-- **ML Evidence Panel:** Structural classification output from the `ps70-classifier` model — pattern label, confidence, frame ID, and the raw satellite image that generated the prediction.
+- **Historical Archive Mode:** Full replay of 7 historical cyclones (2013ï¿½2023) with satellite imagery, ML-predicted tracks, and T+12h/T+24h forecast errors visualized on an interactive Leaflet map.
+- **ML Evidence Panel:** Structural classification output from the `ps70-classifier` model ï¿½ pattern label, confidence, frame ID, and the raw satellite image that generated the prediction.
 - **Timeline Slider:** Scrollable, clickable timeline that steps through every 3-hourly observation for any selected cyclone.
 
 ---
@@ -20,31 +20,31 @@ The CycloneWatch frontend is a **Single-Page Application (SPA)** that provides:
 ```
 frontend/
 +-- src/
-¦   +-- App.tsx                     # Root component: mode switching, layout, timeline auto-play
-¦   +-- main.tsx                    # React entry point
-¦   +-- index.css                   # Global CSS, design tokens, Tailwind utilities
-¦   ¦
-¦   +-- store/
-¦   ¦   +-- useCycloneStore.ts      # Zustand global state — all API fetches live here
-¦   ¦
-¦   +-- data/
-¦   ¦   +-- cyclones.ts             # Static cyclone metadata (names, dates, IMD gap notes)
-¦   ¦
-¦   +-- components/
-¦   ¦   +-- IntroAnimation.tsx      # Boot-up animation shown on first load
-¦   ¦   +-- TopNavigation.tsx       # Mode switcher (LIVE / HISTORICAL) + cyclone dropdown
-¦   ¦   ¦
-¦   ¦   +-- Dashboard/
-¦   ¦       +-- LeafletMap.tsx      # Interactive map — base tiles + NASA GIBS clouds + track markers
-¦   ¦       +-- SatellitePanel.tsx  # Wraps LeafletMap, handles layer toggles and map controls
-¦   ¦       +-- MetricsPanel.tsx    # Right-side panel — live data or historical ML metrics
-¦   ¦       +-- Timeline.tsx        # Scrollable timestep bar (historical mode only)
-¦   ¦       +-- EvidenceDrawer.tsx  # Slide-out drawer showing raw satellite frame + classification
-¦   ¦
-¦   +-- assets/                     # Static assets (logo, icons)
-¦
+ï¿½   +-- App.tsx                     # Root component: mode switching, layout, timeline auto-play
+ï¿½   +-- main.tsx                    # React entry point
+ï¿½   +-- index.css                   # Global CSS, design tokens, Tailwind utilities
+ï¿½   ï¿½
+ï¿½   +-- store/
+ï¿½   ï¿½   +-- useCycloneStore.ts      # Zustand global state ï¿½ all API fetches live here
+ï¿½   ï¿½
+ï¿½   +-- data/
+ï¿½   ï¿½   +-- cyclones.ts             # Static cyclone metadata (names, dates, IMD gap notes)
+ï¿½   ï¿½
+ï¿½   +-- components/
+ï¿½   ï¿½   +-- IntroAnimation.tsx      # Boot-up animation shown on first load
+ï¿½   ï¿½   +-- TopNavigation.tsx       # Mode switcher (LIVE / HISTORICAL) + cyclone dropdown
+ï¿½   ï¿½   ï¿½
+ï¿½   ï¿½   +-- Dashboard/
+ï¿½   ï¿½       +-- LeafletMap.tsx      # Interactive map ï¿½ base tiles + NASA GIBS clouds + track markers
+ï¿½   ï¿½       +-- SatellitePanel.tsx  # Wraps LeafletMap, handles layer toggles and map controls
+ï¿½   ï¿½       +-- MetricsPanel.tsx    # Right-side panel ï¿½ live data or historical ML metrics
+ï¿½   ï¿½       +-- Timeline.tsx        # Scrollable timestep bar (historical mode only)
+ï¿½   ï¿½       +-- EvidenceDrawer.tsx  # Slide-out drawer showing raw satellite frame + classification
+ï¿½   ï¿½
+ï¿½   +-- assets/                     # Static assets (logo, icons)
+ï¿½
 +-- public/                         # Static files served as-is
-+-- dist/                           # Production build output (generated — do not commit)
++-- dist/                           # Production build output (generated ï¿½ do not commit)
 +-- index.html
 +-- vite.config.ts
 +-- tailwind.config.js
@@ -78,7 +78,7 @@ npm run build
 Create a `.env.local` file at `frontend/` (never commit this):
 
 ```env
-# Backend API root — no trailing slash
+# Backend API root ï¿½ no trailing slash
 VITE_API_BASE_URL=http://localhost:8001/api
 ```
 
@@ -106,8 +106,8 @@ All data fetching is centralized in `src/store/useCycloneStore.ts`.
 
 The map uses two tile providers stacked:
 
-1. **Base Layer:** Esri World Imagery — high-resolution satellite terrain.
-2. **Cloud Layer:** NASA GIBS MODIS Terra True Color — real satellite cloud imagery matched to the selected cyclone date. The URL includes the date dynamically from the observation timestamp, so you see the actual clouds from that day.
+1. **Base Layer:** Esri World Imagery ï¿½ high-resolution satellite terrain.
+2. **Cloud Layer:** NASA GIBS MODIS Terra True Color ï¿½ real satellite cloud imagery matched to the selected cyclone date. The URL includes the date dynamically from the observation timestamp, so you see the actual clouds from that day.
 
 ---
 
@@ -129,13 +129,13 @@ The map uses two tile providers stacked:
 
 The UI uses a custom dark ocean design system in `src/index.css`. Key tokens:
 
-- `ocean-950/900/800/750` — dark background palette
-- `text-text-primary/secondary/muted/faint` — text hierarchy
-- `text-ir`, `text-wv`, `text-confidence`, `text-alert` — semantic meteorological colors
-- `glass-card`, `glass-chrome` — glassmorphism utility classes
+- `ocean-950/900/800/750` ï¿½ dark background palette
+- `text-text-primary/secondary/muted/faint` ï¿½ text hierarchy
+- `text-ir`, `text-wv`, `text-confidence`, `text-alert` ï¿½ semantic meteorological colors
+- `glass-card`, `glass-chrome` ï¿½ glassmorphism utility classes
 
 ---
 
 For further reading:
-- [EXPLAINER.md](EXPLAINER.md) — Plain-English explanation for non-technical readers.
-- [Main Project README](../README.md) — Full project overview.
+- [EXPLAINER.md](EXPLAINER.md) ï¿½ Plain-English explanation for non-technical readers.
+- [Main Project README](../README.md) ï¿½ Full project overview.

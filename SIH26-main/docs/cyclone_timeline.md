@@ -1,6 +1,6 @@
 ﻿# Training Data Timeline: The 7 Cyclones
 
-This document breaks down the 7 historic events used to train the CycloneWatch model. Use this in the presentation deck to demonstrate the geographic and temporal diversity of the dataset and to put faces to the cyclones displayed on the dashboard.
+This document breaks down the 7 historic events used to train the CycloNet model. Use this in the presentation deck to demonstrate the geographic and temporal diversity of the dataset and to put faces to the cyclones displayed on the dashboard.
 
 ---
 
@@ -49,37 +49,37 @@ This means the model has seen `eye`, `banding`, `curved_band`, `shear_affected`,
 ### Phailin (2013) — Bay of Bengal
 The first Extremely Severe cyclone to strike India in 14 years. Landfall at Gopalpur, Odisha with devastating impact but relatively low deaths (45) due to the largest pre-cyclone evacuation in Indian history at the time (nearly 1 million people). Phailin triggered major improvements in India's disaster response framework.
 
-**CycloneWatch context:** A textbook case of clear `banding` → `eye` evolution. The model learns the "classic" intensification signature from Phailin.
+**CycloNet context:** A textbook case of clear `banding` → `eye` evolution. The model learns the "classic" intensification signature from Phailin.
 
 ### Hudhud (2014) — Bay of Bengal
 Struck Visakhapatnam (Vizag), Andhra Pradesh on 12 October with 185 km/h sustained winds. Caused severe damage to the port city and triggered unusually rapid intensification in the 24 hours before landfall — a pattern our model now recognizes as a characteristic of storms approaching warm, shallow coastal waters.
 
-**CycloneWatch context:** Provides `banding` and `eye` training examples for Bay of Bengal near-landfall signatures.
+**CycloNet context:** Provides `banding` and `eye` training examples for Bay of Bengal near-landfall signatures.
 
 ### Ockhi (2017) — Arabian Sea ⚠️ KEY CASE
-The primary motivating case for CycloneWatch. See the [full Ockhi analysis](ockhi_analysis.md) for a complete breakdown. In brief: anomalous low-latitude formation, explosive RI, 48-hour IMD advisory delay, 218+ fishermen killed.
+The primary motivating case for CycloNet. See the [full Ockhi analysis](ockhi_analysis.md) for a complete breakdown. In brief: anomalous low-latitude formation, explosive RI, 48-hour IMD advisory delay, 218+ fishermen killed.
 
-**CycloneWatch context:** Provides `disorganized` → `curved_band` → `banding` → `eye` training examples for a low-latitude anomalous cyclone.
+**CycloNet context:** Provides `disorganized` → `curved_band` → `banding` → `eye` training examples for a low-latitude anomalous cyclone.
 
 ### Fani (2019) — Bay of Bengal ✅ IMD SUCCESS CASE
 The most accurately forecast intense cyclone in Indian history. IMD predicted the Puri landfall within ~5 km at 72-hour lead time. 1.2 million people were evacuated. Despite extreme intensity (115 kt / 278 km/h), deaths were held to 89.
 
-**CycloneWatch context:** Provides the best examples of a well-organized mature `eye` pattern and clean `shear_affected` signature during post-landfall weakening.
+**CycloNet context:** Provides the best examples of a well-organized mature `eye` pattern and clean `shear_affected` signature during post-landfall weakening.
 
 ### Amphan (2020) — Bay of Bengal
 The most powerful cyclone to form in the Bay of Bengal since 1999. Reached Super Cyclonic Storm status (the highest IMD classification) and made landfall in West Bengal. Caused catastrophic damage to Kolkata and the Sundarbans delta region.
 
-**CycloneWatch context:** The only Super Cyclonic Storm in our dataset — provides training examples of the most organized, compact `eye` signatures possible.
+**CycloNet context:** The only Super Cyclonic Storm in our dataset — provides training examples of the most organized, compact `eye` signatures possible.
 
 ### Tauktae (2021) — Arabian Sea
 An Extremely Severe cyclone that struck the Gujarat coast with 185 km/h winds. Notably, it intensified very rapidly in the final 24 hours before landfall — from Severe CS to Extremely Severe CS — in a period when NWP ensemble models were still showing uncertainty.
 
-**CycloneWatch context:** Critical RI case for the Arabian Sea. Provides `banding` → `eye` → `shear_affected` examples for rapidly intensifying west-coast storms.
+**CycloNet context:** Critical RI case for the Arabian Sea. Provides `banding` → `eye` → `shear_affected` examples for rapidly intensifying west-coast storms.
 
 ### Biparjoy (2023) — Arabian Sea (Primary Demo Event)
 Our primary demonstration cyclone. Formed on June 6, 2023, and remained active for 12+ days — one of the longest-lived Arabian Sea cyclones on record. Its slow movement gave us the largest single-event frame count (109 frames), making it the richest dataset for training and the best replay experience on the dashboard.
 
-**CycloneWatch context:** The most time steps, the clearest structural progression. When judges watch the dashboard timeline for Biparjoy, they see a complete lifecycle from `disorganized` formation through `eye` peak to `shear_affected` dissipation.
+**CycloNet context:** The most time steps, the clearest structural progression. When judges watch the dashboard timeline for Biparjoy, they see a complete lifecycle from `disorganized` formation through `eye` peak to `shear_affected` dissipation.
 
 ---
 

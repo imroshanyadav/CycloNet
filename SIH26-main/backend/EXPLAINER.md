@@ -1,6 +1,6 @@
-﻿# Backend Explainer: The Engine of CycloneWatch
+﻿# Backend Explainer: The Engine of CycloNet
 
-*This document explains the backend of CycloneWatch in simple terms so anyone — technical or not — can understand what it does and how it works.*
+*This document explains the backend of CycloNet in simple terms so anyone — technical or not — can understand what it does and how it works.*
 
 ---
 
@@ -13,7 +13,7 @@ If the **Frontend** (what you see on your screen) is the dashboard of a car, the
 Satellite Images → ML Model → Backend API → Frontend Dashboard
 ```
 
-When you click on a cyclone in the CycloneWatch dashboard:
+When you click on a cyclone in the CycloNet dashboard:
 
 1. **The Request:** Your browser asks the backend: "Give me all the data for Cyclone Biparjoy replay."
 2. **The Database Lookup:** The backend looks in its digital filing cabinet (the database) and finds every pre-computed prediction, error metric, and classification already stored for that cyclone.

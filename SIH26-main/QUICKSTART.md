@@ -1,4 +1,4 @@
-# CycloneWatch - Quick Start Guide
+# CycloNet - Quick Start Guide
 
 ## Current Status
 ✅ Frontend: Running on http://localhost:5173  
@@ -8,7 +8,7 @@
 
 ### Step 1: Access the Application
 1. Open your browser to: **http://localhost:5173**
-2. You should see the CycloneWatch dashboard
+2. You should see the CycloNet dashboard
 
 ### Step 2: Upload a Cyclone Image
 1. Look for the **"ESTIMATE INTENSITY"** button in the **bottom-right corner** of the screen

@@ -152,9 +152,9 @@ function LiveMetrics() {
         <p className="text-[9px] text-text-faint font-mono mt-2">Source: Open-Meteo Marine · {lastUp}</p>
       </div>
 
-      {/* ── CycloneWatch ML status ── */}
+      {/* ── CycloNet ML status ── */}
       <div className="glass-card rounded-xl p-4">
-        <SectionHeader title="CycloneWatch ML" badge="ML PREDICTION" badgeVariant="ml" />
+        <SectionHeader title="CycloNet ML" badge="ML PREDICTION" badgeVariant="ml" />
         <p className="text-[11px] text-text-muted leading-relaxed">
           No active storm detected. Select a historical cyclone in the event selector to see AI-powered classification and track prediction.
         </p>
@@ -223,7 +223,7 @@ function HistoricalMetrics() {
         </div>
       )}
 
-      {/* ── CycloneWatch classification ── */}
+      {/* ── CycloNet classification ── */}
       <div className="glass-card rounded-xl p-4">
         <SectionHeader title="Classification Inference" badge="LIVE MODEL" badgeVariant="ml" />
 

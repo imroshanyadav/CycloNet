@@ -1,6 +1,6 @@
-# CycloneWatch API Contract
+# CycloNet API Contract
 
-> **Scope:** PS70 sprint only. This contract covers the backend API served by `cyclonewatch_api` on port 8000.
+> **Scope:** PS70 sprint only. This contract covers the backend API served on port 8000.
 >
 > **Coordinate convention:** All GeoJSON uses `[longitude, latitude]` order. All timestamps are UTC ISO 8601.
 >

@@ -1,6 +1,6 @@
 ﻿# Cyclone Ockhi 2017: IMD Gap Analysis
 
-> This document is the core motivating case for CycloneWatch. Understand this event and you understand why the project exists.
+> This document is the core motivating case for CycloNet. Understand this event and you understand why the project exists.
 
 ---
 
@@ -44,13 +44,13 @@ Ockhi's initial northwest track toward Sri Lanka, followed by a sharp north-then
 
 ---
 
-## What CycloneWatch Would Have Done
+## What CycloNet Would Have Done
 
-CycloneWatch is not a physics model. It does not solve differential equations. It looks at a satellite image and recognizes structural patterns the same way a trained meteorologist does — but without fatigue, in milliseconds, every 3 hours.
+CycloNet is not a physics model. It does not solve differential equations. It looks at a satellite image and recognizes structural patterns the same way a trained meteorologist does — but without fatigue, in milliseconds, every 3 hours.
 
 Here is the counterfactual timeline:
 
-| Date & Time | Satellite IR Signature | CycloneWatch Output | IMD Status |
+| Date & Time | Satellite IR Signature | CycloNet Output | IMD Status |
 |---|---|---|---|
 | 29 Nov 00:00 | Scattered convection, loose low-level circulation | `disorganized` — triggers anomaly flag for low-latitude location | No advisory |
 | 29 Nov 12:00 | Single curved band developing around centre | `curved_band` — flags rapid organization, sends structural alert | No advisory |
@@ -58,7 +58,7 @@ Here is the counterfactual timeline:
 | 30 Nov 12:00 | Dense banding with potential eye formation beginning | `banding` → `eye` transition detected — CRITICAL alert | No advisory |
 | 01 Dec 03:00 | Mature Very Severe cyclone | `eye` — confirmed | First IMD watch finally issued |
 
-**CycloneWatch would have issued its first structural warning at approximately T-36h from the IMD's advisory** — on the evening of November 30th, when the banding pattern became unambiguous in the IR imagery.
+**CycloNet would have issued its first structural warning at approximately T-36h from the IMD's advisory** — on the evening of November 30th, when the banding pattern became unambiguous in the IR imagery.
 
 ---
 
@@ -68,7 +68,7 @@ The structural warning signs were present in the GridSat-B1 satellite data. Here
 
 **29 Nov (T-48h from IMD advisory):** The IR image shows a loosely organized comma-shaped cloud mass with a warm, diffuse centre. Classified: `disorganized`, but the geographic location (low latitude, Arabian Sea basin, favorable SST >29°C) already flags the system as worth monitoring.
 
-**30 Nov (T-24h from IMD advisory):** Dense overcast region has formed. Multiple curved bands are visible. The classic signature of an organizing storm. This is when a meteorologist would say "this is going to be a cyclone." CycloneWatch would have recognized `banding` with high confidence at this timestamp.
+**30 Nov (T-24h from IMD advisory):** Dense overcast region has formed. Multiple curved bands are visible. The classic signature of an organizing storm. This is when a meteorologist would say "this is going to be a cyclone." CycloNet would have recognized `banding` with high confidence at this timestamp.
 
 **30 Nov evening:** The eye is forming. The system is at near-peak intensity. A warning at this point is too late for fishermen already at sea.
 
@@ -76,13 +76,13 @@ The structural warning signs were present in the GridSat-B1 satellite data. Here
 
 ## Positioning Statement (For the Demo)
 
-> *"Cyclone Ockhi was not a failure of Indian meteorology. IMD has outstanding forecasters with world-class models. It was a failure of the interpretation workflow's speed. Physics models take hours to compute, and at unusually low latitudes, they produce uncertain results. Our model doesn't calculate physics — it looks at a picture and recognizes patterns in milliseconds. For edge cases like Ockhi, that 36-hour lead time is the difference between a warning and a tragedy. CycloneWatch fills the interpretation gap."*
+> *"Cyclone Ockhi was not a failure of Indian meteorology. IMD has outstanding forecasters with world-class models. It was a failure of the interpretation workflow's speed. Physics models take hours to compute, and at unusually low latitudes, they produce uncertain results. Our model doesn't calculate physics — it looks at a picture and recognizes patterns in milliseconds. For edge cases like Ockhi, that 36-hour lead time is the difference between a warning and a tragedy. CycloNet fills the interpretation gap."*
 
 ---
 
 ## Why We Include Ockhi in Our Dataset
 
-Ockhi is in our training set (`ockhi_2017`, 38 frames, 29 Nov – 6 Dec 2017). The model has learned from its distinctive low-latitude formation signature and its rapid structural evolution. When CycloneWatch sees similar early-stage signatures in future satellite imagery — loose convection organizing at low latitudes with favorable SST — it will flag them automatically, based on the pattern it learned from Ockhi.
+Ockhi is in our training set (`ockhi_2017`, 38 frames, 29 Nov – 6 Dec 2017). The model has learned from its distinctive low-latitude formation signature and its rapid structural evolution. When CycloNet sees similar early-stage signatures in future satellite imagery — loose convection organizing at low latitudes with favorable SST — it will flag them automatically, based on the pattern it learned from Ockhi.
 
 ---
 

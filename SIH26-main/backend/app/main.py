@@ -1,4 +1,4 @@
-"""CycloneWatch FastAPI application entry point."""
+"""CycloNet FastAPI application entry point."""
 from contextlib import asynccontextmanager
 from typing import AsyncGenerator
 
@@ -33,7 +33,7 @@ async def lifespan(app: FastAPI) -> AsyncGenerator[None, None]:
 
 def create_app() -> FastAPI:
     app = FastAPI(
-        title="CycloneWatch API",
+        title="CycloNet API",
         description=(
             "AI/ML-based cyclone identification, classification, and prediction "
             "system for PS70 — SIH 2026."

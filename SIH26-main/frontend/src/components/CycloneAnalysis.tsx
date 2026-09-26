@@ -13,6 +13,7 @@ import {
 } from "lucide-react";
 import type { ChangeEvent } from "react";
 import { useRef, useState } from "react";
+import { createPortal } from "react-dom";
 
 interface CycloneReport {
   // Intensity data
@@ -96,7 +97,7 @@ const PATTERN_GUIDANCE: Record<
   },
 };
 
-export function CycloneAnalysis() {
+export function CycloneAnalysis({ mode }: { mode: "LIVE" | "HISTORICAL" }) {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
@@ -283,25 +284,22 @@ export function CycloneAnalysis() {
 
   return (
     <>
-      {/* Floating button */}
+      {/* Map-section action */}
       {!isOpen && (
         <button
           onClick={() => setIsOpen(true)}
-          className="fixed bottom-6 right-6 z-50 px-6 py-4 rounded-2xl 
-            bg-gradient-to-r from-cyan-500 to-blue-500 text-white
-            flex items-center gap-3 hover:shadow-2xl hover:shadow-cyan-500/50 transition-all hover:scale-105
-            shadow-xl font-semibold group"
+          aria-label="Analyze cyclone"
+          title="Analyze cyclone"
+          className={`flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-1.5 text-[10px] font-semibold tracking-wide text-white transition-colors
+            ${mode === "LIVE" ? "bg-emerald-700 hover:bg-emerald-600" : "bg-orange-700 hover:bg-orange-600"}`}
         >
-          <FileText
-            size={22}
-            className="group-hover:rotate-12 transition-transform"
-          />
-          <span className="text-sm tracking-wide">ANALYZE CYCLONE</span>
+          <FileText size={14} />
+          <span className="hidden sm:inline">ANALYZE CYCLONE</span>
         </button>
       )}
 
       {/* Modal */}
-      {isOpen && (
+      {isOpen && createPortal(
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="w-full max-w-7xl max-h-[95vh] bg-black border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
             {/* Header */}
@@ -891,7 +889,8 @@ export function CycloneAnalysis() {
               )}
             </div>
           </div>
-        </div>
+        </div>,
+        document.body,
       )}
     </>
   );

@@ -1,6 +1,6 @@
-﻿# Data Explainer: The Fuel of CycloneWatch
+﻿# Data Explainer: The Fuel of CycloNet
 
-*This document explains the Data pipeline of CycloneWatch in simple terms so anyone — technical or not — can understand where our information comes from and how it is processed.*
+*This document explains the Data pipeline of CycloNet in simple terms so anyone — technical or not — can understand where our information comes from and how it is processed.*
 
 ---
 
@@ -90,7 +90,7 @@ data/
 
 ## What We Could Not Use (Future Plans)
 
-The major limitation of our dataset is the 4 km resolution of GridSat-B1. The real INSAT-3DR satellite operated by ISRO provides **1 km resolution imagery**, which would give our model 16x more spatial detail per frame. MOSDAC (ISRO's data portal) provides access to this data, but requires a formal research access request, which is currently pending. This MOSDAC integration is the single highest-impact improvement identified for the next phase of CycloneWatch.
+The major limitation of our dataset is the 4 km resolution of GridSat-B1. The real INSAT-3DR satellite operated by ISRO provides **1 km resolution imagery**, which would give our model 16x more spatial detail per frame. MOSDAC (ISRO's data portal) provides access to this data, but requires a formal research access request, which is currently pending. This MOSDAC integration is the single highest-impact improvement identified for the next phase of CycloNet.
 
 ---
 

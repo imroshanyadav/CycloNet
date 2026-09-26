@@ -1,6 +1,6 @@
-﻿# Machine Learning Explainer: The Brain of CycloneWatch
+﻿# Machine Learning Explainer: The Brain of CycloNet
 
-*This document explains the Machine Learning (ML) pipeline of CycloneWatch in simple terms so anyone — technical or not — can understand what it does, how it was trained, and what its current capabilities are.*
+*This document explains the Machine Learning (ML) pipeline of CycloNet in simple terms so anyone — technical or not — can understand what it does, how it was trained, and what its current capabilities are.*
 
 ---
 

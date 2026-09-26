@@ -1,4 +1,4 @@
-# CycloneWatch Model — Explained in Plain Language
+# CycloNet Model — Explained in Plain Language
 
 > **Who this is for:** Everyone on the team, judges, and anyone curious about what the AI is actually doing.
 > No machine learning background assumed.
@@ -156,13 +156,13 @@ The error is low when:
 | All three combined | **< 100 km** | **< 130 km** | Phase 2 | 🔮 Roadmap target |
 | IMD operational NWP (reference) | ~100–150 km | ~150–200 km | Supercomputer | — |
 
-Reaching < 100 km T+12 MAE would put CycloneWatch in operational accuracy territory, competing with physics-based NWP while running 1000× faster.
+Reaching < 100 km T+12 MAE would put CycloNet in operational accuracy territory, competing with physics-based NWP while running 1000× faster.
 
 ---
 
 ## Why does this matter for the demo?
 
-The positioning of CycloneWatch is:
+The positioning of CycloNet is:
 
 > "We are not replacing IMD. We are automating the satellite-image interpretation step."
 
@@ -227,6 +227,6 @@ Class weights: inverse-frequency to handle label imbalance
 
 ## Dashboard Metrics Reference
 
-For a plain-language explanation of every number shown on the CycloneWatch dashboard — including why confidence may be 0%, what T+12 vs T+24 error means, and what SST thresholds indicate — see:
+For a plain-language explanation of every number shown on the CycloNet dashboard — including why confidence may be 0%, what T+12 vs T+24 error means, and what SST thresholds indicate — see:
 
 ➡️ **[metrics_explained.md](metrics_explained.md)**

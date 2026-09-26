@@ -1,6 +1,6 @@
-# CycloneWatch — Backend
+# CycloNet — Backend
 
-FastAPI + PostgreSQL/PostGIS backend for the CycloneWatch PS70 system.
+FastAPI + PostgreSQL/PostGIS backend for the CycloNet PS70 system.
 
 ---
 

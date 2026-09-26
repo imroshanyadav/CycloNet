@@ -1,6 +1,6 @@
-﻿# CycloneWatch Dashboard: Every Metric Explained
+﻿# CycloNet Dashboard: Every Metric Explained
 
-> This document is the definitive reference for every number, label, and indicator shown on the CycloneWatch dashboard — what it means, why it might be high or low, and how it can be improved. Designed for judges, non-technical stakeholders, and anyone demoing the system.
+> This document is the definitive reference for every number, label, and indicator shown on the CycloNet dashboard — what it means, why it might be high or low, and how it can be improved. Designed for judges, non-technical stakeholders, and anyone demoing the system.
 
 ---
 
@@ -65,7 +65,7 @@ The internal database identifier for the satellite frame used to generate this c
 ### Timestamp
 **Example:** `2023-06-10 12:00:00 UTC`
 
-The UTC time of the satellite observation. All timestamps in CycloneWatch are in UTC (Coordinated Universal Time), which is 5 hours 30 minutes behind IST (Indian Standard Time).
+The UTC time of the satellite observation. All timestamps in CycloNet are in UTC (Coordinated Universal Time), which is 5 hours 30 minutes behind IST (Indian Standard Time).
 
 ---
 

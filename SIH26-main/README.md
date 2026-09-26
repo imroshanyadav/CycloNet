@@ -1,4 +1,4 @@
-# CycloneWatch: AI-Powered Tropical Cyclone Tracker
+# CycloNet: AI-Powered Tropical Cyclone Tracker
 
 **Smart India Hackathon 2026 Submission (PS70)**  
 *AI/ML-based system for identification, classification, and prediction of different tropical cyclone patterns using multi-source satellite data.*
@@ -10,9 +10,9 @@
 ---
 
 ## 🌪️ Project Overview
-CycloneWatch is an end-to-end, AI-driven meteorological tracking system. Traditional Numerical Weather Prediction (NWP) physics models are highly accurate but notoriously slow to respond to Rapid Intensification (RI) events and anomalous low-latitude storm formations. 
+CycloNet is an end-to-end, AI-driven meteorological tracking system. Traditional Numerical Weather Prediction (NWP) physics models are highly accurate but notoriously slow to respond to Rapid Intensification (RI) events and anomalous low-latitude storm formations. 
 
-CycloneWatch addresses this **interpretation gap**. By applying deep convolutional neural networks directly to infrared satellite imagery, we automate the structural classification of storms. Our model detects dangerous structural anomalies (like sudden "banding" or "eye" formations) hours before traditional physics models compute the danger, providing a vital early warning system.
+CycloNet addresses this **interpretation gap**. By applying deep convolutional neural networks directly to infrared satellite imagery, we automate the structural classification of storms. Our model detects dangerous structural anomalies (like sudden "banding" or "eye" formations) hours before traditional physics models compute the danger, providing a vital early warning system.
 
 ## 📂 Repository Structure
 
@@ -46,7 +46,7 @@ cd frontend
 npm install
 npm run dev
 ```
-Navigate to `http://localhost:5173` to view the CycloneWatch dashboard.
+Navigate to `http://localhost:5173` to view the CycloNet dashboard.
 
 ## 📊 Current Metrics & Performance
 - **Structural Pattern Classification:** ~78.3% accuracy across 5 distinct morphological classes.
@@ -54,7 +54,7 @@ Navigate to `http://localhost:5173` to view the CycloneWatch dashboard.
 - **Inference Speed:** ~12 milliseconds per satellite frame on CPU.
 
 ## 🔮 Future Roadmap (Scaling to Production)
-Our current prototype is constrained by the 4km-resolution GridSat-B1 dataset. The immediate next step for CycloneWatch is unlocking research access to the **MOSDAC / INSAT-3DR** dataset from ISRO. 
+Our current prototype is constrained by the 4km-resolution GridSat-B1 dataset. The immediate next step for CycloNet is unlocking research access to the **MOSDAC / INSAT-3DR** dataset from ISRO. 
 
 Moving from 4km to 1km resolution will provide the ML model with 16x more spatial data per frame. Combined with our fully staged temporal sequence architecture (ConvLSTM), this will allow our MAE to drop below 100km, rivaling traditional physics models while maintaining our massive speed advantage.
 

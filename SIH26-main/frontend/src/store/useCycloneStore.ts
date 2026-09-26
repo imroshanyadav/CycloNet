@@ -3,6 +3,39 @@ import { BASIN_CENTERS, CYCLONES } from '../data/cyclones';
 
 const API_BASE = import.meta.env.VITE_API_BASE_URL || 'http://localhost:8000/api';
 
+export function getHistoricalCenter(
+  replayData: any,
+  classifications: any,
+  index: number,
+): { lat: number; lon: number } | null {
+  const step = replayData?.steps?.[index];
+  if (!step) return null;
+
+  const targetTime = Date.parse(step.time);
+  let nearestCenter: { lat: number; lon: number } | null = null;
+  let nearestDifference = Infinity;
+
+  for (const replayStep of replayData.steps) {
+    for (const actual of Object.values(replayStep.actual ?? {}) as any[]) {
+      const actualTime = Date.parse(actual?.valid_time);
+      if (!actual?.center || !Number.isFinite(actualTime)) continue;
+
+      const difference = Math.abs(actualTime - targetTime);
+      if (difference < nearestDifference) {
+        nearestDifference = difference;
+        nearestCenter = actual.center;
+      }
+    }
+  }
+
+  if (nearestCenter) return nearestCenter;
+
+  const classification = classifications?.find(
+    (item: any) => item.timestamp === step.time,
+  ) || classifications?.[index];
+  return classification?.center ?? null;
+}
+
 export interface LiveData {
   status: 'LIVE' | 'UPDATING' | 'STALE' | 'OFFLINE';
   lastUpdated: string | null;
@@ -119,7 +152,7 @@ export const useCycloneStore = create<CycloneState>((set, get) => ({
         classification: {
           center: { lat, lon },
           pattern: { label: 'unlabeled', confidence: 0 },
-          model: { name: 'CycloneWatch archive', version: 'local fallback' },
+          model: { name: 'CycloNet archive', version: 'local fallback' },
         },
       };
     }
@@ -133,11 +166,13 @@ export const useCycloneStore = create<CycloneState>((set, get) => ({
     ) || apiClassificationsData.classifications[timelineIndex]; // Fallback to index if timestamp doesn't perfectly match
     
     if (!classification) return null;
+    const center = getHistoricalCenter(apiReplayData, apiClassificationsData.classifications, timelineIndex)
+      ?? classification.center;
 
     return {
       timestamp: step.time,
-      lat: classification.center.lat,
-      lng: classification.center.lon,
+      lat: center.lat,
+      lng: center.lon,
       step: step,
       classification: classification
     };

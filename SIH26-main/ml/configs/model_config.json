@@ -1,5 +1,5 @@
 {
-  "_comment": "Model configuration for CycloneWatch PS70 classifier. Updated after Antigravity training run.",
+  "_comment": "Model configuration for CycloNet PS70 classifier. Updated after Antigravity training run.",
 
   "model": {
     "name": "ps70-classifier",

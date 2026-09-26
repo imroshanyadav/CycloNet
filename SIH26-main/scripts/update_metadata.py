@@ -1,5 +1,5 @@
 """
-update_metadata.py — Provenance manifest for PS70 CycloneWatch
+update_metadata.py — Provenance manifest for PS70 CycloNet
 
 Fixes vs. previous version:
 - No longer re-parses timestamps out of raw .nc filenames (that broke as soon

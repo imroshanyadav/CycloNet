@@ -1,5 +1,5 @@
 """
-Shared pytest fixtures for the CycloneWatch backend test suite.
+Shared pytest fixtures for the CycloNet backend test suite.
 
 Uses an in-memory SQLite database for unit/integration tests so that
 tests run without a live PostgreSQL instance.

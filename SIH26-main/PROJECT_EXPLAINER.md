@@ -1,6 +1,6 @@
-# CycloneWatch: Complete Project Explainer
+# CycloNet: Complete Project Explainer
 
-*Written for judges, evaluators, non-technical stakeholders, and anyone who wants to deeply understand what CycloneWatch is, why it exists, how it works, and where it is going. Read this first. Every section tells you exactly where to go for a deeper dive.*
+*Written for judges, evaluators, non-technical stakeholders, and anyone who wants to deeply understand what CycloNet is, why it exists, how it works, and where it is going. Read this first. Every section tells you exactly where to go for a deeper dive.*
 
 ---
 
@@ -48,7 +48,7 @@ At that point, hundreds of fishermen from Tamil Nadu and Kerala were already at 
 
 This is what we call the **Interpretation Gap** — the time between when the satellite image already shows the warning signs and when the physics models finally compute the threat. Ockhi did not hide. The structural warning signs were visible in the satellite imagery on 29 November. No automated system was watching.
 
-> **CycloneWatch is built to close the interpretation gap.**
+> **CycloNet is built to close the interpretation gap.**
 
 ---
 
@@ -97,7 +97,7 @@ The entire download and processing flow is automated:
 
 ### What the Model Does
 
-The CycloneWatch AI model (called `ps70-classifier`, version 2.0.0) receives a 2-channel satellite image and performs two simultaneous tasks:
+The CycloNet AI model (called `ps70-classifier`, version 2.0.0) receives a 2-channel satellite image and performs two simultaneous tasks:
 
 **Task 1 — Pattern Classification:**
 It classifies the storm's current structural state into one of 5 categories:
@@ -110,7 +110,7 @@ It classifies the storm's current structural state into one of 5 categories:
 | **Shear Affected** | Lopsided, torn structure — storm is being dismantled by wind shear | 🟢 Decreasing |
 | **Disorganized** | Scattered clouds, no structure — early stage or dying remnant | ⚪ Low |
 
-These five categories are not invented — they follow the internationally accepted **Dvorak Technique**, the standard used by meteorologists worldwide to assess cyclone intensity from satellite images. CycloneWatch automates the Dvorak image-interpretation step.
+These five categories are not invented — they follow the internationally accepted **Dvorak Technique**, the standard used by meteorologists worldwide to assess cyclone intensity from satellite images. CycloNet automates the Dvorak image-interpretation step.
 
 **Task 2 — Centre Position Regression:**
 Simultaneously, the model estimates the geographic latitude and longitude of the storm's centre, directly from the geometry of the cloud structure in the image.
@@ -204,7 +204,7 @@ This pattern allowed parallel development — frontend, backend, and ML teams al
 
 ### What You See on Screen
 
-The CycloneWatch dashboard is a **Single-Page Application** — a web application that loads once and updates in real time without ever reloading the page. It is built with React (Meta's web UI framework) and Leaflet (the industry-standard interactive map library).
+The CycloNet dashboard is a **Single-Page Application** — a web application that loads once and updates in real time without ever reloading the page. It is built with React (Meta's web UI framework) and Leaflet (the industry-standard interactive map library).
 
 ### The Two Modes
 
@@ -223,7 +223,7 @@ When a cyclone is selected from the dropdown, the dashboard shows the full histo
 - **Cloud layer:** Real NASA GIBS satellite imagery pulled for that specific date — the actual clouds from the day of the event
 - **Timeline:** A scrollable horizontal bar with one dot per 3-hour observation step
 - **Metrics panel:** Pattern classification, confidence, centre coordinates, T+12 and T+24 forecast errors
-- **IMD Gap Case banner:** For every cyclone, a red banner explains specifically how CycloneWatch would have provided earlier warning than the official IMD advisory
+- **IMD Gap Case banner:** For every cyclone, a red banner explains specifically how CycloNet would have provided earlier warning than the official IMD advisory
 
 ### The NASA GIBS Cloud Layer (Is It Real?)
 
@@ -240,7 +240,7 @@ Biparjoy lasted 12 days with one observation every 3 hours — that is 96 data p
 
 ## Chapter 6: The Numbers — What the Metrics Mean
 
-This chapter explains every number you see on the CycloneWatch dashboard. You do not need to understand machine learning to understand these metrics.
+This chapter explains every number you see on the CycloNet dashboard. You do not need to understand machine learning to understand these metrics.
 
 ### Pattern Confidence (%)
 The model outputs a probability between 0–100% for each structural pattern. The displayed percentage is the probability the model assigns to the pattern it chose. Low confidence (< 20%) at the early and late stages of a cyclone is **expected and correct** — the storm genuinely looks ambiguous during formation and dissipation. High confidence (> 80%) during the banding or eye phase confirms the model is seeing a clear, unambiguous structural signature.
@@ -285,13 +285,13 @@ How many frames had valid ground-truth data available for computing the accuracy
 
 ### What Is a Gap Case?
 
-A Gap Case is a historical cyclone event where CycloneWatch's automated structural analysis would have identified the dangerous pattern **before the official IMD advisory acknowledged the threat**. We specifically selected events with IMD advisory delays or cases where the structural evolution was faster than traditional models could process.
+A Gap Case is a historical cyclone event where CycloNet's automated structural analysis would have identified the dangerous pattern **before the official IMD advisory acknowledged the threat**. We specifically selected events with IMD advisory delays or cases where the structural evolution was faster than traditional models could process.
 
 ### Why This Is Important
 
-The pitch for CycloneWatch is not "our AI is more accurate than IMD." IMD has world-class physicists, supercomputers, and decades of regional expertise. The pitch is: **CycloneWatch is always watching, never fatigues, and sees the structural signal the instant it appears in the satellite image.**
+The pitch for CycloNet is not "our AI is more accurate than IMD." IMD has world-class physicists, supercomputers, and decades of regional expertise. The pitch is: **CycloNet is always watching, never fatigues, and sees the structural signal the instant it appears in the satellite image.**
 
-When Ockhi was forming on 29 November 2017, a meteorologist may have been reviewing 40 different weather systems across the ocean simultaneously. CycloneWatch would have flagged Ockhi's unusual low-latitude organization and escalating banding pattern automatically, in real time, without anyone needing to notice it first.
+When Ockhi was forming on 29 November 2017, a meteorologist may have been reviewing 40 different weather systems across the ocean simultaneously. CycloNet would have flagged Ockhi's unusual low-latitude organization and escalating banding pattern automatically, in real time, without anyone needing to notice it first.
 
 ### All 7 Gap Cases
 
@@ -307,14 +307,14 @@ When Ockhi was forming on 29 November 2017, a meteorologist may have been review
 
 Every one of these Gap Cases is visible on the dashboard — select the cyclone, scrub the timeline to the early hours, and you will see the structural pattern the model detected at that timestamp.
 
-> **📖 Go Deeper:** [docs/ockhi_analysis.md](docs/ockhi_analysis.md) — minute-by-minute Ockhi timeline, the exact satellite signatures, and what CycloneWatch would have done at each step.
-> **📖 Contrast case:** [docs/fani_comparison.md](docs/fani_comparison.md) — why Fani was forecastable by NWP but Ockhi was not; how CycloneWatch adds value to both.
+> **📖 Go Deeper:** [docs/ockhi_analysis.md](docs/ockhi_analysis.md) — minute-by-minute Ockhi timeline, the exact satellite signatures, and what CycloNet would have done at each step.
+> **📖 Contrast case:** [docs/fani_comparison.md](docs/fani_comparison.md) — why Fani was forecastable by NWP but Ockhi was not; how CycloNet adds value to both.
 
 ---
 
 ## Chapter 8: Limitations — What We Do Not Claim
 
-Honesty is the foundation of scientific credibility. Here is what CycloneWatch is, and is not.
+Honesty is the foundation of scientific credibility. Here is what CycloNet is, and is not.
 
 ### What We Do NOT Claim
 - We do not claim to replace IMD or any national meteorological service
@@ -343,7 +343,7 @@ Honesty is the foundation of scientific credibility. Here is what CycloneWatch i
 
 ## Chapter 9: The Future Roadmap
 
-CycloneWatch is a prototype that proves the end-to-end concept works. The prototype phase is complete. Here is what Phase 2 and beyond look like.
+CycloNet is a prototype that proves the end-to-end concept works. The prototype phase is complete. Here is what Phase 2 and beyond look like.
 
 ### Phase 1 ✅ Complete — Prototype (SIH 2026)
 - 7 cyclone events downloaded and processed
@@ -387,7 +387,7 @@ This is achievable within 6 months of MOSDAC data access.
 
 The long-term goal is integration into IMD's satellite analysis workflow. When a new satellite image arrives:
 
-1. CycloneWatch processes it in 12 milliseconds
+1. CycloNet processes it in 12 milliseconds
 2. If a structural anomaly is detected (e.g., depression organizing at low latitude), an automated alert is sent to the duty meteorologist's console
 3. The meteorologist sees: "Low-latitude organization detected, curved_band signature, potential RI candidate" before any NWP model has even started running
 
@@ -411,7 +411,7 @@ The economic damage from a single cyclone in India regularly exceeds ₹10,000�
 
 ### The Technology Gap
 
-The global meteorological community has identified automated satellite interpretation as a key research frontier. WMO's WWRP (World Weather Research Programme) has active programs specifically aimed at AI-based structural analysis of tropical cyclones. CycloneWatch's approach — Dvorak-compatible structural classification using CNN — is aligned with this global research direction, not a departure from it.
+The global meteorological community has identified automated satellite interpretation as a key research frontier. WMO's WWRP (World Weather Research Programme) has active programs specifically aimed at AI-based structural analysis of tropical cyclones. CycloNet's approach — Dvorak-compatible structural classification using CNN — is aligned with this global research direction, not a departure from it.
 
 ### Why Now
 
@@ -420,7 +420,7 @@ The convergence of three factors makes this the right moment:
 2. **Open-source deep learning** (PyTorch) — no corporate dependency
 3. **API-based weather data** (Open-Meteo, IBTrACS) — real data for free
 
-CycloneWatch is a demonstration that a small, focused team with public data and open-source tools can build a meaningful contribution to operational meteorology.
+CycloNet is a demonstration that a small, focused team with public data and open-source tools can build a meaningful contribution to operational meteorology.
 
 ---
 
@@ -430,11 +430,11 @@ CycloneWatch is a demonstration that a small, focused team with public data and 
 |---|---|
 | **NWP (Numerical Weather Prediction)** | Physics-equation-based forecasting run on supercomputers. Accurate but slow; struggles with rapid intensification. |
 | **Rapid Intensification (RI)** | A storm's wind speed increasing by ≥ 30 knots in 24 hours. The most dangerous and least predictable scenario. |
-| **Dvorak Technique** | The international standard for estimating cyclone intensity from satellite images, developed in the 1970s. CycloneWatch automates its structural classification step. |
+| **Dvorak Technique** | The international standard for estimating cyclone intensity from satellite images, developed in the 1970s. CycloNet automates its structural classification step. |
 | **Infrared (IR) Channel** | Satellite imagery showing cloud top temperature. Cold clouds = tall clouds = intense convection = severe storm. |
 | **Water Vapor (WV) Channel** | Satellite imagery showing atmospheric moisture and circulation patterns — visible even through cloud cover. |
 | **IBTrACS** | International Best Track Archive for Climate Stewardship. The global reference database for every tropical cyclone's position and intensity. Maintained by NOAA and WMO. |
-| **GridSat-B1** | NOAA's free historical satellite dataset (4 km resolution). The data source used for CycloneWatch training. |
+| **GridSat-B1** | NOAA's free historical satellite dataset (4 km resolution). The data source used for CycloNet training. |
 | **MOSDAC / INSAT-3DR** | ISRO's satellite data portal providing 1 km resolution Indian Ocean imagery. Our primary target for the next data upgrade. |
 | **MAE (Mean Absolute Error)** | Average distance in km between predicted storm centre and actual position. Lower is better. |
 | **Persistence Baseline** | The simplest possible forecasting method: assume the storm stays where it was. Our current T+12/T+24 model is at this level for position prediction. |
@@ -443,9 +443,9 @@ CycloneWatch is a demonstration that a small, focused team with public data and 
 | **ConvLSTM / GRU** | Types of AI that understand sequences and time. Used for predicting future storm positions from a sequence of past images. |
 | **Softmax / Confidence** | The AI outputs a probability for each of 5 pattern classes. The displayed confidence is the probability for the winning class. Currently uncalibrated. |
 | **GeoJSON** | A standard data format for geographic shapes. Used for track lines and uncertainty polygons on the Leaflet map. |
-| **NASA GIBS** | NASA Global Imagery Browse Services — a free API providing real historical satellite imagery by date. Provides the cloud layer on the CycloneWatch map. |
+| **NASA GIBS** | NASA Global Imagery Browse Services — a free API providing real historical satellite imagery by date. Provides the cloud layer on the CycloNet map. |
 | **Precomputation** | Running ML inference in advance and saving results to the database so demos are instant. |
-| **FastAPI** | The Python web framework used to build the CycloneWatch backend API. |
+| **FastAPI** | The Python web framework used to build the CycloNet backend API. |
 | **Zustand** | The state management library used in the React frontend to keep all data (current cyclone, timeline step, live readings) in one central store. |
 | **F1 Score** | A combined precision + recall metric for classification. 1.0 = perfect, 0.0 = useless. |
 | **T+12h / T+24h** | Predictions for 12 hours and 24 hours into the future from the current observation. |

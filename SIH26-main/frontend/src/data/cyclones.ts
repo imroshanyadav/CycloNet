@@ -1,5 +1,5 @@
 // ─────────────────────────────────────────────────────────────────────────────
-// CycloneWatch — cyclone data
+// CycloNet — cyclone data
 // Sources: IMD/RSMC New Delhi preliminary reports, IBTrACS v4.01, dossiers
 // ─────────────────────────────────────────────────────────────────────────────
 
@@ -40,7 +40,7 @@ export interface Cyclone {
   trackLengthKm: number;
   landfallRegion: string;
   landfallTime: string;    // ISO-8601 UTC
-  // For CycloneWatch ML positioning — was this a gap-case for IMD?
+  // For CycloNet ML positioning — was this a gap-case for IMD?
   imdGapCase: boolean;
   imdGapNote?: string;
 }
@@ -59,7 +59,7 @@ export const CYCLONES: Cyclone[] = [
     landfallRegion: 'Near Jakhau Port, Gujarat, India',
     landfallTime: '2023-06-15T13:30:00Z',
     imdGapCase: true,
-    imdGapNote: 'CycloneWatch detected curved_band signatures up to 24h before official IMD classification, which would have provided earlier localized warnings for the Gujarat coast before the rapid intensification phase.',
+    imdGapNote: 'CycloNet detected curved_band signatures up to 24h before official IMD classification, which would have provided earlier localized warnings for the Gujarat coast before the rapid intensification phase.',
   },
 
   // ── AMPHAN 2020 ───────────────────────────────────────────────────────────
@@ -74,7 +74,7 @@ export const CYCLONES: Cyclone[] = [
     landfallRegion: 'West Bengal / Bangladesh Coast',
     landfallTime: '2020-05-20T10:00:00Z',
     imdGapCase: true,
-    imdGapNote: 'While IMD tracked Amphan well, CycloneWatch identified the transition to an Eye pattern (rapid intensification) 18h earlier than the official bulletin, aiding disaster prep in West Bengal.',
+    imdGapNote: 'While IMD tracked Amphan well, CycloNet identified the transition to an Eye pattern (rapid intensification) 18h earlier than the official bulletin, aiding disaster prep in West Bengal.',
   },
 
   // ── FANI 2019 ─────────────────────────────────────────────────────────────
@@ -89,7 +89,7 @@ export const CYCLONES: Cyclone[] = [
     landfallRegion: 'Near Puri, Odisha, India',
     landfallTime: '2019-05-03T02:30:00Z',
     imdGapCase: true,
-    imdGapNote: 'FANI had a highly unusual track. IMD accurately forecast landfall 72h out, but CycloneWatch\'s deep-learning model pinpointed the exact recurvature node 12 hours earlier using shear-affected structural analysis.',
+    imdGapNote: 'FANI had a highly unusual track. IMD accurately forecast landfall 72h out, but CycloNet\'s deep-learning model pinpointed the exact recurvature node 12 hours earlier using shear-affected structural analysis.',
   },
 
   // ── TAUKTAE 2021 ──────────────────────────────────────────────────────────
@@ -104,7 +104,7 @@ export const CYCLONES: Cyclone[] = [
     landfallRegion: 'Saurashtra coast, Gujarat',
     landfallTime: '2021-05-17T15:30:00Z',
     imdGapCase: true,
-    imdGapNote: 'TAUKTAE intensified extremely rapidly near the coast. CycloneWatch predicted this RI phase 30 hours ahead of IMD by detecting dense banding features in GIBS imagery, offering crucial lead time.',
+    imdGapNote: 'TAUKTAE intensified extremely rapidly near the coast. CycloNet predicted this RI phase 30 hours ahead of IMD by detecting dense banding features in GIBS imagery, offering crucial lead time.',
   },
 
   // ── OCKHI 2017 ────────────────────────────────────────────────────────────
@@ -119,7 +119,7 @@ export const CYCLONES: Cyclone[] = [
     landfallRegion: 'Gujarat coast (weakening remnant)',
     landfallTime: '2017-12-05T00:00:00Z',
     imdGapCase: true,
-    imdGapNote: 'CRITICAL GAP CASE: Ockhi formed off Sri Lanka on 29 Nov. IMD issued the first cyclone watch only on 1 Dec — ~36-48h late. 218+ fishermen were lost at sea with no warning. CycloneWatch would have flagged curved_band → banding structural signatures at T-36h.',
+    imdGapNote: 'CRITICAL GAP CASE: Ockhi formed off Sri Lanka on 29 Nov. IMD issued the first cyclone watch only on 1 Dec — ~36-48h late. 218+ fishermen were lost at sea with no warning. CycloNet would have flagged curved_band → banding structural signatures at T-36h.',
   },
 
   // ── HUDHUD 2014 ───────────────────────────────────────────────────────────
@@ -134,7 +134,7 @@ export const CYCLONES: Cyclone[] = [
     landfallRegion: 'Visakhapatnam, Andhra Pradesh',
     landfallTime: '2014-10-12T06:30:00Z',
     imdGapCase: true,
-    imdGapNote: 'HUDHUD intensified into an ESCS very quickly. IMD issued standard warnings, but CycloneWatch isolated the core structure consolidation 24h earlier, reducing T+24 track error by 40%.',
+    imdGapNote: 'HUDHUD intensified into an ESCS very quickly. IMD issued standard warnings, but CycloNet isolated the core structure consolidation 24h earlier, reducing T+24 track error by 40%.',
   },
 
   // ── PHAILIN 2013 ───────────────────────────────────────────────────────────
@@ -149,7 +149,7 @@ export const CYCLONES: Cyclone[] = [
     landfallRegion: 'Gopalpur, Odisha',
     landfallTime: '2013-10-12T17:00:00Z',
     imdGapCase: true,
-    imdGapNote: 'PHAILIN was a massive system. While IMD did a historic job, CycloneWatch\'s automated pattern recognition would have consistently validated the intense Eye structure without human subjectivity.',
+    imdGapNote: 'PHAILIN was a massive system. While IMD did a historic job, CycloNet\'s automated pattern recognition would have consistently validated the intense Eye structure without human subjectivity.',
   },
 ];
 

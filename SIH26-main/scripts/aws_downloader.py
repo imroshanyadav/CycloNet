@@ -1,5 +1,5 @@
 """
-aws_downloader.py — NOAA GridSat-B1 ingestion for PS70 CycloneWatch
+aws_downloader.py — NOAA GridSat-B1 ingestion for PS70 CycloNet
 
 Downloads one 3-hourly NetCDF file per timestamp, per event, from the public
 NOAA GridSat-B1 AWS S3 bucket (no credentials needed).

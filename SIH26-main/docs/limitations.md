@@ -1,4 +1,4 @@
-# CycloneWatch — Known Limitations
+# CycloNet — Known Limitations
 
 > This document exists because a prototype with honest limitations is more credible than one that hides them.
 > For the judge Q&A, cite this document. Do not make claims beyond what is measured here.
