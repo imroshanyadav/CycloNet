@@ -1,18 +1,14 @@
-# CycloneWatch: AI-Powered Tropical Cyclone Tracker
+# CycloNet: AI-Powered Tropical Cyclone Tracker
 
 **Smart India Hackathon 2026 Submission (PS70)**  
 *AI/ML-based system for identification, classification, and prediction of different tropical cyclone patterns using multi-source satellite data.*
 
-### 🌐 Live Demo
-- **Frontend Dashboard:** [https://sih-26-one.vercel.app/](https://sih-26-one.vercel.app/)
-- **Backend API (Render):** [https://sih26-o6nv.onrender.com/health](https://sih26-o6nv.onrender.com/health)
 
----
 
 ## 🌪️ Project Overview
-CycloneWatch is an end-to-end, AI-driven meteorological tracking system. Traditional Numerical Weather Prediction (NWP) physics models are highly accurate but notoriously slow to respond to Rapid Intensification (RI) events and anomalous low-latitude storm formations. 
+CycloNet is an end-to-end, AI-driven meteorological tracking system. Traditional Numerical Weather Prediction (NWP) physics models are highly accurate but notoriously slow to respond to Rapid Intensification (RI) events and anomalous low-latitude storm formations. 
 
-CycloneWatch addresses this **interpretation gap**. By applying deep convolutional neural networks directly to infrared satellite imagery, we automate the structural classification of storms. Our model detects dangerous structural anomalies (like sudden "banding" or "eye" formations) hours before traditional physics models compute the danger, providing a vital early warning system.
+CycloNet addresses this **interpretation gap**. By applying deep convolutional neural networks directly to infrared satellite imagery, we automate the structural classification of storms. Our model detects dangerous structural anomalies (like sudden "banding" or "eye" formations) hours before traditional physics models compute the danger, providing a vital early warning system.
 
 ## 📂 Repository Structure
 
