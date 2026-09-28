@@ -25,22 +25,22 @@ import { registerMap } from "./mapHelpers";
 // ── Custom icons ────────────────────────────────────────────────────────────
 const CycloneCentreIcon = L.divIcon({
   className: "",
-  html: `<div style="position:relative;width:20px;height:20px;">
-    <div style="position:absolute;inset:0;border:1.5px solid #FF7A45;border-radius:50%;animation:pulse-ring 2s ease-out infinite;"></div>
-    <div style="position:absolute;top:5px;left:5px;width:10px;height:10px;background:#FF7A45;border-radius:50%;box-shadow:0 0 8px #FF7A45;"></div>
+  html: `<div style="position:relative;width:22px;height:22px;">
+    <div style="position:absolute;inset:0;border:1.5px solid #ef4444;border-radius:50%;animation:pulse-ring 2.4s cubic-bezier(0,0,0.2,1) infinite;"></div>
+    <div style="position:absolute;top:5px;left:5px;width:12px;height:12px;background:#ef4444;border:1.5px solid #ffffff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.6);"></div>
   </div>`,
-  iconSize: [20, 20],
-  iconAnchor: [10, 10],
+  iconSize: [22, 22],
+  iconAnchor: [11, 11],
 });
 
 const LiveCentreIcon = L.divIcon({
   className: "",
-  html: `<div style="position:relative;width:16px;height:16px;">
-    <div style="position:absolute;inset:0;border:1.5px solid #6FE3B4;border-radius:50%;animation:pulse-ring 2s ease-out infinite;"></div>
-    <div style="position:absolute;top:4px;left:4px;width:8px;height:8px;background:#6FE3B4;border-radius:50%;box-shadow:0 0 8px #6FE3B4;"></div>
+  html: `<div style="position:relative;width:18px;height:18px;">
+    <div style="position:absolute;inset:0;border:1.5px solid #38bdf8;border-radius:50%;animation:pulse-ring 2.4s cubic-bezier(0,0,0.2,1) infinite;"></div>
+    <div style="position:absolute;top:4px;left:4px;width:10px;height:10px;background:#38bdf8;border:1.5px solid #ffffff;border-radius:50%;box-shadow:0 1px 4px rgba(0,0,0,0.6);"></div>
   </div>`,
-  iconSize: [16, 16],
-  iconAnchor: [8, 8],
+  iconSize: [18, 18],
+  iconAnchor: [9, 9],
 });
 
 // ── Layer visibility context (passed down via props) ────────────────────────

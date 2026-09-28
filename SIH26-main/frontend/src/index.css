@@ -1,276 +1,241 @@
-/* IBM Plex fonts — local vendor copies used as fallback; Google Fonts for dev */
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap');
+/* Institutional Scientific Fonts: IBM Plex & JetBrains Mono */
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* ── Base ─────────────────────────────────────────────────────────────────── */
+/* ── Institutional Base & Scientific Grid ─────────────────────────────────── */
 @layer base {
-
   html,
   body {
-    @apply bg-[#050506] text-white overflow-x-hidden overflow-y-auto;
-    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+    @apply bg-ocean-950 text-text-primary overflow-x-hidden overflow-y-auto;
+    font-family: 'IBM Plex Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
     -webkit-font-smoothing: antialiased;
-    background-image: radial-gradient(circle at 50% 15%, rgba(37, 31, 24, 0.42) 0%, rgba(5, 5, 6, 1) 62%);
+    /* Scientific GIS grid pattern with subtle atmospheric vignette */
+    background-color: #080c14;
+    background-image: 
+      linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+      radial-gradient(circle at 50% 15%, rgba(14, 165, 233, 0.04) 0%, rgba(8, 12, 20, 0.98) 75%);
+    background-size: 48px 48px, 48px 48px, auto;
     background-attachment: fixed;
+    color-scheme: dark;
   }
 
-  html.theme-light,
-  html.theme-light body {
-    background: #f4f7fa;
-    color: #172333;
-  }
-
-  /* Custom scrollbar - minimalist dark theme */
+  /* Precision GIS technical scrollbar */
   ::-webkit-scrollbar {
-    width: 4px;
-    height: 4px;
+    width: 6px;
+    height: 6px;
   }
 
   ::-webkit-scrollbar-track {
-    background: rgba(255, 255, 255, 0.02);
+    background: rgba(8, 12, 20, 0.85);
   }
 
   ::-webkit-scrollbar-thumb {
-    @apply bg-white/15 rounded-full;
+    background: rgba(56, 189, 248, 0.22);
+    border-radius: 4px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
   }
 
   ::-webkit-scrollbar-thumb:hover {
-    @apply bg-white/25;
+    background: rgba(56, 189, 248, 0.4);
   }
 
-  /* Leaflet container font override */
+  /* Leaflet GIS container theme */
   .leaflet-container {
-    font-family: 'IBM Plex Mono', monospace !important;
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace !important;
+    background-color: #080c14 !important;
+  }
+
+  .leaflet-bar a {
+    background-color: #0c1322 !important;
+    color: #f8fafc !important;
+    border-color: #1d2b45 !important;
+  }
+
+  .leaflet-bar a:hover {
+    background-color: #121b2f !important;
+    color: #38bdf8 !important;
   }
 }
 
-/* Light theme overrides the console surfaces while keeping signal colors intact. */
-@layer components {
-  .theme-light {
-    color-scheme: light;
-  }
-
-  .theme-light.bg-\[\#0a0a0a\] {
-    background: #f4f7fa;
-  }
-
-  .theme-light .bg-\[\#0a0a0a\] {
-    background: #f4f7fa;
-  }
-
-  .theme-light .text-text-primary {
-    color: #172333;
-  }
-
-  .theme-light .text-text-secondary {
-    color: #526173;
-  }
-
-  .theme-light .text-text-muted {
-    color: #68778a;
-  }
-
-  .theme-light .text-text-faint {
-    color: #8b98a8;
-  }
-
-  .theme-light .text-white {
-    color: #172333;
-  }
-
-  .theme-light .text-gray-300 {
-    color: #526173;
-  }
-
-  .theme-light .text-gray-400 {
-    color: #68778a;
-  }
-
-  .theme-light .border-white\/10 {
-    border-color: rgba(23, 35, 51, 0.14);
-  }
-
-  .theme-light .border-white\/5 {
-    border-color: rgba(23, 35, 51, 0.09);
-  }
-
-  .theme-light .bg-white\/5 {
-    background-color: rgba(23, 35, 51, 0.06);
-  }
-
-  .theme-light .bg-white\/10 {
-    background-color: rgba(23, 35, 51, 0.1);
-  }
-
-  .theme-light .hover\:text-white:hover {
-    color: #172333;
-  }
-
-  .theme-light .glass-panel,
-  .theme-light .glass-card,
-  .theme-light .glass-chrome,
-  .theme-light .glass-pill {
-    background-color: rgba(255, 255, 255, 0.82);
-    border-color: rgba(23, 35, 51, 0.12);
-    box-shadow: 0 4px 24px rgba(23, 35, 51, 0.08);
-  }
-}
-
-/* ── Glass utilities ──────────────────────────────────────────────────────── */
+/* ── Precision Workstation Glass Utilities ────────────────────────────────── */
 @layer utilities {
-
-  /* Primary panel glass — minimalist dark with subtle blur */
+  /* Primary workstation panel — high-contrast slate with hairline border */
   .glass-panel {
-    background: rgba(12, 12, 14, 0.9);
-    backdrop-filter: blur(12px) saturate(120%);
-    -webkit-backdrop-filter: blur(12px) saturate(120%);
-    border: 1px solid rgba(244, 241, 234, 0.1);
-    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+    background: rgba(12, 19, 34, 0.86);
+    backdrop-filter: blur(14px) saturate(120%);
+    -webkit-backdrop-filter: blur(14px) saturate(120%);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.04);
   }
 
-  /* Lighter surface glass for cards */
+  /* Structured telemetry card */
   .glass-card {
-    background: rgba(17, 17, 19, 0.86);
+    background: rgba(18, 27, 47, 0.72);
     backdrop-filter: blur(10px) saturate(115%);
     -webkit-backdrop-filter: blur(10px) saturate(115%);
-    border: 1px solid rgba(244, 241, 234, 0.08);
-    box-shadow: 0 2px 16px rgba(0, 0, 0, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.07);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.35);
   }
 
-  /* Floating chrome (map controls, popovers) */
+  /* High-elevation floating controls & popovers */
   .glass-chrome {
-    background: rgba(20, 19, 19, 0.94);
-    backdrop-filter: blur(14px) saturate(125%);
-    -webkit-backdrop-filter: blur(14px) saturate(125%);
-    border: 1px solid rgba(215, 164, 90, 0.2);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+    background: rgba(12, 19, 34, 0.94);
+    backdrop-filter: blur(16px) saturate(125%);
+    -webkit-backdrop-filter: blur(16px) saturate(125%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.6);
   }
 
-  /* Pill / chip variant */
+  /* Pill / status indicator */
   .glass-pill {
-    background: rgba(24, 22, 20, 0.8);
-    backdrop-filter: blur(8px) saturate(110%);
-    -webkit-backdrop-filter: blur(8px) saturate(110%);
-    border: 1px solid rgba(244, 241, 234, 0.09);
-    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.25);
+    background: rgba(18, 27, 47, 0.82);
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255, 255, 255, 0.09);
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.3);
   }
 
-  /* Data value typography — large number display */
+  /* Telemetry metric values — clean scientific monospace display */
   .metric-value {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 2.75rem;
-    font-weight: 300;
-    line-height: 1.1;
-    letter-spacing: -0.03em;
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    font-size: 2.5rem;
+    font-weight: 500;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    color: #f8fafc;
   }
 
   .metric-value-sm {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 1.75rem;
-    font-weight: 400;
+    font-family: 'JetBrains Mono', 'IBM Plex Mono', monospace;
+    font-size: 1.5rem;
+    font-weight: 500;
     line-height: 1.1;
-    letter-spacing: -0.02em;
+    letter-spacing: -0.01em;
   }
 
   .metric-label {
-    font-size: 0.65rem;
+    font-size: 0.68rem;
     font-weight: 600;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: #7C8FA3;
+    color: #94a3b8;
+    font-family: 'IBM Plex Sans', sans-serif;
   }
 
   .metric-unit {
-    font-family: 'IBM Plex Sans', sans-serif;
-    font-size: 1rem;
-    font-weight: 400;
-    color: #7C8FA3;
-    margin-left: 4px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #94a3b8;
+    margin-left: 3px;
     align-self: flex-end;
     margin-bottom: 2px;
   }
 
-  /* Text shadow for map overlays */
+  /* Scientific telemetry text styling */
+  .telemetry-tag {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 rounded text-[10px] font-mono tracking-wider uppercase border;
+  }
+
+  /* Text shadow for GIS map overlays */
   .text-shadow-sm {
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.7);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85);
   }
 
   .text-shadow-md {
-    text-shadow: 0 2px 6px rgba(0, 0, 0, 0.8);
+    text-shadow: 0 2px 5px rgba(0, 0, 0, 0.9);
   }
 
-  /* Custom range input — for timeline slider */
+  /* Custom precision range track — timeline scrubber */
   .range-track {
-    @apply w-full h-[2px] rounded-full bg-ocean-800 appearance-none cursor-pointer;
+    @apply w-full h-[3px] rounded-sm bg-ocean-800 appearance-none cursor-pointer;
   }
 
   .range-track::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 14px;
     height: 14px;
-    border-radius: 50%;
-    background: white;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    background: #38bdf8;
+    border: 1px solid #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
     cursor: pointer;
+    transition: transform 0.1s ease;
+  }
+
+  .range-track::-webkit-slider-thumb:hover {
+    transform: scale(1.15);
   }
 
   .range-track::-moz-range-thumb {
     width: 14px;
     height: 14px;
-    border-radius: 50%;
-    background: white;
-    border: none;
-    box-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    border-radius: 2px;
+    background: #38bdf8;
+    border: 1px solid #ffffff;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.5);
     cursor: pointer;
   }
 }
 
-/* ── Animations ────────────────────────────────────────────────────────────── */
-@keyframes spin-slow {
-  from {
-    transform: rotate(0deg);
+/* ── Realistic Operational Animations (No sci-fi gimmicks) ─────────────────── */
+@keyframes radar-ping {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.8;
   }
-
-  to {
-    transform: rotate(360deg);
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
   }
 }
 
+@keyframes operational-blip {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.35;
+  }
+}
+
+.animate-radar-ping {
+  animation: radar-ping 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-operational-blip {
+  animation: operational-blip 1.8s ease-in-out infinite;
+}
+
+/* Operational aliases */
 @keyframes pulse-ring {
   0% {
-    transform: scale(0.4);
-    opacity: 0.9;
+    transform: scale(0.6);
+    opacity: 0.8;
   }
-
   100% {
-    transform: scale(2.4);
+    transform: scale(2.2);
     opacity: 0;
   }
 }
 
 @keyframes blink {
-
-  0%,
-  100% {
+  0%, 100% {
     opacity: 1;
   }
-
   50% {
-    opacity: 0.3;
+    opacity: 0.35;
   }
-}
-
-.animate-spin-slow {
-  animation: spin-slow 12s linear infinite;
 }
 
 .animate-pulse-ring {
-  animation: pulse-ring 2s ease-out infinite;
+  animation: pulse-ring 2.4s cubic-bezier(0, 0, 0.2, 1) infinite;
 }
 
 .animate-blink {
-  animation: blink 2.2s ease-in-out infinite;
+  animation: blink 1.8s ease-in-out infinite;
 }

@@ -1,4 +1,4 @@
-import { ChevronDown, FlaskConical, Zap, Archive } from 'lucide-react';
+import { ChevronDown, Radio, Activity, Archive } from 'lucide-react';
 import { useCycloneStore } from '../store/useCycloneStore';
 import { CYCLONES } from '../data/cyclones';
 import { useState, useRef, useEffect } from 'react';
@@ -20,47 +20,46 @@ export function TopNavigation() {
   }, []);
 
   return (
-    <div className="relative z-50 w-full h-14 border-b border-ocean-800 flex items-center px-5 gap-6 flex-shrink-0"
-      style={{ background: 'rgba(13, 12, 12, 0.88)', backdropFilter: 'blur(18px)' }}>
+    <div className="relative z-40 w-full h-12 border-b border-ocean-800/90 flex items-center px-4 lg:px-6 gap-6 flex-shrink-0 bg-ocean-900/95 backdrop-blur-md">
 
-      {/* ── Brand ── */}
-      <div className="flex items-center gap-2.5 mr-2 flex-shrink-0">
-        <FlaskConical size={16} className="text-ir" />
-        <span className="text-[13px] font-semibold tracking-[0.08em] text-text-primary">
-          CYCLONET OBSERVATORY
+      {/* ── Institutional Observatory Identifier ── */}
+      <div className="flex items-center gap-2 mr-1 flex-shrink-0">
+        <Radio size={14} className="text-ir" />
+        <span className="text-[11px] font-bold tracking-[0.14em] text-text-primary uppercase font-mono">
+          WORKSTATION CONSOLE
         </span>
       </div>
 
+      <div className="h-4 w-px bg-ocean-800" />
+
       {/* ── Mode tabs ── */}
-      <div className="flex items-center h-full gap-6">
+      <div className="flex items-center h-full gap-5">
         <button
           onClick={() => setMode('LIVE')}
-          className={`flex items-center gap-1.5 h-14 text-[11px] font-semibold tracking-widest transition-colors relative
-            ${mode === 'LIVE' ? 'text-text-primary' : 'text-text-faint hover:text-text-muted'}`}
+          className={`flex items-center gap-2 h-12 text-[10px] font-mono font-semibold tracking-wider transition-colors relative
+            ${mode === 'LIVE' ? 'text-white' : 'text-text-muted hover:text-text-secondary'}`}
         >
-          <Zap size={11} className={mode === 'LIVE' ? 'text-ir' : 'text-text-faint'} />
-          REALTIME MONITORING
+          <Activity size={12} className={mode === 'LIVE' ? 'text-confidence' : 'text-text-faint'} />
+          REAL-TIME TELEMETRY (INSAT-3D)
           {mode === 'LIVE' && (
             <motion.div
               layoutId="tab-indicator"
-              className="absolute bottom-0 left-0 right-0 h-[2px] bg-text-primary"
-              style={{ boxShadow: '0 0 6px rgba(255,255,255,0.6)' }}
+              className="absolute bottom-0 left-0 right-0 h-[2px] bg-ir"
             />
           )}
         </button>
 
         <button
           onClick={() => setMode('HISTORICAL')}
-          className={`flex items-center gap-1.5 h-14 text-[11px] font-semibold tracking-widest transition-colors relative
-            ${mode === 'HISTORICAL' ? 'text-text-primary' : 'text-text-faint hover:text-text-muted'}`}
+          className={`flex items-center gap-2 h-12 text-[10px] font-mono font-semibold tracking-wider transition-colors relative
+            ${mode === 'HISTORICAL' ? 'text-white' : 'text-text-muted hover:text-text-secondary'}`}
         >
-          <Archive size={11} className={mode === 'HISTORICAL' ? 'text-wv' : 'text-text-faint'} />
-          HISTORICAL ARCHIVE
+          <Archive size={12} className={mode === 'HISTORICAL' ? 'text-ir' : 'text-text-faint'} />
+          HISTORICAL ARCHIVE & VALIDATION
           {mode === 'HISTORICAL' && (
             <motion.div
               layoutId="tab-indicator"
-              className="absolute bottom-0 left-0 right-0 h-[2px] bg-text-primary"
-              style={{ boxShadow: '0 0 6px rgba(255,255,255,0.6)' }}
+              className="absolute bottom-0 left-0 right-0 h-[2px] bg-ir"
             />
           )}
         </button>
@@ -69,69 +68,79 @@ export function TopNavigation() {
       {/* ── Spacer ── */}
       <div className="flex-1" />
 
-      {/* ── Event selector ── */}
+      {/* ── Storm Event selector ── */}
       <div className="relative" ref={dropRef}>
         <button
           onClick={() => setDropdownOpen(v => !v)}
-          className="flex items-center gap-2 h-9 px-3 rounded-lg bg-ocean-850 border border-ocean-800
-            hover:bg-ocean-800 hover:border-ocean-750 transition-colors"
+          className="flex items-center gap-2.5 h-8 px-3 rounded-md bg-ocean-850 border border-ocean-750
+            hover:bg-ocean-800 hover:border-ocean-700 transition-colors shadow-subtle"
         >
           {/* Basin dot */}
-          <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+          <div className={`w-1.5 h-1.5 rounded-full flex-shrink-0 ${
             mode === 'HISTORICAL'
-              ? (activeCycloneMeta.basin === 'Arabian Sea' ? 'bg-ir' : 'bg-wv')
-              : 'bg-ocean-750'
+              ? (activeCycloneMeta.basin === 'Arabian Sea' ? 'bg-amber-400' : 'bg-ir')
+              : 'bg-ocean-700'
           }`} />
-          <span className="text-[11px] font-medium text-text-secondary truncate max-w-[160px]">
+          <span className="text-[11px] font-mono font-medium text-text-primary truncate max-w-[200px]">
             {mode === 'HISTORICAL'
-              ? `${activeCycloneMeta.name} ${activeCycloneMeta.year} · ${activeCycloneMeta.basin}`
-              : 'Select historical event…'}
+              ? `${activeCycloneMeta.name.toUpperCase()} (${activeCycloneMeta.year})`
+              : 'SELECT ARCHIVAL STORM…'}
           </span>
-          <ChevronDown size={12} className={`text-text-faint transition-transform flex-shrink-0 ${dropdownOpen ? 'rotate-180' : ''}`} />
+          <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-ocean-900 text-text-muted border border-ocean-800 hidden sm:inline">
+            {activeCycloneMeta.basin}
+          </span>
+          <ChevronDown size={12} className={`text-text-muted transition-transform flex-shrink-0 ${dropdownOpen ? 'rotate-180' : ''}`} />
         </button>
 
         <AnimatePresence>
           {dropdownOpen && (
             <motion.div
-              initial={{ opacity: 0, y: -6, scale: 0.97 }}
+              initial={{ opacity: 0, y: -4, scale: 0.98 }}
               animate={{ opacity: 1, y: 0,  scale: 1    }}
-              exit={{   opacity: 0, y: -6, scale: 0.97 }}
-              transition={{ duration: 0.15 }}
-              className="absolute top-full right-0 mt-1.5 w-72 rounded-xl py-1.5 z-50 shadow-glass overflow-hidden border border-ocean-750"
-              style={{ background: 'rgba(12, 11, 12, 0.97)', backdropFilter: 'blur(18px)' }}
+              exit={{   opacity: 0, y: -4, scale: 0.98 }}
+              transition={{ duration: 0.12 }}
+              className="absolute top-full right-0 mt-1.5 w-80 rounded-lg py-1.5 z-50 shadow-glass overflow-hidden border border-ocean-700 bg-ocean-900/98 backdrop-blur-md"
             >
               {/* Basin groupings */}
               {(['Arabian Sea', 'Bay of Bengal'] as const).map(basin => {
                 const group = CYCLONES.filter(c => c.basin === basin);
                 if (!group.length) return null;
                 return (
-                  <div key={basin}>
-                    <div className="px-3 py-1.5 metric-label text-text-faint border-b border-ocean-800">{basin}</div>
+                  <div key={basin} className="border-b border-ocean-800/80 last:border-b-0">
+                    <div className="px-3.5 py-1.5 text-[9px] font-mono uppercase tracking-widest text-text-faint bg-ocean-950/60 flex items-center justify-between">
+                      <span>{basin}</span>
+                      <span className="text-ocean-700">{group.length} CASES</span>
+                    </div>
                     {group.map(cyclone => (
                       <button
                         key={cyclone.id}
                         onClick={() => { setActiveCyclone(cyclone.id); setDropdownOpen(false); }}
-                        className={`w-full flex items-center gap-3 px-4 py-2.5 hover:bg-ocean-850 transition-colors text-left ${
-                          activeEventId === cyclone.id && mode === 'HISTORICAL' ? 'bg-ocean-850' : ''
+                        className={`w-full flex items-center gap-3 px-3.5 py-2.5 hover:bg-ocean-850 transition-colors text-left ${
+                          activeEventId === cyclone.id && mode === 'HISTORICAL' ? 'bg-ocean-800/80' : ''
                         }`}
                       >
-                        {/* Category color dot */}
-                        <div className={`w-2 h-2 rounded-full flex-shrink-0 ${
+                        {/* Category intensity indicator */}
+                        <div className={`w-2 h-2 rounded-sm flex-shrink-0 ${
                           cyclone.peakWind >= 200 ? 'bg-alert' :
-                          cyclone.peakWind >= 150 ? 'bg-ir'    :
-                          cyclone.peakWind >= 100 ? 'bg-amber-400' : 'bg-confidence'
+                          cyclone.peakWind >= 150 ? 'bg-amber-400' :
+                          cyclone.peakWind >= 100 ? 'bg-sky-400' : 'bg-confidence'
                         }`} />
                         <div className="flex-1 min-w-0">
-                          <p className="text-[11px] font-semibold text-text-primary tracking-wide">
-                            {cyclone.name} {cyclone.year}
-                          </p>
-                          <p className="text-[9px] text-text-faint truncate">
-                            {cyclone.peakWind} km/h peak · {cyclone.minPressure} hPa
-                            {cyclone.imdGapCase ? ' · ⚠ IMD gap case' : ''}
+                          <div className="flex items-center justify-between">
+                            <p className="text-[11px] font-bold text-white tracking-wide font-mono">
+                              {cyclone.name.toUpperCase()} {cyclone.year}
+                            </p>
+                            <span className="text-[9px] font-mono text-text-faint">
+                              {cyclone.peakWind} km/h
+                            </span>
+                          </div>
+                          <p className="text-[9px] text-text-muted truncate mt-0.5 font-mono">
+                            {cyclone.minPressure} hPa min · {cyclone.landfallRegion}
+                            {cyclone.imdGapCase ? ' · [IMD Gap Case]' : ''}
                           </p>
                         </div>
                         {activeEventId === cyclone.id && mode === 'HISTORICAL' && (
-                          <div className="w-1.5 h-1.5 rounded-full bg-wv flex-shrink-0" />
+                          <div className="w-1.5 h-1.5 rounded-full bg-ir flex-shrink-0" />
                         )}
                       </button>
                     ))}

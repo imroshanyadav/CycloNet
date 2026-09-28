@@ -290,10 +290,9 @@ export function CycloneAnalysis({ mode }: { mode: "LIVE" | "HISTORICAL" }) {
           onClick={() => setIsOpen(true)}
           aria-label="Analyze cyclone"
           title="Analyze cyclone"
-          className={`flex flex-shrink-0 items-center gap-2 rounded-lg px-3 py-1.5 text-[10px] font-semibold tracking-wide text-white transition-colors
-            ${mode === "LIVE" ? "bg-emerald-700 hover:bg-emerald-600" : "bg-orange-700 hover:bg-orange-600"}`}
+          className="flex flex-shrink-0 items-center gap-1.5 rounded-lg px-3 py-1 text-[9px] font-semibold tracking-widest text-sky-200 bg-sky-500/10 border border-sky-400/30 hover:bg-sky-500/20 hover:border-sky-400/50 hover:text-white transition-all font-mono shadow-sm"
         >
-          <FileText size={14} />
+          <FileText size={13} className="text-sky-400" />
           <span className="hidden sm:inline">ANALYZE CYCLONE</span>
         </button>
       )}
@@ -301,29 +300,33 @@ export function CycloneAnalysis({ mode }: { mode: "LIVE" | "HISTORICAL" }) {
       {/* Modal */}
       {isOpen &&
         createPortal(
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="w-full max-w-7xl max-h-[95vh] bg-black border border-white/20 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
+          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ocean-950/85 backdrop-blur-md">
+            <div className="w-full max-w-7xl max-h-[92vh] glass-panel border border-ocean-800 rounded-2xl shadow-2xl flex flex-col overflow-hidden">
               {/* Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b border-white/10 bg-gradient-to-r from-slate-900/50 to-slate-800/50">
+              <div className="flex items-center justify-between px-6 py-4 border-b border-ocean-800 bg-ocean-950/80">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gradient-to-br from-cyan-400 to-blue-500 flex items-center justify-center">
-                    <FileText size={20} className="text-white" />
+                  <div className="w-9 h-9 rounded-md bg-ocean-850 border border-ocean-750 flex items-center justify-center">
+                    <FileText size={18} className="text-ir" />
                   </div>
                   <div>
-                    <h2 className="text-xl font-bold tracking-wide text-white">
-                      CycloNet Analysis
-                    </h2>
-                    <p className="text-xs text-gray-400">
-                      AI-Powered Cyclone Intelligence
+                    <div className="flex items-center gap-2">
+                      <h2 className="text-sm font-bold tracking-wider text-white uppercase font-mono">
+                        SPECIAL SATELLITE STRUCTURE & INTENSITY REPORT
+                      </h2>
+                      <span className="px-1.5 py-0.2 rounded text-[9px] font-mono tracking-wider bg-ocean-800 text-sky-300 border border-ocean-700">
+                        {mode} CONSOLE
+                      </span>
+                    </div>
+                    <p className="text-[10px] font-mono tracking-widest text-text-muted uppercase">
+                      WMO DVORAK & MULTI-SPECTRAL RADIOMETRIC AUDIT
                     </p>
                   </div>
                 </div>
                 <button
                   onClick={() => setIsOpen(false)}
-                  className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center
-                  text-gray-400 hover:text-white hover:bg-white/20 transition-all border border-white/10"
+                  className="w-8 h-8 rounded-md bg-ocean-850 hover:bg-ocean-800 border border-ocean-750 flex items-center justify-center text-text-muted hover:text-white transition-all"
                 >
-                  <X size={20} />
+                  <X size={16} />
                 </button>
               </div>
 
@@ -333,17 +336,16 @@ export function CycloneAnalysis({ mode }: { mode: "LIVE" | "HISTORICAL" }) {
                   /* Upload Section */
                   <div className="p-8 max-w-2xl mx-auto">
                     <div className="space-y-6">
-                      <div>.
-                        <label className="text-sm text-gray-400 mb-3 block font-medium flex items-center gap-2">
-                          <Upload size={16} className="text-cyan-400" />
-                          UPLOAD SATELLITE IMAGE
+                      <div>
+                        <label className="text-xs text-text-muted mb-3 block font-mono font-semibold tracking-wider flex items-center gap-2 uppercase">
+                          <Upload size={14} className="text-ir" />
+                          INGEST CALIBRATED SATELLITE GEOTIFF / INFRARED IMAGE
                         </label>
 
                         <div
                           onClick={() => fileInputRef.current?.click()}
-                          className="relative border-2 border-dashed border-cyan-500/30 rounded-2xl p-12
-                          hover:border-cyan-400/50 transition-all cursor-pointer bg-gradient-to-br from-cyan-500/5 to-blue-500/5
-                          hover:from-cyan-500/10 hover:to-blue-500/10"
+                          className="relative border border-dashed border-ocean-700 hover:border-ir/50 rounded-xl p-10
+                          transition-all cursor-pointer bg-ocean-900/60 hover:bg-ocean-900/80 text-center shadow-subtle"
                         >
                           <input
                             ref={fileInputRef}
@@ -511,11 +513,9 @@ export function CycloneAnalysis({ mode }: { mode: "LIVE" | "HISTORICAL" }) {
                       </div>
                       <button
                         onClick={handleReset}
-                        className="px-4 py-2 rounded-lg bg-gradient-to-r from-cyan-500/20 to-blue-500/20 text-cyan-400 
-                        hover:from-cyan-500/30 hover:to-blue-500/30
-                        transition-all border border-cyan-500/30 text-sm font-medium"
+                        className="px-3.5 py-1.5 rounded-md bg-ocean-850 hover:bg-ocean-800 border border-ocean-700 text-sky-300 hover:text-white transition-all text-xs font-mono font-semibold uppercase tracking-wider"
                       >
-                        New Analysis
+                        Ingest New Frame
                       </button>
                     </div>
 

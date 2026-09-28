@@ -1,4 +1,4 @@
-import { Bell, Home, Moon, Sun, User } from "lucide-react";
+import { Bell, Home, Radio } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AlertSystem } from "./components/AlertSystem";
 import { CycloneAnalysis } from "./components/CycloneAnalysis";
@@ -13,9 +13,8 @@ import { useCycloneStore } from "./store/useCycloneStore";
 function App() {
   const [showLanding, setShowLanding] = useState(true);
   const [alertOpen, setAlertOpen] = useState(false);
-  const [isDark, setIsDark] = useState(
-    () => localStorage.getItem("cyclonet-theme") !== "light",
-  );
+  const [utcTime, setUtcTime] = useState("");
+
   const {
     introComplete,
     isPlaying,
@@ -29,22 +28,34 @@ function App() {
     closeEvidence,
   } = useCycloneStore();
 
+  // Live ticking UTC Zulu clock
   useEffect(() => {
-    localStorage.setItem("cyclonet-theme", isDark ? "dark" : "light");
-    document.documentElement.classList.toggle("theme-light", !isDark);
-  }, [isDark]);
+    const updateTime = () => {
+      const d = new Date();
+      const yr = d.getUTCFullYear();
+      const mo = String(d.getUTCMonth() + 1).padStart(2, "0");
+      const da = String(d.getUTCDate()).padStart(2, "0");
+      const hr = String(d.getUTCHours()).padStart(2, "0");
+      const mi = String(d.getUTCMinutes()).padStart(2, "0");
+      const sc = String(d.getUTCSeconds()).padStart(2, "0");
+      setUtcTime(`${yr}-${mo}-${da} ${hr}:${mi}:${sc}Z`);
+    };
+    updateTime();
+    const interval = setInterval(updateTime, 1000);
+    return () => clearInterval(interval);
+  }, []);
 
   // Fetch event data when active event changes
   useEffect(() => {
     if (mode === "HISTORICAL") {
       useCycloneStore.getState().fetchEventData(activeEventId);
     }
-  }, [mode, activeEventId]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [mode, activeEventId]);
 
   // Initial live data fetch
   useEffect(() => {
     if (mode === "LIVE") fetchLiveData();
-  }, []); // eslint-disable-line react-hooks/exhaustive-deps
+  }, []);
 
   // Timeline auto-play
   useEffect(() => {
@@ -64,120 +75,106 @@ function App() {
       {showLanding && (
         <LandingPage
           onEnterApp={() => setShowLanding(false)}
-          isDark={isDark}
-          onToggleTheme={() => setIsDark((value) => !value)}
         />
       )}
 
       {/* Main Dashboard */}
       {!showLanding && (
-        <div
-          className={`theme-shell w-full min-h-screen bg-[#050506] text-text-primary overflow-visible flex flex-col p-3 lg:p-5 ${isDark ? "theme-dark" : "theme-light"}`}
-        >
+        <div className="relative w-full min-h-screen overflow-x-hidden flex flex-col p-2.5 lg:p-4 text-text-primary bg-ocean-950">
+          {/* Scientific GIS coordinate raster background */}
+          <div
+            className="fixed inset-0 bg-cover bg-center bg-no-repeat -z-10 pointer-events-none opacity-20"
+            style={{
+              backgroundImage: "url('/satellite_bg.jpg')",
+              filter: "brightness(0.3) saturate(0.8) contrast(1.15)",
+            }}
+          />
+          <div className="fixed inset-0 bg-gradient-to-b from-ocean-950/85 via-ocean-950/92 to-ocean-950/98 -z-10 pointer-events-none" />
+
           {/* Intro splash */}
           {!introComplete && <IntroAnimation />}
 
-          {/* Brand header */}
+          {/* Institutional Command Header */}
           <header
-            className="flex justify-between items-center w-full px-1 mb-3 transition-opacity duration-700"
+            className="flex justify-between items-center w-full px-1 mb-2.5 transition-opacity duration-700"
             style={{ opacity: introComplete ? 1 : 0 }}
           >
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <button
                 onClick={() => setShowLanding(true)}
-                className="w-8 h-8 rounded-lg bg-[#0f172a] border border-cyan-500/20 flex items-center justify-center text-slate-300 hover:text-cyan-200 hover:border-cyan-400/40 hover:bg-cyan-500/5 transition-all shadow-[0_0_0_1px_rgba(34,211,238,0.08)]"
-                title="Back to home"
+                className="h-8 px-3 rounded-md bg-ocean-900 border border-ocean-800 flex items-center gap-2 text-text-muted hover:text-white hover:border-ir/40 hover:bg-ocean-850 transition-all text-xs font-medium shadow-subtle"
+                title="Return to National Overview Portal"
               >
-                <Home size={16} />
+                <Home size={13} className="text-ir" />
+                <span className="hidden sm:inline font-mono tracking-wider text-[10px] uppercase">PORTAL</span>
               </button>
-              <div className="flex items-center gap-2">
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <circle
-                    cx="16"
-                    cy="16"
-                    r="14"
-                    stroke="url(#logo-gradient)"
-                    strokeWidth="2"
-                    fill="none"
-                  />
-                  <path
-                    d="M16 6 C20 10, 26 16, 16 26 C6 16, 12 10, 16 6 Z"
-                    fill="url(#logo-gradient)"
-                    opacity="0.3"
-                  />
-                  <circle cx="16" cy="16" r="4" fill="url(#logo-gradient)" />
-                  <defs>
-                    <linearGradient
-                      id="logo-gradient"
-                      x1="0%"
-                      y1="0%"
-                      x2="100%"
-                      y2="100%"
-                    >
-                      <stop offset="0%" stopColor="#06b6d4" />
-                      <stop offset="100%" stopColor="#3b82f6" />
-                    </linearGradient>
-                  </defs>
-                </svg>
-                <h1 className="text-xl tracking-[0.15em] text-white font-bold uppercase">
-                  CycloNet
-                </h1>
+              
+              <div className="flex items-center gap-2.5">
+                <div className="flex items-center justify-center w-8 h-8 rounded-md bg-ocean-850 border border-ocean-800 text-ir">
+                  <Radio size={15} />
+                </div>
+                <div>
+                  <div className="flex items-center gap-2">
+                    <h1 className="text-sm font-bold tracking-[0.14em] text-white uppercase leading-none font-sans">
+                      CYCLONET
+                    </h1>
+                    <span className="hidden sm:inline-block px-1.5 py-0.5 rounded text-[9px] font-mono tracking-wider bg-ocean-800 text-sky-300 border border-ocean-700">
+                      WMO / RSMC SPEC
+                    </span>
+                  </div>
+                  <p className="text-[9px] font-mono tracking-wider text-text-muted uppercase mt-0.5">
+                    NORTH INDIAN OCEAN EARLY WARNING WORKSTATION
+                  </p>
+                </div>
               </div>
             </div>
+
             <div className="flex items-center gap-2">
-              <button
-                onClick={() => setIsDark((value) => !value)}
-                className="w-8 h-8 rounded-lg bg-[#0f172a] border border-sky-500/20 flex items-center justify-center text-slate-300 hover:text-cyan-200 hover:border-cyan-400/40 hover:bg-cyan-500/5 transition-all shadow-[0_0_0_1px_rgba(34,211,238,0.08)]"
-                title={isDark ? "Switch to light mode" : "Switch to dark mode"}
-                aria-label={
-                  isDark ? "Switch to light mode" : "Switch to dark mode"
-                }
-              >
-                {isDark ? <Sun size={13} /> : <Moon size={13} />}
-              </button>
-              <button className="w-8 h-8 rounded-lg bg-[#0f172a] border border-slate-700/80 flex items-center justify-center text-slate-300 hover:text-cyan-200 transition-all">
-                <User size={13} />
-              </button>
+              {/* Operational Telemetry Clock & Sensor Status */}
+              <div className="hidden md:flex items-center gap-2.5 px-3 py-1 rounded-md bg-ocean-900 border border-ocean-800 text-[10px] font-mono text-text-muted shadow-subtle">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-1.5 h-1.5 rounded-full bg-confidence animate-operational-blip" />
+                  <span className="text-text-primary font-semibold tracking-wider">{utcTime || "CALIBRATING ZULU…"}</span>
+                </div>
+                <span className="text-ocean-750">|</span>
+                <span className="text-sky-300">INSAT-3DR 74°E (TIR1/WV)</span>
+                <span className="text-ocean-750">|</span>
+                <span className="text-text-faint">LINK: LOCKED</span>
+              </div>
+
+              {/* Official Bulletins & Alerts */}
               <button
                 onClick={() => setAlertOpen(true)}
-                className="h-8 px-3 rounded-lg bg-red-500/10 border border-red-500/30 flex items-center gap-1.5 text-slate-300 hover:text-red-100 hover:bg-red-500/15 transition-all relative shadow-[0_0_0_1px_rgba(239,68,68,0.12)]"
+                className="h-8 px-3 rounded-md bg-alert/10 border border-alert/30 flex items-center gap-2 text-red-200 hover:text-white hover:bg-alert/20 transition-all relative shadow-subtle"
+                title="View Active IMD & NDMA Meteorological Bulletins"
               >
-                <Bell
-                  size={12}
-                  fill="currentColor"
-                  className="text-red-400 animate-pulse"
-                />
-                <span className="text-[9px] font-bold tracking-[0.14em] text-slate-100">
-                  ALERT
+                <Bell size={13} className="text-alert" />
+                <span className="text-[10px] font-bold tracking-widest text-red-200 font-mono">
+                  BULLETINS
                 </span>
-                <div className="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full border-2 border-[#070b12] animate-pulse"></div>
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-alert opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-alert" />
+                </span>
               </button>
             </div>
           </header>
 
           {/* Main workspace */}
           <main
-            className="flex-1 min-h-[calc(100vh-7rem)] w-full max-w-[1920px] mx-auto rounded-2xl border border-white/10 flex flex-col overflow-hidden transition-opacity duration-700 shadow-2xl"
+            className="flex-1 min-h-[calc(100vh-6.5rem)] w-full max-w-[1920px] mx-auto rounded-xl glass-panel flex flex-col overflow-hidden transition-opacity duration-700 shadow-panel"
             style={{
               opacity: introComplete ? 1 : 0,
-              background: "rgba(10, 10, 11, 0.72)",
-              backdropFilter: "blur(18px)",
             }}
           >
             <TopNavigation />
 
             <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-0">
               {/* ── Left: Map (65%) ── */}
-              <div className="flex-none h-[50vh] lg:h-auto lg:flex-[0.65] min-h-0 flex flex-col border-b lg:border-b-0 lg:border-r border-white/10">
+              <div className="flex-none h-[50vh] lg:h-auto lg:flex-[0.65] min-h-0 flex flex-col border-b lg:border-b-0 lg:border-r border-ocean-800/80">
                 {/* Section label */}
-                <div className="flex-shrink-0 flex items-center justify-between gap-3 px-4 py-2 border-b border-white/5">
-                  <span className="metric-label min-w-0 truncate text-gray-500">
+                <div className="flex-shrink-0 flex items-center justify-between gap-3 px-4 py-2.5 border-b border-ocean-800/80 bg-ocean-950/40">
+                  <span className="metric-label min-w-0 truncate text-text-muted">
                     {mode === "LIVE"
                       ? "LIVE SATELLITE IMAGING"
                       : "HISTORICAL SATELLITE ARCHIVE"}
@@ -186,8 +183,8 @@ function App() {
                     {mode === "HISTORICAL" && (
                       <button
                         onClick={openEvidence}
-                        className="text-[9px] font-semibold tracking-widest text-blue-400 hover:text-blue-300
-                          transition-colors px-2 py-0.5 rounded border border-blue-500/25 hover:border-blue-400/50"
+                        className="text-[9px] font-semibold tracking-widest text-sky-400 hover:text-sky-300
+                          transition-colors px-2 py-0.5 rounded border border-sky-500/25 hover:border-sky-400/50 bg-sky-500/5 font-mono"
                       >
                         VIEW EVIDENCE
                       </button>
@@ -203,9 +200,9 @@ function App() {
               </div>
 
               {/* ── Right: Metrics (35%) ── */}
-              <div className="flex-none lg:flex-[0.35] min-h-0 flex flex-col">
-                <div className="flex-shrink-0 px-4 py-2 border-b border-white/5">
-                  <span className="metric-label text-gray-500">
+              <div className="flex-none lg:flex-[0.35] min-h-0 flex flex-col bg-ocean-950/30">
+                <div className="flex-shrink-0 px-4 py-2.5 border-b border-ocean-800/80 bg-ocean-950/40">
+                  <span className="metric-label text-text-muted">
                     {mode === "LIVE"
                       ? "LIVE INTELLIGENCE"
                       : "HISTORICAL ANALYSIS"}
@@ -218,13 +215,11 @@ function App() {
             </div>
           </main>
 
-          {/* Evidence drawer — portal-style, rendered outside main for proper z-index */}
+          {/* Evidence drawer — portal-style */}
           <EvidenceDrawer open={evidenceOpen} onClose={closeEvidence} />
 
           {/* Alert System — real-time notifications */}
           <AlertSystem open={alertOpen} onClose={() => setAlertOpen(false)} />
-
-          {/* ML Tasks — separate task interface can be enabled here when needed. */}
         </div>
       )}
     </>

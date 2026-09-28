@@ -429,38 +429,38 @@ export function SatellitePanel({
       </div>
 
       {/* ── Status badges — top-centre ── */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex gap-2 pointer-events-none">
+      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 pointer-events-none">
         {isLive ? (
           <div
-            className={`glass-pill flex items-center gap-2 px-3 py-1.5 rounded-full ${
+            className={`glass-pill flex items-center gap-2 px-3 py-1 rounded-md shadow-subtle ${
               liveData.status === "LIVE"
-                ? "border-ir/40 text-ir"
+                ? "border-ocean-700 text-sky-300"
                 : "border-amber-500/40 text-amber-400"
             }`}
           >
             <Radio
               size={11}
-              className={liveData.status === "LIVE" ? "animate-blink" : ""}
+              className={liveData.status === "LIVE" ? "animate-operational-blip text-confidence" : ""}
             />
-            <span className="metric-label text-current">
+            <span className="text-[10px] font-mono tracking-wider font-semibold uppercase text-current">
               {liveData.status === "LIVE"
-                ? "LIVE SATELLITE FEED"
+                ? "INSAT-3DR LIVE STREAM"
                 : liveData.status === "UPDATING"
-                  ? "FETCHING SATELLITE..."
-                  : "STALE SATELLITE DATA"}
+                  ? "SYNCING TELEMETRY..."
+                  : "STALE SENSOR DATA"}
             </span>
           </div>
         ) : (
-          <div className="glass-pill flex items-center gap-2 px-3 py-1.5 rounded-full text-text-primary">
-            <span className="metric-label">
-              HISTORICAL ARCHIVE · {activeCycloneMeta.name}{" "}
-              {activeCycloneMeta.year}
+          <div className="glass-pill flex items-center gap-2 px-3 py-1 rounded-md text-text-primary border-ocean-700 shadow-subtle">
+            <span className="w-1.5 h-1.5 rounded-full bg-ir" />
+            <span className="text-[10px] font-mono tracking-wider font-semibold uppercase">
+              ARCHIVE: {activeCycloneMeta.name.toUpperCase()} ({activeCycloneMeta.year})
             </span>
           </div>
         )}
 
-        <div className="glass-pill px-3 py-1.5 rounded-full pointer-events-auto">
-          <span className="font-mono text-[10px] text-text-primary tracking-widest">
+        <div className="glass-pill px-3 py-1 rounded-md border-ocean-700 shadow-subtle pointer-events-auto">
+          <span className="font-mono text-[10px] text-text-primary tracking-widest font-medium">
             {isLive
               ? liveData.lastUpdated
                 ? new Date(liveData.lastUpdated)
@@ -474,9 +474,9 @@ export function SatellitePanel({
           </span>
         </div>
 
-        <div className="glass-pill px-3 py-1.5 rounded-full">
-          <span className="metric-label text-text-secondary">
-            SRC: NASA GIBS
+        <div className="glass-pill px-2.5 py-1 rounded-md border-ocean-700 shadow-subtle hidden sm:inline-block">
+          <span className="text-[9px] font-mono tracking-wider text-text-muted uppercase">
+            PAYLOAD: NASA GIBS / INSAT
           </span>
         </div>
       </div>

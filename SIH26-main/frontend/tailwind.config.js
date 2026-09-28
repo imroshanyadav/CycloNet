@@ -4,64 +4,84 @@ export default {
   theme: {
     extend: {
       colors: {
-        // ── Ocean palette (from the console shell tokens) ─────────────────
+        // ── Institutional Observatory Slate & Maritime Navy Palette ─────
         ocean: {
-          950: "#050506",
-          900: "#0C0C0E",
-          850: "#151518",
-          800: "#29272A",
-          750: "#403D42",
+          950: "#080c14", // Deep command console ground
+          900: "#0c1322", // Operational workstation panel base
+          850: "#121b2f", // Scientific card surface
+          800: "#1d2b45", // Hairline structural dividers
+          750: "#273859", // Interactive hover surface
+          700: "#364c75", // Active state border
+          600: "#49659b", // Elevated telemetry borders
         },
-        // ── Signal colours ─────────────────────────────────────────────────
-        ir: "#FF7A45", // IR channel / active alerts
-        wv: "#4FC3E0", // Water vapour channel
-        vis: "#E7EEF4", // Visible channel
-        confidence: "#6FE3B4", // Confidence / positive readouts
-        alert: "#FF5C5C", // High-severity alerts
-        accent: "#D7A45A", // Interactive / selected states
-        // ── Text ───────────────────────────────────────────────────────────
+        slate: {
+          950: "#080c14",
+          900: "#0c1322",
+          850: "#121b2f",
+          800: "#1d2b45",
+          700: "#334155",
+        },
+        // ── Meteorological Sensor & Signal Tokens ───────────────────────
+        ir: "#38bdf8", // TIR1 (10.8µm) Thermal Infrared
+        wv: "#0ea5e9", // WV (6.7µm) Water Vapour Channel
+        vis: "#f8fafc", // VIS (0.65µm) Visible Optical Spectrum
+        radar: "#0284c7", // Doppler Radar reflectivity
+        confidence: "#10b981", // Operational Nominal / Verification
+        alert: "#ef4444", // Storm Warning / High Convection
+        hazard: "#dc2626", // Severe Cyclonic Landfall Hazard
+        caution: "#f59e0b", // Tropical Depression / Pre-warning
+        accent: "#38bdf8", // Interactive telemetry cyan
+        
+        // ── Typography Tokens ──────────────────────────────────────────
         text: {
-          primary: "#F4F1EA",
-          secondary: "#B5B0A8",
-          muted: "#89847E",
-          faint: "#5A5652",
+          primary: "#f8fafc", // High contrast reading
+          secondary: "#cbd5e1", // Supporting scientific telemetry
+          muted: "#94a3b8", // Metadata labels & coordinates
+          faint: "#64748b", // Subtle timestamps & system IDs
         },
-        // ── Legacy aliases kept so existing classes don't break ────────────
-        danger: { DEFAULT: "#FF5C5C", critical: "#FF3B30" },
-        base: { 900: "#050506", 800: "#0C0C0E", 700: "#151518" },
+
+        // ── Institutional System Aliases ───────────────────────────────
+        danger: { DEFAULT: "#ef4444", critical: "#dc2626" },
+        base: { 900: "#080c14", 800: "#0c1322", 700: "#121b2f" },
         glass: {
-          bg: "rgba(16, 27, 40, 0.60)",
+          bg: "rgba(12, 19, 34, 0.85)",
+          card: "rgba(18, 27, 47, 0.72)",
           border: "rgba(255, 255, 255, 0.08)",
-          highlight: "rgba(255, 255, 255, 0.04)",
+          highlight: "rgba(56, 189, 248, 0.05)",
         },
       },
       fontFamily: {
-        // IBM Plex Sans for UI prose, IBM Plex Mono for data values
         sans: [
           '"IBM Plex Sans"',
           "-apple-system",
           "BlinkMacSystemFont",
+          '"Segoe UI"',
+          "Roboto",
           "sans-serif",
         ],
         mono: [
           '"IBM Plex Mono"',
+          '"JetBrains Mono"',
           "ui-monospace",
           "SFMono-Regular",
+          "Menlo",
           "monospace",
         ],
       },
       boxShadow: {
-        glass: "0 8px 32px 0 rgba(0,0,0,0.45)",
-        glow: "0 0 20px rgba(100,149,237,0.25)",
-        "glow-ir": "0 0 14px rgba(255,122,69,0.35)",
-        "glow-conf": "0 0 10px rgba(111,227,180,0.30)",
+        glass: "0 8px 30px rgba(0, 0, 0, 0.45), 0 0 0 1px rgba(255, 255, 255, 0.06)",
+        panel: "0 4px 20px -2px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.08)",
+        card: "0 2px 10px rgba(0, 0, 0, 0.35), 0 0 0 1px rgba(255, 255, 255, 0.06)",
+        subtle: "0 1px 3px rgba(0, 0, 0, 0.3)",
+        radar: "0 0 12px rgba(14, 165, 233, 0.2)",
+        "radar-alert": "0 0 12px rgba(239, 68, 68, 0.25)",
       },
       backdropBlur: {
         xs: "4px",
         sm: "8px",
-        md: "16px",
-        lg: "24px",
-        xl: "32px",
+        md: "14px",
+        lg: "20px",
+        xl: "28px",
       },
     },
   },
