@@ -36,9 +36,9 @@ export function EvidenceDrawer({ open, onClose }: EvidenceDrawerProps) {
   if (!obs || !obs.classification) return null;
 
   const { classification, step } = obs;
-  const patternLabel   = classification.pattern.label;
-  const patternConf    = classification.pattern.confidence ? (classification.pattern.confidence * 100).toFixed(1) : 0;
-  const patternColor   = PATTERN_COLORS[patternLabel] ?? '#38bdf8';
+  const patternLabel = classification.pattern.label;
+  const patternConf = classification.pattern.confidence ? (classification.pattern.confidence * 100).toFixed(1) : 0;
+  const patternColor = PATTERN_COLORS[patternLabel] ?? '#38bdf8';
 
   const frameId = mode === 'HISTORICAL'
     ? step.observation_frame
@@ -65,8 +65,8 @@ export function EvidenceDrawer({ open, onClose }: EvidenceDrawerProps) {
           <motion.div
             key="drawer"
             initial={{ x: 360, opacity: 0 }}
-            animate={{ x: 0,   opacity: 1 }}
-            exit={{ x: 360,    opacity: 0 }}
+            animate={{ x: 0, opacity: 1 }}
+            exit={{ x: 360, opacity: 0 }}
             transition={{ type: 'spring', stiffness: 350, damping: 35 }}
             className="fixed top-0 right-0 h-full w-[360px] z-50 flex flex-col glass-panel border-l border-ocean-800 shadow-glass overflow-hidden font-sans"
           >
@@ -134,20 +134,20 @@ export function EvidenceDrawer({ open, onClose }: EvidenceDrawerProps) {
 
               <Row icon={<Satellite size={12} />} label="Sensor Spacecraft"
                 value="INSAT-3DR (74.0°E GEO) / VHRR Radiometer" mono />
-              <Row icon={<Database size={12} />}   label="Spectral Channel"
+              <Row icon={<Database size={12} />} label="Spectral Channel"
                 value="10.8µm Thermal Infrared (TIR1)" mono />
-              <Row icon={<Hash size={12} />}        label="Frame Identification"
+              <Row icon={<Hash size={12} />} label="Frame Identification"
                 value={frameId} mono />
-              <Row icon={<Clock size={12} />}       label="Observation Timestamp"
+              <Row icon={<Clock size={12} />} label="Observation Timestamp"
                 value={obsTime} mono highlight="text-text-primary" />
-              <Row icon={<MapPin size={12} />}      label="Circulation Center Coordinates"
+              <Row icon={<MapPin size={12} />} label="Circulation Center Coordinates"
                 value={`${obs.lat.toFixed(2)}°N, ${obs.lng.toFixed(2)}°E`} mono />
-              <Row icon={<Radio size={12} />}       label="Dvorak Morphology Diagnosis"
+              <Row icon={<Radio size={12} />} label="Dvorak Morphology Diagnosis"
                 value={`${PATTERN_LABELS[patternLabel]} (${patternConf}%)`}
                 highlight="text-confidence" />
-              <Row icon={<Radio size={12} />}       label="Convolutional Model Architecture"
+              <Row icon={<Radio size={12} />} label="Convolutional Model Architecture"
                 value={classification.model?.name || "ps70-resnet-classifier v2.1"} mono />
-              <Row icon={<Database size={12} />}    label="Calibration Standard"
+              <Row icon={<Database size={12} />} label="Calibration Standard"
                 value="IMD RSMC NIO Dvorak Empirical Dataset" mono />
 
               {/* IMD gap note if applicable */}

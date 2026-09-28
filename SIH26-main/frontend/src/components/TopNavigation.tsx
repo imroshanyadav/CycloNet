@@ -1,10 +1,14 @@
-import { ChevronDown, Radio, Activity, Archive } from 'lucide-react';
+import { ChevronDown, Radio, Activity, Archive, Globe } from 'lucide-react';
 import { useCycloneStore } from '../store/useCycloneStore';
 import { CYCLONES } from '../data/cyclones';
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 
-export function TopNavigation() {
+interface TopNavigationProps {
+  onOpenNasa?: () => void;
+}
+
+export function TopNavigation({ onOpenNasa }: TopNavigationProps = {}) {
   const { mode, setMode, activeEventId, setActiveCyclone } = useCycloneStore();
   const activeCycloneMeta = CYCLONES.find(c => c.id === activeEventId) || CYCLONES[0];
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -63,6 +67,21 @@ export function TopNavigation() {
             />
           )}
         </button>
+
+        {onOpenNasa && (
+          <button
+            onClick={onOpenNasa}
+            className="flex items-center gap-1.5 h-8 px-2.5 rounded-md bg-sky-500/10 border border-sky-500/30 text-sky-300 hover:text-white hover:bg-sky-500/20 hover:border-sky-400/50 transition-all text-[10px] font-mono font-semibold shadow-subtle"
+            title="Explore NASA EONET v3 Severe Storms & GIBS WMS Satellite Rasters"
+          >
+            <Globe size={13} className="text-sky-400" />
+            <span className="hidden md:inline">NASA EARTH OBSERVATORY</span>
+            <span className="md:hidden">NASA</span>
+            <span className="px-1 py-0.2 rounded bg-sky-400/20 text-sky-200 text-[8px] font-bold">
+              ZERO-KEY
+            </span>
+          </button>
+        )}
       </div>
 
       {/* ── Spacer ── */}

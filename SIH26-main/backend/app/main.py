@@ -17,6 +17,8 @@ from app.api.replay import router as replay_router
 from app.api.metrics import router as metrics_router
 from app.api.intensity import router as intensity_router
 from app.api.ml_tasks import router as ml_tasks_router
+from app.api.nasa import router as nasa_router
+from app.api.yolo import router as yolo_router
 
 settings = get_settings()
 
@@ -63,6 +65,8 @@ def create_app() -> FastAPI:
     app.include_router(metrics_router)
     app.include_router(intensity_router)
     app.include_router(ml_tasks_router)
+    app.include_router(nasa_router)
+    app.include_router(yolo_router)
 
     return app
 

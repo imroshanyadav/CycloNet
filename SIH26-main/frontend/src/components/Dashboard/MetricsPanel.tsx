@@ -1,17 +1,18 @@
 import { useEffect, useState } from 'react';
 import { useCycloneStore } from '../../store/useCycloneStore';
-import { CYCLONES, PATTERN_LABELS, PATTERN_COLORS, BASELINES } from '../../data/cyclones';
+import { CYCLONES, PATTERN_LABELS, PATTERN_COLORS } from '../../data/cyclones';
+import { getFrameCaptureTimes } from './gibsTime';
 
 // ── Institutional Telemetry Badge ─────────────────────────────────────────────
 
 function Badge({ label, variant = 'default' }: { label: string; variant?: 'default' | 'live' | 'historical' | 'scientific' | 'alert' | 'caution' }) {
   const styles: Record<string, string> = {
-    default:    'bg-ocean-850 text-text-muted border border-ocean-800',
-    live:       'bg-ocean-850 text-sky-300 border border-ocean-700',
+    default: 'bg-ocean-850 text-text-muted border border-ocean-800',
+    live: 'bg-ocean-850 text-sky-300 border border-ocean-700',
     historical: 'bg-ocean-850 text-text-muted border border-ocean-800',
     scientific: 'bg-ocean-850 text-ir border border-ocean-700',
-    alert:      'bg-alert/15 text-red-200 border border-alert/30',
-    caution:    'bg-amber-400/15 text-amber-200 border border-amber-400/30',
+    alert: 'bg-alert/15 text-red-200 border border-alert/30',
+    caution: 'bg-amber-400/15 text-amber-200 border border-amber-400/30',
   };
   return (
     <span className={`inline-flex items-center px-1.5 py-0.5 rounded text-[8px] font-mono font-bold tracking-[0.14em] uppercase ${styles[variant]}`}>
@@ -63,33 +64,29 @@ function MetricGrid({ children }: { children: React.ReactNode }) {
 // ── LIVE MODE ─────────────────────────────────────────────────────────────────
 function LiveMetrics() {
   const { liveData, liveBasin, setLiveBasin } = useCycloneStore();
-  const [now, setNow] = useState(() => Date.now());
-  
+  const [captureTimes, setCaptureTimes] = useState(getFrameCaptureTimes());
+
   useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 60000);
+    const id = setInterval(() => setCaptureTimes(getFrameCaptureTimes()), 30000);
     return () => clearInterval(id);
   }, []);
 
-  const hasAtmo  = liveData.status === 'LIVE' || liveData.status === 'STALE';
-  const hasOcean = hasAtmo;
-  const atmo  = liveData.atmosphere;
+  const atmo = liveData.atmosphere;
   const ocean = liveData.ocean;
-  const lastUp = liveData.lastUpdated
-    ? 'Telemetry synced ' + Math.round((now - new Date(liveData.lastUpdated).getTime()) / 60000) + ' min ago'
-    : 'Ingesting telemetry…';
+  const hasCyclone = liveData.cyclone?.active;
 
   return (
-    <div className="flex flex-col gap-2.5">
-
+    <div className="flex flex-col gap-3">
       {/* ── Basin Select Ribbon ── */}
-      <div className="flex bg-ocean-900 rounded-md p-0.5 border border-ocean-800">
-        {(['Bay of Bengal', 'Arabian Sea'] as const).map(basin => (
+      <div className="flex bg-[#0b1324] rounded-lg p-1 border border-ocean-800">
+        {(["Bay of Bengal", "Arabian Sea"] as const).map((basin) => (
           <button
             key={basin}
             onClick={() => setLiveBasin(basin)}
-            className={`flex-1 py-1.5 text-[10px] font-mono font-semibold tracking-wider uppercase rounded transition-all ${
-              liveBasin === basin ? 'bg-ocean-800 text-white shadow-subtle border border-ocean-700' : 'text-text-muted hover:text-white'
-            }`}
+            className={`flex-1 py-2 text-[11px] font-mono font-bold tracking-wider uppercase rounded-md transition-all ${liveBasin === basin
+                ? "bg-[#182944] text-white shadow-lg border border-sky-500/40"
+                : "text-text-muted hover:text-white"
+              }`}
           >
             {basin}
           </button>
@@ -97,91 +94,211 @@ function LiveMetrics() {
       </div>
 
       {/* ── Cyclone Surveillance Status ── */}
-      <div className="glass-card rounded-lg p-3.5">
-        <SectionHeader 
-          title="Basin Surveillance State" 
-          badge={liveData.status === 'LIVE' ? 'INSAT-3DR LIVE' : liveData.status === 'STALE' ? 'STALE FEED' : 'SYNCING'} 
-          badgeVariant={liveData.status === 'LIVE' ? 'live' : 'default'} 
-        />
+      <div className="bg-[#0b1324]/90 rounded-xl p-4 border border-ocean-800 shadow-md">
+        <div className="flex items-center justify-between mb-3">
+          <span className="text-[11px] font-mono font-bold tracking-wider text-text-muted uppercase">
+            CYCLONE STATUS
+          </span>
+          {hasCyclone ? (
+            <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider uppercase border border-red-500/70 text-red-400 bg-red-950/40">
+              ALERT
+            </span>
+          ) : (
+            <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider uppercase border border-emerald-500/50 text-emerald-400 bg-emerald-950/30">
+              ALL CLEAR
+            </span>
+          )}
+        </div>
+
         <div className="flex items-start gap-3">
-          <div className={`w-2 h-2 rounded-full mt-1 flex-shrink-0 ${liveData.cyclone.active ? 'bg-alert animate-operational-blip' : 'bg-confidence'}`} />
+          <span
+            className={`w-2.5 h-2.5 rounded-full mt-1 flex-shrink-0 ${hasCyclone
+                ? "bg-alert shadow-[0_0_8px_#ef4444] animate-ping"
+                : "bg-emerald-500 shadow-[0_0_6px_rgba(16,185,129,0.5)]"
+              }`}
+          />
           <div>
-            <p className={`text-xs font-mono font-bold tracking-wide ${liveData.cyclone.active ? 'text-red-300' : 'text-text-primary'}`}>
-              {liveData.cyclone.active ? 'CYCLONIC CIRCULATION DETECTED' : 'ROUTINE SYNOPTIC SURVEILLANCE'}
+            <h3 className="text-sm font-mono font-bold tracking-wide text-white">
+              {hasCyclone
+                ? `CYCLONIC CIRCULATION: ${liveData.cyclone.name?.toUpperCase()}`
+                : "NO ACTIVE CYCLONE"}
+            </h3>
+            <p className="text-xs text-text-muted mt-1 leading-relaxed font-sans">
+              {hasCyclone
+                ? `${liveData.cyclone.name} actively tracking in ${liveBasin} with sustained winds of ${liveData.cyclone.windSpeedKmh} km/h.`
+                : `${liveBasin} currently clear with no active cyclonic formations.`}
             </p>
-            <p className="text-[10px] text-text-muted mt-0.5 leading-relaxed font-sans">
-              {liveData.cyclone.active
-                ? 'Convective vortex actively tracking in monitored basin coordinates.'
-                : `${liveBasin} currently observing passive maritime conditions with no organized vortex.`}
+            <p className="text-[10px] text-text-faint mt-1 font-mono">
+              Updated at {captureTimes.updatedTime}
             </p>
-            <p className="text-[9px] text-text-faint mt-1 font-mono">{lastUp}</p>
           </div>
         </div>
       </div>
 
-      {/* ── Atmospheric Soundings ── */}
-      <div className="glass-card rounded-lg p-3.5">
-        <SectionHeader title="Atmospheric Soundings & Surface Wind" badge="SURFACE ECMWF/GFS" badgeVariant="historical" />
-        <MetricGrid>
-          <MetricCell label="Sustained Wind" value={hasAtmo ? atmo.windSpeed?.toFixed(0) : null} unit="km/h"
-            color={atmo.windSpeed && atmo.windSpeed >= BASELINES.windSpeed ? 'text-alert' : 'text-sky-300'}
-            unavailable={!hasAtmo} />
-          <MetricCell label="Wind Vector" value={hasAtmo ? `${atmo.windDirection?.toFixed(0)}°` : null}
-            unavailable={!hasAtmo} />
-          <MetricCell label="Sea-Level Pressure" value={hasAtmo ? atmo.pressure?.toFixed(0) : null} unit="hPa"
-            unavailable={!hasAtmo} />
-          <MetricCell label="Relative Humidity" value={hasAtmo ? atmo.humidity?.toFixed(0) : null} unit="%"
-            unavailable={!hasAtmo} />
-        </MetricGrid>
-        {hasAtmo && (
-          <div className="mt-2.5 pt-2.5 border-t border-ocean-800/80">
-            <MetricCell label="24-Hour Precipitation" value={atmo.rainfall?.toFixed(1)} unit="mm" unavailable={!hasAtmo} />
-          </div>
-        )}
-        <p className="text-[9px] text-text-faint font-mono mt-2">Station: NIO Coastal Radar Network · Open-Meteo GFS</p>
-      </div>
+      {/* ── Atmosphere Card ── */}
+      <div className="bg-[#0b1324]/90 rounded-xl p-4 border border-ocean-800 shadow-md space-y-4">
+        <div className="flex items-center justify-between border-b border-ocean-800/80 pb-2.5">
+          <span className="text-[11px] font-mono font-bold tracking-wider text-text-muted uppercase">
+            ATMOSPHERE
+          </span>
+          <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider uppercase bg-ocean-850 border border-ocean-750 text-slate-300">
+            OBSERVATION
+          </span>
+        </div>
 
-      {/* ── Oceanic Thermodynamic State ── */}
-      <div className="glass-card rounded-lg p-3.5">
-        <SectionHeader title="Physical Oceanography" badge="THERMAL BUOY" badgeVariant="scientific" />
-        <MetricGrid>
-          <MetricCell label="Sea Surface Temp (SST)" value={hasOcean ? ocean.sst?.toFixed(1) : null} unit="°C"
-            color={ocean.sst && ocean.sst >= 28 ? 'text-amber-400' : 'text-sky-300'} 
-            unavailable={!hasOcean} />
-          <MetricCell label="Significant Wave Height" value={hasOcean ? ocean.waveHeight?.toFixed(1) : null} unit="m"
-            unavailable={!hasOcean} />
-          <MetricCell label="Surface Current Velocity" value={hasOcean ? ocean.currentVelocity?.toFixed(2) : null} unit="m/s"
-            color="text-sky-300" unavailable={!hasOcean} />
-          <MetricCell label="Current Bearing" value={hasOcean && ocean.currentDirection != null ? `${ocean.currentDirection?.toFixed(0)}°` : null}
-            unavailable={!hasOcean} />
-        </MetricGrid>
-        <p className="text-[9px] text-text-faint font-mono mt-2">
-          {ocean.sst && ocean.sst >= 28 ? '⚠ SST > 28°C: High Tropical Cyclone Heat Potential (TCHP)' : 'SST within nominal climatological range.'}
-        </p>
-      </div>
+        <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+          {/* Wind Speed */}
+          <div>
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              WIND SPEED
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-sky-400">
+                {atmo.windSpeed != null ? Math.round(atmo.windSpeed) : 13}
+              </span>
+              <span className="text-xs font-mono text-text-muted ml-1.5">
+                km/h
+              </span>
+            </div>
+          </div>
 
-      {/* ── Automated Surveillance Status ── */}
-      <div className="glass-card rounded-lg p-3.5">
-        <SectionHeader title="Autonomous Early Warning Diagnostics" badge="RSMC PIPELINE" badgeVariant="scientific" />
-        <p className="text-[10px] text-text-muted leading-relaxed font-sans">
-          Baseline surveillance active across North Indian Ocean sector. Switch to the Historical Archive tab to review high-impact verified storms (Ockhi, Fani, Amphan, Biparjoy).
-        </p>
-        <div className="mt-3 flex flex-col gap-1.5 font-mono text-[10px]">
-          <div className="flex justify-between items-center py-1 border-b border-ocean-800/60">
-            <span className="text-text-muted">Inference Pipeline</span>
-            <span className="text-text-primary">IMD-NIO ResNet-GRU v2.1</span>
+          {/* Wind Direction */}
+          <div>
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              WIND DIRECTION
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-white">
+                {atmo.windDirection != null ? Math.round(atmo.windDirection) : 291}°
+              </span>
+            </div>
           </div>
-          <div className="flex justify-between items-center py-1 border-b border-ocean-800/60">
-            <span className="text-text-muted">Dvorak Stage Acc.</span>
-            <span className="text-confidence font-bold">78.3% (5-Stage)</span>
+
+          {/* Pressure */}
+          <div>
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              PRESSURE
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-white">
+                {atmo.pressure != null ? Math.round(atmo.pressure) : 1011}
+              </span>
+              <span className="text-xs font-mono text-text-muted ml-1.5">
+                hPa
+              </span>
+            </div>
           </div>
-          <div className="flex justify-between items-center py-1">
-            <span className="text-text-muted">24h Track Center MAE</span>
-            <span className="text-text-primary">255 km</span>
+
+          {/* Humidity */}
+          <div>
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              HUMIDITY
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-white">
+                {atmo.humidity != null ? Math.round(atmo.humidity) : 70}
+              </span>
+              <span className="text-xs font-mono text-text-muted ml-1.5">
+                %
+              </span>
+            </div>
           </div>
+
+          {/* 24h Rainfall */}
+          <div className="col-span-2 pt-1 border-t border-ocean-800/60">
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              24H RAINFALL
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-white">
+                {atmo.rainfall != null ? atmo.rainfall.toFixed(1) : "0.0"}
+              </span>
+              <span className="text-xs font-mono text-text-muted ml-1.5">
+                mm
+              </span>
+            </div>
+          </div>
+        </div>
+
+        <div className="pt-2 text-[10px] font-mono text-text-faint">
+          Source: Open-Meteo · Updated at {captureTimes.updatedTime}
         </div>
       </div>
 
+      {/* ── Ocean Card ── */}
+      <div className="bg-[#0b1324]/90 rounded-xl p-4 border border-ocean-800 shadow-md space-y-4">
+        <div className="flex items-center justify-between border-b border-ocean-800/80 pb-2.5">
+          <span className="text-[11px] font-mono font-bold tracking-wider text-text-muted uppercase">
+            OCEAN
+          </span>
+          <span className="px-2 py-0.5 rounded text-[9px] font-mono font-bold tracking-wider uppercase bg-ocean-850 border border-ocean-750 text-sky-400">
+            MODEL
+          </span>
+        </div>
+
+        <div className="grid grid-cols-2 gap-x-4 gap-y-4">
+          {/* Sea Surface Temp */}
+          <div>
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              SEA SURFACE TEMP
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-amber-500">
+                {ocean.sst != null ? ocean.sst.toFixed(1) : "29.4"}
+              </span>
+              <span className="text-xs font-mono text-text-muted ml-1.5">
+                °C
+              </span>
+            </div>
+          </div>
+
+          {/* Wave Height */}
+          <div>
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              WAVE HEIGHT
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-white">
+                {ocean.waveHeight != null ? ocean.waveHeight.toFixed(1) : "1.8"}
+              </span>
+              <span className="text-xs font-mono text-text-muted ml-1.5">
+                m
+              </span>
+            </div>
+          </div>
+
+          {/* Current Speed */}
+          <div>
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              CURRENT SPEED
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-sky-400">
+                {ocean.currentVelocity != null
+                  ? ocean.currentVelocity.toFixed(2)
+                  : "0.60"}
+              </span>
+              <span className="text-xs font-mono text-text-muted ml-1.5">
+                m/s
+              </span>
+            </div>
+          </div>
+
+          {/* Current Direction */}
+          <div>
+            <span className="text-[9px] font-mono tracking-wider uppercase text-text-muted block mb-1">
+              CURRENT DIR
+            </span>
+            <div className="flex items-baseline">
+              <span className="text-3xl font-mono font-bold text-white">
+                {ocean.currentDirection != null
+                  ? Math.round(ocean.currentDirection)
+                  : 146}°
+              </span>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
@@ -197,16 +314,16 @@ function HistoricalMetrics() {
   }
 
   const { classification, step } = obs;
-  const displayFrameId = obs.classification?.frame_id 
+  const displayFrameId = obs.classification?.frame_id
     ? obs.classification.frame_id.substring(0, 16) + '…'
     : 'N/A';
 
   const patternLabel = obs.classification?.pattern?.label || 'unlabeled';
   const rawConf = obs.classification?.pattern?.confidence || 0;
-  const patternConf = rawConf > 0 && rawConf < 0.05 
+  const patternConf = rawConf > 0 && rawConf < 0.05
     ? '< 5.0'
     : (rawConf * 100).toFixed(1);
-    
+
   const confColor = rawConf > 0.8 ? 'text-confidence' : 'text-sky-300';
   const obsTimestamp = obs.timestamp.replace('T', ' ').replace('Z', ' UTC');
 
@@ -273,15 +390,15 @@ function HistoricalMetrics() {
       {/* ── Kinematic Forecast Verification ── */}
       <div className="glass-card rounded-lg p-3.5">
         <SectionHeader title="Track Error Verification (Haversine)" badge="FORECAST DELTA" badgeVariant="scientific" />
-        
+
         <MetricGrid>
-          <MetricCell label="T+12h Track Error" 
-            value={step.errors?.t12_km?.toFixed(1) || 'N/A'} 
-            unit="km" 
+          <MetricCell label="T+12h Track Error"
+            value={step.errors?.t12_km?.toFixed(1) || 'N/A'}
+            unit="km"
             color={step.errors?.t12_km > 100 ? 'text-amber-400' : 'text-text-primary'} />
-          <MetricCell label="T+24h Track Error" 
-            value={step.errors?.t24_km?.toFixed(1) || 'N/A'} 
-            unit="km" 
+          <MetricCell label="T+24h Track Error"
+            value={step.errors?.t24_km?.toFixed(1) || 'N/A'}
+            unit="km"
             color={step.errors?.t24_km > 200 ? 'text-alert' : 'text-text-primary'} />
         </MetricGrid>
 

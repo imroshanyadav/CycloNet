@@ -1,4 +1,4 @@
-import { Bell, Home, Radio } from "lucide-react";
+import { Bell, Globe, Home, Radio, Scan } from "lucide-react";
 import { useEffect, useState } from "react";
 import { AlertSystem } from "./components/AlertSystem";
 import { CycloneAnalysis } from "./components/CycloneAnalysis";
@@ -7,12 +7,16 @@ import { MetricsPanel } from "./components/Dashboard/MetricsPanel";
 import { SatellitePanel } from "./components/Dashboard/SatellitePanel";
 import { IntroAnimation } from "./components/IntroAnimation";
 import { LandingPage } from "./components/LandingPage";
+import { NasaStormsModal } from "./components/NasaStormsModal";
+import { YoloScannerModal } from "./components/YoloScannerModal";
 import { TopNavigation } from "./components/TopNavigation";
 import { useCycloneStore } from "./store/useCycloneStore";
 
 function App() {
   const [showLanding, setShowLanding] = useState(true);
   const [alertOpen, setAlertOpen] = useState(false);
+  const [nasaModalOpen, setNasaModalOpen] = useState(false);
+  const [yoloModalOpen, setYoloModalOpen] = useState(false);
   const [utcTime, setUtcTime] = useState("");
 
   const {
@@ -75,6 +79,7 @@ function App() {
       {showLanding && (
         <LandingPage
           onEnterApp={() => setShowLanding(false)}
+          onOpenNasa={() => setNasaModalOpen(true)}
         />
       )}
 
@@ -108,7 +113,7 @@ function App() {
                 <Home size={13} className="text-ir" />
                 <span className="hidden sm:inline font-mono tracking-wider text-[10px] uppercase">PORTAL</span>
               </button>
-              
+
               <div className="flex items-center gap-2.5">
                 <div className="flex items-center justify-center w-8 h-8 rounded-md bg-ocean-850 border border-ocean-800 text-ir">
                   <Radio size={15} />
@@ -142,6 +147,38 @@ function App() {
                 <span className="text-text-faint">LINK: LOCKED</span>
               </div>
 
+              {/* YOLO Satellite Formation Scanner Button */}
+              <button
+                onClick={() => setYoloModalOpen(true)}
+                className="h-8 px-3 rounded-md bg-emerald-500/10 border border-emerald-500/30 flex items-center gap-2 text-emerald-200 hover:text-white hover:bg-emerald-500/20 hover:border-emerald-400/50 transition-all relative shadow-subtle"
+                title="Scan Complete India Satellite Map with YOLOv8 Vision Model"
+              >
+                <Scan size={13} className="text-emerald-400" />
+                <span className="text-[10px] font-bold tracking-widest text-emerald-200 font-mono">
+                  YOLO SCAN
+                </span>
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-400" />
+                </span>
+              </button>
+
+              {/* NASA Earth Observatory Feed Button */}
+              <button
+                onClick={() => setNasaModalOpen(true)}
+                className="h-8 px-3 rounded-md bg-sky-500/10 border border-sky-500/30 flex items-center gap-2 text-sky-200 hover:text-white hover:bg-sky-500/20 hover:border-sky-400/50 transition-all relative shadow-subtle"
+                title="View Global Severe Storms via NASA EONET v3 & GIBS Satellite Imagery"
+              >
+                <Globe size={13} className="text-sky-400" />
+                <span className="text-[10px] font-bold tracking-widest text-sky-200 font-mono">
+                  NASA EONET
+                </span>
+                <span className="flex h-2 w-2 relative">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75" />
+                  <span className="relative inline-flex rounded-full h-2 w-2 bg-sky-400" />
+                </span>
+              </button>
+
               {/* Official Bulletins & Alerts */}
               <button
                 onClick={() => setAlertOpen(true)}
@@ -167,7 +204,7 @@ function App() {
               opacity: introComplete ? 1 : 0,
             }}
           >
-            <TopNavigation />
+            <TopNavigation onOpenNasa={() => setNasaModalOpen(true)} />
 
             <div className="flex-1 min-h-0 flex flex-col lg:flex-row gap-0">
               {/* ── Left: Map (65%) ── */}
@@ -220,6 +257,18 @@ function App() {
 
           {/* Alert System — real-time notifications */}
           <AlertSystem open={alertOpen} onClose={() => setAlertOpen(false)} />
+
+          {/* NASA Earth Observatory Modal */}
+          <NasaStormsModal
+            open={nasaModalOpen}
+            onClose={() => setNasaModalOpen(false)}
+          />
+
+          {/* YOLO Complete India Satellite Formation Scanner Modal */}
+          <YoloScannerModal
+            open={yoloModalOpen}
+            onClose={() => setYoloModalOpen(false)}
+          />
         </div>
       )}
     </>

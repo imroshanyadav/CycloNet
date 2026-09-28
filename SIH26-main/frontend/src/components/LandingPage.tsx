@@ -17,9 +17,10 @@ import { useEffect, useRef, useState } from "react";
 
 interface LandingPageProps {
   onEnterApp: () => void;
+  onOpenNasa?: () => void;
 }
 
-export function LandingPage({ onEnterApp }: LandingPageProps) {
+export function LandingPage({ onEnterApp, onOpenNasa }: LandingPageProps) {
   const [scrollY, setScrollY] = useState(0);
   const featuresRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
@@ -253,6 +254,17 @@ export function LandingPage({ onEnterApp }: LandingPageProps) {
                 ARCHITECTURE
               </a>
             </div>
+
+            {onOpenNasa && (
+              <button
+                onClick={onOpenNasa}
+                className="flex items-center gap-1.5 px-3 py-2 rounded-md bg-sky-500/10 hover:bg-sky-500/20 border border-sky-500/30 text-sky-200 transition-all text-xs font-semibold tracking-wider font-mono shadow-subtle"
+                title="NASA EONET v3 Severe Storms & GIBS Satellite Imagery"
+              >
+                <Globe size={13} className="text-sky-400" />
+                <span className="hidden sm:inline">NASA OBSERVATORY</span>
+              </button>
+            )}
 
             <button
               onClick={onEnterApp}

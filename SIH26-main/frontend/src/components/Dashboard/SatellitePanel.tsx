@@ -11,13 +11,14 @@ import {
   MoreHorizontal,
   Navigation,
   Plus,
-  Radio,
   Triangle,
   Waves,
   Wind,
+  Scan,
 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { CYCLONES } from "../../data/cyclones";
+import { YoloScannerModal } from "../YoloScannerModal";
 import {
   getHistoricalCenter,
   useCycloneStore,
@@ -32,6 +33,7 @@ import {
   mapZoomOut,
 } from "./mapHelpers";
 import { Timeline } from "./Timeline";
+import { getFrameCaptureTimes } from "./gibsTime";
 
 // ── Layer definitions ────────────────────────────────────────────────────────
 const LAYER_DEFS: {
@@ -40,55 +42,55 @@ const LAYER_DEFS: {
   icon: React.ReactNode;
   alwaysAvailable: boolean;
 }[] = [
-  {
-    key: "satellite",
-    label: "Satellite / Base",
-    icon: <Map size={13} />,
-    alwaysAvailable: true,
-  },
-  {
-    key: "trajectory",
-    label: "Cyclone Trajectory",
-    icon: <GitBranch size={13} />,
-    alwaysAvailable: false,
-  },
-  {
-    key: "structure",
-    label: "Cyclone Structure",
-    icon: <Wind size={13} />,
-    alwaysAvailable: false,
-  },
-  {
-    key: "centre",
-    label: "Cyclone Centre",
-    icon: <Eye size={13} />,
-    alwaysAvailable: false,
-  },
-  {
-    key: "forecastTrack",
-    label: "Forecast Track",
-    icon: <Navigation size={13} />,
-    alwaysAvailable: false,
-  },
-  {
-    key: "forecastCone",
-    label: "Forecast Cone",
-    icon: <Triangle size={13} />,
-    alwaysAvailable: false,
-  },
-  {
-    key: "wind",
-    label: "Wind Field",
-    icon: <Wind size={13} />,
-    alwaysAvailable: false,
-  },
-  {
-    key: "ocean",
-    label: "Ocean Currents",
-    icon: <Waves size={13} />,
-    alwaysAvailable: false,
-  },
-];
+    {
+      key: "satellite",
+      label: "Satellite / Base",
+      icon: <Map size={13} />,
+      alwaysAvailable: true,
+    },
+    {
+      key: "trajectory",
+      label: "Cyclone Trajectory",
+      icon: <GitBranch size={13} />,
+      alwaysAvailable: false,
+    },
+    {
+      key: "structure",
+      label: "Cyclone Structure",
+      icon: <Wind size={13} />,
+      alwaysAvailable: false,
+    },
+    {
+      key: "centre",
+      label: "Cyclone Centre",
+      icon: <Eye size={13} />,
+      alwaysAvailable: false,
+    },
+    {
+      key: "forecastTrack",
+      label: "Forecast Track",
+      icon: <Navigation size={13} />,
+      alwaysAvailable: false,
+    },
+    {
+      key: "forecastCone",
+      label: "Forecast Cone",
+      icon: <Triangle size={13} />,
+      alwaysAvailable: false,
+    },
+    {
+      key: "wind",
+      label: "Wind Field",
+      icon: <Wind size={13} />,
+      alwaysAvailable: false,
+    },
+    {
+      key: "ocean",
+      label: "Ocean Currents",
+      icon: <Waves size={13} />,
+      alwaysAvailable: false,
+    },
+  ];
 
 // Quick-preset modes
 type Preset = "CYCLONE_VIEW" | "TRAJECTORY_ONLY" | "CLEAN_MAP";
@@ -160,8 +162,16 @@ export function SatellitePanel({
   // Popover states
   const [layersOpen, setLayersOpen] = useState(false);
   const [dotMenuOpen, setDotMenuOpen] = useState(false);
+  const [yoloModalOpen, setYoloModalOpen] = useState(false);
+  const [captureTimes, setCaptureTimes] = useState(getFrameCaptureTimes());
   const layerRef = useRef<HTMLDivElement>(null);
   const dotRef = useRef<HTMLDivElement>(null);
+
+  // Live time ticker for NASA GIBS frame stamps
+  useEffect(() => {
+    const id = setInterval(() => setCaptureTimes(getFrameCaptureTimes()), 30000);
+    return () => clearInterval(id);
+  }, []);
 
   // Close popovers on outside click
   useEffect(() => {
@@ -238,6 +248,22 @@ export function SatellitePanel({
           >
             <Minus size={14} />
           </button>
+          <div className="w-5 h-px bg-ocean-800 mx-auto" />
+          <button
+            onClick={mapFitBounds}
+            className="w-8 h-8 flex items-center justify-center text-text-muted hover:text-sky-400 transition-colors"
+            title="Fit Complete Map (Entire Basin)"
+          >
+            <Maximize2 size={13} />
+          </button>
+          <div className="w-5 h-px bg-ocean-800 mx-auto" />
+          <button
+            onClick={() => setYoloModalOpen(true)}
+            className="w-8 h-8 flex items-center justify-center text-emerald-400 hover:text-emerald-300 hover:bg-emerald-500/20 transition-colors"
+            title="Scan Complete India with YOLOv8 Vision Model"
+          >
+            <Scan size={14} />
+          </button>
         </div>
       </div>
 
@@ -251,9 +277,8 @@ export function SatellitePanel({
             setLayersOpen((v) => !v);
             setDotMenuOpen(false);
           }}
-          className={`w-8 h-8 glass-chrome rounded-lg flex items-center justify-center transition-colors ${
-            layersOpen ? "text-wv" : "text-text-muted hover:text-text-primary"
-          }`}
+          className={`w-8 h-8 glass-chrome rounded-lg flex items-center justify-center transition-colors ${layersOpen ? "text-wv" : "text-text-muted hover:text-text-primary"
+            }`}
           title="Layer controls"
         >
           <Layers size={14} />
@@ -323,18 +348,16 @@ export function SatellitePanel({
                         </span>
                       </div>
                       <div
-                        className={`w-7 h-4 rounded-full relative transition-colors ${
-                          layers[def.key] && available
+                        className={`w-7 h-4 rounded-full relative transition-colors ${layers[def.key] && available
                             ? "bg-wv"
                             : "bg-ocean-800"
-                        }`}
+                          }`}
                       >
                         <div
-                          className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${
-                            layers[def.key] && available
+                          className={`absolute top-0.5 w-3 h-3 rounded-full bg-white transition-all ${layers[def.key] && available
                               ? "left-[14px]"
                               : "left-0.5"
-                          }`}
+                            }`}
                         />
                       </div>
                     </button>
@@ -359,11 +382,10 @@ export function SatellitePanel({
             setDotMenuOpen((v) => !v);
             setLayersOpen(false);
           }}
-          className={`w-8 h-8 glass-chrome rounded-lg flex items-center justify-center transition-colors ${
-            dotMenuOpen
+          className={`w-8 h-8 glass-chrome rounded-lg flex items-center justify-center transition-colors ${dotMenuOpen
               ? "text-confidence"
               : "text-text-muted hover:text-text-primary"
-          }`}
+            }`}
           title="Map actions"
         >
           <MoreHorizontal size={14} />
@@ -391,22 +413,22 @@ export function SatellitePanel({
                 },
                 ...(mode === "HISTORICAL"
                   ? [
-                      {
-                        icon: <GitBranch size={13} />,
-                        label: "Fit Cyclone Track",
-                        action: () => mapFitTrack(trackCoords),
-                      },
-                    ]
+                    {
+                      icon: <GitBranch size={13} />,
+                      label: "Fit Cyclone Track",
+                      action: () => mapFitTrack(trackCoords),
+                    },
+                  ]
                   : []),
                 {
                   icon: <Database size={13} />,
                   label: "Data Source: NASA GIBS",
-                  action: () => {},
+                  action: () => { },
                 },
                 {
                   icon: <Clock size={13} />,
                   label: displayTime.slice(0, 20) + "…",
-                  action: () => {},
+                  action: () => { },
                 },
               ].map((item, i) => (
                 <button
@@ -429,62 +451,63 @@ export function SatellitePanel({
       </div>
 
       {/* ── Status badges — top-centre ── */}
-      <div className="absolute top-4 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 pointer-events-none">
+      <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 flex items-center gap-2 pointer-events-none">
         {isLive ? (
-          <div
-            className={`glass-pill flex items-center gap-2 px-3 py-1 rounded-md shadow-subtle ${
-              liveData.status === "LIVE"
-                ? "border-ocean-700 text-sky-300"
-                : "border-amber-500/40 text-amber-400"
-            }`}
-          >
-            <Radio
-              size={11}
-              className={liveData.status === "LIVE" ? "animate-operational-blip text-confidence" : ""}
-            />
-            <span className="text-[10px] font-mono tracking-wider font-semibold uppercase text-current">
-              {liveData.status === "LIVE"
-                ? "INSAT-3DR LIVE STREAM"
-                : liveData.status === "UPDATING"
-                  ? "SYNCING TELEMETRY..."
-                  : "STALE SENSOR DATA"}
-            </span>
-          </div>
+          <>
+            {/* NASA GIBS Capture Frame Badge */}
+            <div className="bg-[#1a1811]/92 border border-amber-600/35 px-4 py-1.5 rounded-lg shadow-2xl backdrop-blur-md flex flex-col text-left">
+              <span className="text-[10px] font-mono tracking-wider font-bold text-amber-300">
+                FRAME CAPTURED: {captureTimes.captured}
+              </span>
+              <span className="text-[9px] font-mono tracking-wider text-amber-400/80 font-medium">
+                NEXT UPCOMING: {captureTimes.next}
+              </span>
+            </div>
+
+            {/* NASA GIBS Source Badge */}
+            <div className="bg-[#1a1811]/92 border border-amber-600/35 px-3.5 py-2.5 rounded-lg shadow-2xl backdrop-blur-md flex items-center justify-center">
+              <span className="text-[10px] font-mono tracking-wider font-extrabold text-amber-300 uppercase">
+                SRC: NASA GIBS
+              </span>
+            </div>
+          </>
         ) : (
-          <div className="glass-pill flex items-center gap-2 px-3 py-1 rounded-md text-text-primary border-ocean-700 shadow-subtle">
-            <span className="w-1.5 h-1.5 rounded-full bg-ir" />
-            <span className="text-[10px] font-mono tracking-wider font-semibold uppercase">
-              ARCHIVE: {activeCycloneMeta.name.toUpperCase()} ({activeCycloneMeta.year})
-            </span>
-          </div>
+          <>
+            <div className="glass-pill flex items-center gap-2 px-3 py-1 rounded-md text-text-primary border-ocean-700 shadow-subtle">
+              <span className="w-1.5 h-1.5 rounded-full bg-ir" />
+              <span className="text-[10px] font-mono tracking-wider font-semibold uppercase">
+                ARCHIVE: {activeCycloneMeta.name.toUpperCase()} ({activeCycloneMeta.year})
+              </span>
+            </div>
+
+            <div className="glass-pill px-3 py-1 rounded-md border-ocean-700 shadow-subtle pointer-events-auto">
+              <span className="font-mono text-[10px] text-text-primary tracking-widest font-medium">
+                {obs
+                  ? obs.timestamp.replace("T", " ").replace("Z", " UTC")
+                  : "..."}
+              </span>
+            </div>
+
+            <div className="glass-pill px-2.5 py-1 rounded-md border-ocean-700 shadow-subtle hidden sm:inline-block">
+              <span className="text-[9px] font-mono tracking-wider text-text-muted uppercase">
+                PAYLOAD: NASA GIBS ARCHIVE
+              </span>
+            </div>
+          </>
         )}
-
-        <div className="glass-pill px-3 py-1 rounded-md border-ocean-700 shadow-subtle pointer-events-auto">
-          <span className="font-mono text-[10px] text-text-primary tracking-widest font-medium">
-            {isLive
-              ? liveData.lastUpdated
-                ? new Date(liveData.lastUpdated)
-                    .toISOString()
-                    .slice(0, 19)
-                    .replace("T", " ") + " UTC"
-                : "UPDATING..."
-              : obs
-                ? obs.timestamp.replace("T", " ").replace("Z", " UTC")
-                : "..."}
-          </span>
-        </div>
-
-        <div className="glass-pill px-2.5 py-1 rounded-md border-ocean-700 shadow-subtle hidden sm:inline-block">
-          <span className="text-[9px] font-mono tracking-wider text-text-muted uppercase">
-            PAYLOAD: NASA GIBS / INSAT
-          </span>
-        </div>
       </div>
 
       {/* ── Timeline ── */}
       <div className={isLive ? "pointer-events-none opacity-25" : ""}>
         <Timeline />
       </div>
+
+      {/* ── YOLO Satellite Scanner Modal ── */}
+      <YoloScannerModal
+        open={yoloModalOpen}
+        onClose={() => setYoloModalOpen(false)}
+        initialDate={obs?.timestamp?.slice(0, 10)}
+      />
     </div>
   );
 }
