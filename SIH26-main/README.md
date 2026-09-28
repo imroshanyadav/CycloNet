@@ -3,11 +3,6 @@
 **Smart India Hackathon 2026 Submission (PS70)**  
 *AI/ML-based system for identification, classification, and prediction of different tropical cyclone patterns using multi-source satellite data.*
 
-### 🌐 Live Demo
-- **Frontend Dashboard:** [https://sih-26-one.vercel.app/](https://sih-26-one.vercel.app/)
-- **Backend API (Render):** [https://sih26-o6nv.onrender.com/health](https://sih26-o6nv.onrender.com/health)
-
----
 
 ## 🌪️ Project Overview
 CycloNet is an end-to-end, AI-driven meteorological tracking system. Traditional Numerical Weather Prediction (NWP) physics models are highly accurate but notoriously slow to respond to Rapid Intensification (RI) events and anomalous low-latitude storm formations. 
