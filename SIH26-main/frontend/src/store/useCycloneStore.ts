@@ -1,8 +1,7 @@
 import { create } from "zustand";
 import { BASIN_CENTERS, CYCLONES } from "../data/cyclones";
 
-const API_BASE =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:8000/api";
+const API_BASE = import.meta.env.VITE_API_BASE_URL || "/api";
 
 export function getHistoricalCenter(
   replayData: any,
@@ -283,7 +282,8 @@ export const useCycloneStore = create<CycloneState>((set, get) => ({
           const activeStorms = (nasaData.events || []).filter((e: any) => {
             if (!e.is_active) return false;
             if (e.latest_date) {
-              const ageHours = (Date.now() - Date.parse(e.latest_date)) / (1000 * 3600);
+              const ageHours =
+                (Date.now() - Date.parse(e.latest_date)) / (1000 * 3600);
               // Must be within 36 hours of current real time to be considered active
               if (ageHours > 36 || ageHours < -24) return false;
             }
@@ -298,7 +298,9 @@ export const useCycloneStore = create<CycloneState>((set, get) => ({
               lat: storm.latitude,
               lon: storm.longitude,
               windKnots: storm.wind_speed_knots,
-              windSpeedKmh: storm.indicators?.wind_speed_kmh ?? Math.round(storm.wind_speed_knots * 1.852),
+              windSpeedKmh:
+                storm.indicators?.wind_speed_kmh ??
+                Math.round(storm.wind_speed_knots * 1.852),
               pressure: storm.indicators?.atkinson_holliday_pressure_hpa ?? 995,
               dvorak: storm.indicators?.dvorak_t_number ?? "T3.0",
               category: storm.indicators?.imd_category_name ?? "Cyclonic Storm",
@@ -322,7 +324,7 @@ export const useCycloneStore = create<CycloneState>((set, get) => ({
           },
           ocean: {
             sst: weather?.current?.temperature_2m ?? 29.4,
-            currentVelocity: marine?.current?.ocean_current_velocity ?? 0.60,
+            currentVelocity: marine?.current?.ocean_current_velocity ?? 0.6,
             currentDirection: marine?.current?.ocean_current_direction ?? 146.0,
             waveHeight: marine?.current?.wave_height ?? 1.8,
           },
@@ -344,7 +346,7 @@ export const useCycloneStore = create<CycloneState>((set, get) => ({
           },
           ocean: {
             sst: 29.4,
-            currentVelocity: 0.60,
+            currentVelocity: 0.6,
             currentDirection: 146.0,
             waveHeight: 1.8,
           },

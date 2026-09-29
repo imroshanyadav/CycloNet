@@ -81,13 +81,10 @@ export function IntensityEstimation() {
       const formData = new FormData();
       formData.append("file", selectedFile);
 
-      const response = await fetch(
-        "http://localhost:8000/api/cyclone/intensity",
-        {
-          method: "POST",
-          body: formData,
-        },
-      );
+      const response = await fetch("/api/cyclone/intensity", {
+        method: "POST",
+        body: formData,
+      });
 
       if (!response.ok) {
         const errorData = await response.json();

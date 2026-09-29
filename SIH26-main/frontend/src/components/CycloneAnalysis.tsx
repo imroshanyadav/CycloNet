@@ -150,11 +150,11 @@ export function CycloneAnalysis({ mode }: { mode: "LIVE" | "HISTORICAL" }) {
       formData3.append("file", selectedFile);
 
       const [intensityRes, identifyRes] = await Promise.all([
-        fetch("http://localhost:8000/api/cyclone/intensity", {
+        fetch("/api/cyclone/intensity", {
           method: "POST",
           body: formData1,
         }),
-        fetch("http://localhost:8000/api/ml/identify", {
+        fetch("/api/ml/identify", {
           method: "POST",
           body: formData2,
         }),
@@ -181,13 +181,10 @@ export function CycloneAnalysis({ mode }: { mode: "LIVE" | "HISTORICAL" }) {
         formData4.append("center_lat", identifyData.center.lat.toString());
         formData4.append("center_lon", identifyData.center.lon.toString());
 
-        const classifyRes = await fetch(
-          "http://localhost:8000/api/ml/classify",
-          {
-            method: "POST",
-            body: formData4,
-          },
-        );
+        const classifyRes = await fetch("/api/ml/classify", {
+          method: "POST",
+          body: formData4,
+        });
 
         if (classifyRes.ok) {
           classifyData = await classifyRes.json();

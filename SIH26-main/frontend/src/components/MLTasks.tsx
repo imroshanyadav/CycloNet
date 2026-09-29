@@ -164,7 +164,7 @@ export function MLTasks() {
     const formData = new FormData();
     formData.append("file", selectedFiles[0]);
 
-    const response = await fetch("http://localhost:8000/api/ml/identify", {
+    const response = await fetch("/api/ml/identify", {
       method: "POST",
       body: formData,
     });
@@ -188,7 +188,7 @@ export function MLTasks() {
     formData.append("center_lat", centerLat);
     formData.append("center_lon", centerLon);
 
-    const response = await fetch("http://localhost:8000/api/ml/classify", {
+    const response = await fetch("/api/ml/classify", {
       method: "POST",
       body: formData,
     });
@@ -208,7 +208,7 @@ export function MLTasks() {
       formData.append("files", file);
     });
 
-    const response = await fetch("http://localhost:8000/api/ml/predict", {
+    const response = await fetch("/api/ml/predict", {
       method: "POST",
       body: formData,
     });
