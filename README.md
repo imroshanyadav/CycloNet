@@ -22,7 +22,9 @@ This repository is organized into distinct, microservice-ready domains:
 
 *(Note: For non-technical readers or judges, every directory contains an `EXPLAINER.md` file that translates the technical code into layman's terms.)*
 
-## 🚀 Quick Start (Local Development)
+## 🚀 Quick Start & Deployment Guide
+
+> 📖 **Looking for a complete step-by-step tutorial? Check out [`Guide.md`](Guide.md) for full instructions on running locally with SQLite/Docker and deploying to Vercel & Cloud platforms.**
 
 ### 1. Backend & ML (FastAPI Server)
 ```bash

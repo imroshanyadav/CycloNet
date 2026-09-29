@@ -23,5 +23,5 @@ ENV PYTHONPATH=/app
 # Expose port
 EXPOSE 8000
 
-# Run the server (1 worker to save RAM on Render Free Tier)
-CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000", "--workers", "1"]
+# Run the server (supports dynamic PORT from Render/Railway, defaults to 8000)
+CMD exec uvicorn app.main:app --host 0.0.0.0 --port ${PORT:-8000} --workers 1
